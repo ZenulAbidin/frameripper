@@ -80,7 +80,7 @@ class TranscodePNGPage extends React.Component {
           <Progress animated value={this.state.frameNumber/this.state.totalFrames} />
         </div>
         <Link to="/">
-          <Button id="cancelTooltip" color="primary" onclick={"this.state.canceled = true;"}>Cancel</Button>
+          <Button id="cancelTooltip" color="primary" onclick={this.state.canceled = true;}>Cancel</Button>
         </Link>
       </>
     );

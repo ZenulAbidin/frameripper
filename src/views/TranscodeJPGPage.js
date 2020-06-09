@@ -68,7 +68,7 @@ class TranscodeJPGPage extends React.Component {
           <h3>Extracting JPG frames, please wait...</h3>
         </div>
         <Link to="/">
-          <Button color="primary" onclick={"this.state.canceled = true;">Cancel</Button>
+          <Button color="primary" onclick={this.state.canceled = true;}>Cancel</Button>
         </Link>
       </>
     );
