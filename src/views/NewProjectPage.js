@@ -112,7 +112,7 @@ class NewProjectPage extends React.Component {
             <Button id="createTooltip" color="primary">Create</Button>
           </Link>
           <Link to="/">
-            <Button color="primary" onclick={() => {this.state.canceled = true;}>Cancel</Button>
+            <Button color="primary" onclick={"this.state.canceled = true;">Cancel</Button>
           </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.pathTooltipOpen} target="pathTooltip" toggle={togglePathTooltipOpen}>

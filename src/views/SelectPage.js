@@ -112,7 +112,7 @@ class SelectPage extends React.Component {
             <Button id="createTooltip" color="primary">Create</Button>
           </Link>
           <Link to="/">
-            <Button id="createTooltip" color="primary" onclick={() => {this.state.canceled = true;}>Cancel</Button>
+            <Button id="createTooltip" color="primary" onclick={"this.state.canceled = true;">Cancel</Button>
           </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.frameNumbersTooltipOpen} target="frameNumbersToolTip" toggle={toggleFrameNumbersTooltipOpen}>
