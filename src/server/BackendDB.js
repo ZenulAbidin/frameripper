@@ -238,7 +238,7 @@ const getProjects = db => {
         logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: false, 'error': err}});
         reject(err);
       }
-      logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: true, '/projects': value});
+      logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: true, '/projects': value}});
       return resolve(value);
     })
   })
