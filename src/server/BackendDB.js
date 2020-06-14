@@ -13,7 +13,10 @@ const logfile = path.join(homedir, ".frameripper", `frameripper_${moment().forma
 
 const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination({dest: logfile, minLength: 4096, sync: false}));
 
-//TODO logging, log rotation
+var JPGcomplete = false;
+var PNGcomplete = false;
+
+logger.trace({app_subsystem: 'program_entry_point', app_file: '/server/BackendDB.js'});
 
 var app = express();
 app.use(express.json())
@@ -184,17 +187,38 @@ app.get('/currentframe', function (req, res) {
   })
 })
 
-app.get('/istranscodingcomplete', function (req, res) {
-  logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/currentframe\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  isTranscodingComplete().then(function(complete) {
-    logger.debug({app_subsystem: 'endpoint', app_url: '/istranscodingcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
+app.get('/istranscodingjpgcomplete', function (req, res) {
+  logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/istranscodingjpgcomplete\', function (req, res) {', app_file: '/server/BackendDB.js'});
+  isTranscodingJPGComplete().then(function(complete) {
+    logger.debug({app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
     res.status(200).json({'complete': complete})
   }).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/istranscodingcomplete', app_request: 'get', app_status: 400, app_response: {'error': err}});
+    logger.error({app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 400, app_response: {'error': err}});
     res.status(400).json({'error': err})
   })
 })
 
+app.get('/istranscodingpngcomplete', function (req, res) {
+  logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/istranscodingpngcomplete\', function (req, res) {', app_file: '/server/BackendDB.js'});
+  isTranscodingPNGComplete().then(function(complete) {
+    logger.debug({app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
+    res.status(200).json({'complete': complete})
+  }).catch(function(err) {
+    logger.error({app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 400, app_response: {'error': err}});
+    res.status(400).json({'error': err})
+  })
+})
+
+
+const isTranscodingJPGComplete = () => {
+  logger.trace({app_subsystem: 'function_call', app_func: 'const isTranscodingJPGComplete = () => {', app_file: '/server/BackendDB.js'});
+  return JPGcomplete === true;
+}
+
+const isTranscodingPNGComplete = () => {
+  logger.trace({app_subsystem: 'function_call', app_func: 'const isTranscodingPNGComplete = () => {', app_file: '/server/BackendDB.js'});
+  return PNGcomplete === true;
+}
 
 const openDB = () => {
   logger.trace({app_subsystem: 'function_call', app_func: 'const openDB = () => {', app_file: '/server/BackendDB.js'});
@@ -467,6 +491,8 @@ const deleteProject = (db, project) => {
 }
 
 const runFFmpegJPG = framesList => {
+  logger.trace({app_subsystem: 'function_call', app_func: 'const runFFmpegJPG = framesList => {', app_file: '/server/BackendDB.js'});
+  JPGcomplete = false;
 
   const currentProject = getCurrentProject(db).then({currentProject => (
     return currentProject;
@@ -502,11 +528,14 @@ const runFFmpegJPG = framesList => {
   });
 
   ffmpeg.on("close", code => {
-      logger.error({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'close', output: code});
+      logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'close', output: code});
+      JPGcomplete = true;
   });
 }
 
 const runFFmpegPNG = framesList => {
+  logger.trace({app_subsystem: 'function_call', app_func: 'const runFFmpegPNG = framesList => {', app_file: '/server/BackendDB.js'});
+  PNGcomplete = false;
 
   const currentProject = getCurrentProject(db).then({currentProject => (
     return currentProject;
@@ -564,6 +593,7 @@ const runFFmpegPNG = framesList => {
           }
       });
     }
+    PNGcomplete = true;
   });
 }
 
@@ -591,9 +621,14 @@ const argv = yargs
             demandOption: true
         }
     }))
-    .option('test', {
-        alias: 't',
-        description: 'Run frameripper in test mode. Doesn\'t run any ffmpeg commands.',
+    .option('test-client', {
+        alias: 'c',
+        description: 'Run frameripper in client test mode. Doesn\'t run server-side functions.',
+        type: 'boolean',
+    })
+    .option('test-server', {
+        alias: 's',
+        description: 'Run frameripper in server test mode. Doesn\'t run ffmpeg or filesystem operations.',
         type: 'boolean',
     })
     .help()
@@ -603,11 +638,13 @@ const argv = yargs
 
 try {
   if (fs.lstatSync(argv.jpgpath).isDirectory() && fs.lstatSync(argv.pngpath).isDirectory() && fs.lstatSync(argv.videopath).isDirectory()) {
-    console.log(`Storing JPGs in ${argv.jpgpath}, PNGs in ${argv.pngpath} using videos stored in ${argv.videopath}`);
+    console.log(`Storing JPGs in ${argv.jpgpath}, PNGs in ${argv.pngpath}. Using video directory ${argv.videopath}`);
+  logger.debug({app_subsystem: 'argv', app_response: {success=true, jpgpath: argv.jpgpath, pngpath: argv.pngpath, videopath: argv.videopath, test_client: argv['test-client'], test_server: argv['test-server']}});
   }
 } catch(err) {
   console.error("One or more folders don't exist. Please ensure they exist before running.");
   console.error(err);
+  logger.fatal({app_subsystem: 'argv', app_response: {success=false, error_type: 'directory_notexists', 'error': err}});
   process.exit(1);
 }
 

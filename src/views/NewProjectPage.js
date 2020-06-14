@@ -1,7 +1,7 @@
-
 import React from "react";
 import {Form, FormGroup, Button, Col, Input, Label, Link, Tooltip} from "reactstrap";
 var process = require('process');
+import "./styles.css";
 
 const address = process.env.SERVER_ADDRESS;
 
@@ -15,9 +15,11 @@ class NewProjectPage extends React.Component {
       offsetTooltipOpen: false,
       runFFmpegTooltipOpen: false,
       createTooltipOpen: false,
-      path: null,
-      prefix: null,
+      path: "",
+      prefix: "",
       offset: null,
+      prefixInputInvalid: false,
+      pathInputInvalid: false,
       canceled: false
     };
   }
@@ -75,6 +77,82 @@ class NewProjectPage extends React.Component {
     document.body.classList.toggle("newproject-page");
   }
 
+
+  validatePrefixInput(e) {
+    if (e.target.value;.length === 0) {
+      this.state.prefixInputInvalid = true;
+    }
+    for (var i = 0; i <  e.target.value;.length; i++) {
+      var c = e.target.value[i];
+      if (!c.match('[0-9a-zA-Z]') && c !== '_' && c !== '-' && c !== '.' ) {
+        this.state.prefixInputInvalid = true;
+        break;
+      }
+    }
+    this.state.prefixInput = e.target.value;
+    this.state.prefixInputInvalid = false;
+  }
+
+  prefixHelpText() {
+    return (
+      <>
+        <span className="small invalid_text">Please ensure your prefix contains only {'".", "-", "_"'} and{' '}
+          alphanumeric characters and is not empty.
+        </span>
+      </>
+    );
+  }
+
+  validatePathInput(e) {
+    if (e.target.value;.length === 0) {
+      this.state.pathInputInvalid = true;
+    }
+    for (var i = 0; i <  e.target.value;.length; i++) {
+      var c = e.target.value[i];
+      if (!c.match('[0-9a-zA-Z]') && c !== '_' && c !== '-' && c !== '.' ) {
+        this.state.pathInputInvalid = true;
+        break;
+      }
+    }
+    this.state.path = e.target.value;
+    this.state.pathInputInvalid = false;
+  }
+
+  pathHelpText() {
+    return (
+      <>
+        <span className="small invalid_text">Please ensure your file name contains only {'".", "-", "_"'} and{' '}
+          alphanumeric characters and is not empty.
+        </span>
+      </>
+    );
+  }
+
+  validatePathInput(e) {
+    if (e.target.value;.length === 0) {
+      this.state.prefixInputInvalid = true;
+    }
+    for (var i = 0; i <  e.target.value;.length; i++) {
+      var c = e.target.value[i];
+      if (!c.match('[0-9a-zA-Z]') && c !== '_' && c !== '-' && c !== '.' ) {
+        this.state.pathInputInvalid = true;
+        break;
+      }
+    }
+    this.state.path = e.target.value;
+    this.state.pathInputInvalid = false;
+  }
+
+  pathHelpText() {
+    return (
+      <>
+        <span className="small invalid_text">Please ensure your file name contains only {'".", "-", "_"'} and{' '}
+          alphanumeric characters and is not empty.
+        </span>
+      </>
+    );
+  }
+
   render() {
     return (
       <>
@@ -82,15 +160,17 @@ class NewProjectPage extends React.Component {
         <div>
           <Form>
             <FormGroup row>
-              <Label id="pathToolTip" for="pathInput" sm={2}>Path</Label>
+              <Label id="pathToolTip" for="pathInput" sm={2}>File Name</Label>
               <Col sm={10}>
-                <Input type="text" id="pathInput" placeholder="/some/path/to/video.mp4" />
+                <Input type="text" id="pathInput" placeholder="video.mp4" onchange={e => this.validatePathInput(e)} className={(this.state.pathInputInvalid ? 'input_invalid' : null)} />
+                (this.state.pathInputInvalid ? this.pathHelpText() : null)
               </Col>
             </FormGroup>
             <FormGroup row>
               <Label id="prefixToolTip" for="prefixInput" sm={2}>Prefix</Label>
               <Col sm={10}>
-                <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" />
+                <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onchange={e => this.validatePrefixInput(e)} className={(this.state.prefixInputInvalid ? 'input_invalid' : null)} />
+                (this.state.prefixInputInvalid ? this.prefixHelpText() : null)
               </Col>
             </FormGroup>
             <FormGroup row>

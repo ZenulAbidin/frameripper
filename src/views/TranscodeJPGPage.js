@@ -43,7 +43,7 @@ class TranscodeJPGPage extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     // retrieve state from backend
-    fetch(address+'/istranscodingcomplete').then(res => {
+    fetch(address+'/istranscodingjpgcomplete').then(res => {
     	if (res.ok) {
         res.json().then(json => {
           if (json.complete === true) {
@@ -52,7 +52,7 @@ class TranscodeJPGPage extends React.Component {
         })
       }
       else {
-        console.error(`GET /istranscodingcomplete at TranscodeJPGPage: ${res.status} ${res.statusText}`);
+        console.error(`GET /istranscodingjpgcomplete at TranscodeJPGPage: ${res.status} ${res.statusText}`);
       }
     })
   }

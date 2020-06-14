@@ -1,4 +1,3 @@
-
 import React from "react";
 import "./styles.css";
 var process = require('process');
@@ -16,7 +15,8 @@ class SelectPage extends React.Component {
       framesList: null,
       numFrames: null,
       project: null,
-      invalid: false
+      inputFrameNumbers: "",
+      frameNumbersInvalid: false
     };
   }
 
@@ -86,24 +86,35 @@ class SelectPage extends React.Component {
     this.setState({extractTooltipOpen: !extractTooltipOpen});
   }
 
-  helpText() {
+  frameNumbersHelpText() {
     return (
       <>
         <span className="small invalid_text">Please ensure your input has only a single number{' '}
-          on each line and all of the numbers are between 0 and {this.state.numFrames-1}.
+          on each line and all of the numbers are between 0 and {this.state.numFrames-1} (Blank lines are ignored,{' '}
+          scientific numbers will be truncated).
         </span>
       </>
     );
   }
 
-  validateInput() {
-    if (/* your input is invalid */ ) {
-      event.preventDefault();
-      this.state.invalid = true;
+  validateFrameNumbersInput(e) {
+    this.state.inputFrameNumbers = e.target.value;
+    if (this.state.inputFrameNumbers.length === 0) {
+      this.state.frameNumbersInvalid = true;
     }
-    else {
-      this.state.invalid = false;
+    var nums = this.state.inputFrameNumbers.split('\n');
+    var frames = [];
+    for (var i = 0; i < nums.length; i++) {
+      var n = parseInt(nums[i])
+      if (isNaN(n)) {
+        this.state.frameNumbersInvalid = true;
+        break;
+      } else {
+        frames.push(n);
+      }
     }
+    this.state.framesList = frames;
+    this.state.frameNumbersInvalid = false;
   }
 
   render() {
@@ -114,11 +125,11 @@ class SelectPage extends React.Component {
           <Form>
             <FormGroup>
               <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
-              <Input type="textarea" id="inputFrameNumbers" className={(this.state.invalid ? 'input_invalid' : null)} />
-              (this.state.invalid ? this.helpText() : null)
+              <Input type="textarea" id="inputFrameNumbers" onchange={e => this.validateFrameNumbersInput(e)} className={(this.state.invalid ? 'input_invalid' : null)} />
+              (this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null)
             </FormGroup>
           </Form>
-          <Link to="/transcode-png" onclick={this.validateInput()}>
+          <Link to="/transcode-png">
             <Button id="createTooltip" color="primary">Create</Button>
           </Link>
           <Link to="/" onclick={this.state.canceled = true}>

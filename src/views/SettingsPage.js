@@ -1,7 +1,7 @@
-
 import React from "react";
 var process = require('process');
 import {Form, FormGroup, Button, Col, Input, Label, Link, Tooltip} from "reactstrap";
+import "./styles.css";
 
 const address = process.env.SERVER_ADDRESS;
 
@@ -13,9 +13,10 @@ class SettingsPage extends React.Component {
       prefixTooltipOpen: false,
       offsetTooltipOpen: false,
       saveTooltipOpen: false,
-      prefix: null,
+      prefix: "",
       frameOffset: null,
       project: null,
+      prefixInputInvalid: false,
       canceled: false
     };
   }
@@ -68,6 +69,31 @@ class SettingsPage extends React.Component {
     this.setState({saveTooltipOpen: !saveTooltipOpen});
   }
 
+  validatePrefixInput(e) {
+    if (e.target.value;.length === 0) {
+      this.state.prefixInputInvalid = true;
+    }
+    for (var i = 0; i <  e.target.value;.length; i++) {
+      var c = e.target.value[i];
+      if (!c.match('[0-9a-zA-Z]') && c !== '_' && c !== '-' && c !== '.' ) {
+        this.state.prefixInputInvalid = true;
+        break;
+      }
+    }
+    this.state.prefixInput = e.target.value;
+    this.state.prefixInputInvalid = false;
+  }
+
+  prefixHelpText() {
+    return (
+      <>
+        <span className="small invalid_text">Please ensure your prefix contains only {'".", "-", "_"'} and{' '}
+          alphanumeric characters and is not empty.
+        </span>
+      </>
+    );
+  }
+
   render() {
     return (
       <>
@@ -77,13 +103,14 @@ class SettingsPage extends React.Component {
             <FormGroup row>
               <Label id="prefixToolTip" for="prefixInput" sm={2}>Prefix</Label>
               <Col sm={10}>
-                <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" />
+                <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onchange={e => this.validatePrefixInput(e)} className={(this.state.prefixInputInvalid ? 'input_invalid' : null)} />
+                (this.state.prefixInputInvalid ? this.prefixHelpText() : null)
               </Col>
             </FormGroup>
             <FormGroup row>
               <Label id="offsetToolTip" for="offsetInput">Frame offset</Label>
               <Col sm={10}>
-                <Input min={-10} max={10} type="number" step="1" placeholder="-2"/>
+                <Input min={-10} max={10} type="number" step="1" placeholder="-2" onchange={e => this.state.frameOffset = e.target.value} />
               </Col>
             </FormGroup>
           </Form>

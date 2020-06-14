@@ -2,7 +2,7 @@ import React from "react";
 import {Checkmark} from 'react-checkmark';
 const fetch = require('node-fetch');
 var process = require('process');
-import {Progress, Button, Col, Link} from "reactstrap";
+import {Spinner, Button, Col, Link} from "reactstrap";
 
 const address = process.env.SERVER_ADDRESS;
 
@@ -11,14 +11,13 @@ class TranscodePNGPage extends React.Component {
     super(props);
     this.state = {
       project: null,
-      frameNumber: 0,
-      totalFrames: 1,
       completed: false,
       canceled: false
     };
   }
 
   componentDidMount() {
+    document.body.classList.toggle("transcodepng-page");
     fetch(address+'/currentproject').then(res => {
       if (res.ok) {
         res.json().then(json => {
@@ -29,17 +28,6 @@ class TranscodePNGPage extends React.Component {
         console.error(`GET /currentproject at TranscodePNGPage: ${res.status} ${res.statusText}`);
       }
     })
-    fetch(address+'/nextframe').then(res => {
-    	if (res.ok) {
-        res.json().then(json => {
-          this.state.totalFrames = json.numFrames;
-        })
-      }
-      else {
-        console.error(`GET /nextframe at TranscodePNGPage: ${res.status} ${res.statusText}`);
-      }
-    })
-    document.body.classList.toggle("transcodepng-page");
   }
   componentWillUnmount() {
     if (this.state.cancelled) {
@@ -54,33 +42,32 @@ class TranscodePNGPage extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     // retrieve state from backend
-    if (this.state.frameNumber !== prevState.frameNumber) {
-      fetch(address+'/nextframe').then(res => {
-      	if (res.ok) {
-          res.json().then(json => {
-            if (json.frameNumber >= 0) {
-              this.state.framenumber = json.framenumber;
-            }
-            else {
-              // All transcoding jobs have finished.
-              this.state.completed = true;
-            }
-          })
-        }
-      })
-    }
+    fetch(address+'/istranscodingpngcomplete').then(res => {
+    	if (res.ok) {
+        res.json().then(json => {
+          if (json.complete === true) {
+            this.state.completed = true;
+          }
+        })
+      }
+      else {
+        console.error(`GET /istranscodingpngcomplete at TranscodePNGPage: ${res.status} ${res.statusText}`);
+      }
+    })
   }
 
   displayIncomplete() {
     return (
       <>
-        <h1>Transcoding {this.state.project} JPGs</h1>
+        <h1>Transcoding {this.state.project} PNGs</h1>
         <div>
+          <div style={{ alignSelf: "center", width: '6rem', height: '6rem' }}>
+            <Spinner type="grow" color="info" />
+          </div>
           <h3>Extracting PNG frames, please wait...</h3>
-          <Progress animated value={this.state.frameNumber/this.state.totalFrames} />
         </div>
         <Link to="/">
-          <Button id="cancelTooltip" color="primary" onclick={this.state.canceled = true}>Cancel</Button>
+          <Button color="primary" onclick={this.state.canceled = true}>Cancel</Button>
         </Link>
       </>
     );
@@ -89,13 +76,12 @@ class TranscodePNGPage extends React.Component {
   displayComplete() {
     return (
       <>
-        <h1>Transcoding {this.state.project} JPGs</h1>
+        <h1>Transcoding {this.state.project} PNGs</h1>
         <div>
-          <h3>All PNG frames extracted</h3>
-          <Progress animated value={100} />
           <Checkmark size='xxLarge' />
+          <h3>All PNG frames extracted</h3>
         </div>
-        <Link to="/">
+        <Link to="/select">
           <Buttoncolor="primary">OK</Button>
         </Link>
       </>
