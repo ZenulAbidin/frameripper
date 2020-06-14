@@ -252,8 +252,10 @@ const setProjects = (db, projects) => {
         logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: value, app_response: {success: false, 'error': err}});
         reject(err);
       }
-      logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: value, app_response: {success: true}});
-      else resolve(null);
+      else {
+        logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: value, app_response: {success: true}});
+        resolve(null);
+      }
     })
   })
 }
