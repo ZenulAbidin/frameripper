@@ -235,7 +235,7 @@ const getProjects = db => {
   return new Promise((resolve, reject) => {
     db.get('/projects').then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: false, 'error': err}});
         reject(err);
       }
       logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: true, '/projects': value});
@@ -249,10 +249,10 @@ const setProjects = (db, projects) => {
   return new Promise((resolve, reject) => {
     db.set('/projects', projects).then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: value, app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: value, app_response: {success: false, 'error': err}});
         reject(err);
       }
-      logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: value, app_response: {success: true});
+      logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: value, app_response: {success: true}});
       else resolve(null);
     })
   })
@@ -263,10 +263,10 @@ const getCurrentProject = db => {
   return new Promise((resolve, reject) => {
     db.get('/currentProject').then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_value: value, app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_value: value, app_response: {success: false, 'error': err}});
         reject(err);
       }
-      logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: true, '/currentProject': value});
+      logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: true, '/currentProject': value}});
       return resolve(value);
     })
   })
@@ -279,16 +279,16 @@ const setCurrentProject = (db, project) => {
       return projects.includes(project);
     });
     if (!exists) {
-        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: value, app_response: {success: false, 'error': 'Project doesn\'t exist'});
+        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: value, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
         reject('Project doesn\'t exist');
     }
     db.set('/currentProject', project).then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: value, app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: value, app_response: {success: false, 'error': err}});
         reject(err);
       }
       else {
-        logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: value, app_response: {success: true});
+        logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: value, app_response: {success: true}});
         resolve(null);
       }
     })
@@ -302,26 +302,26 @@ const getSettings = (db, project) => {
       return projects.includes(project);
     });
     if (!exists) {
-        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': 'Project doesn\'t exist'});
-        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': 'Project doesn\'t exist'});
+        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
         reject('Project doesn\'t exist');
     }
     prefix = db.get('/project/'+project+'/prefix').then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err}});
         reject(err);
       }
       return value;
     })
     frameOffset = db.get('/project/'+project+'/frameOffset').then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err}});
         reject(err);
       }
       return value;
     })
-    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: true, '/project/'+project+'/prefix': prefix});
-    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: true, '/project/'+project+'/frameOffset': frameOffset});
+    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: true, '/project/'+project+'/prefix': prefix}});
+    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: true, '/project/'+project+'/frameOffset': frameOffset}});
     resolve({'prefix': prefix, 'frameOffset': frameOffset});
   })
 }
@@ -332,21 +332,21 @@ const setSettings = (db, project, prefix, frameOffset) => {
     exists = getProjects(db).then(projects => {
       return projects.includes(project);
     });
-    logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix, app_response: {success: false, 'error': 'Project doesn\'t exist'});
-    logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset, app_response: {success: false, 'error': 'Project doesn\'t exist'});
+    logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+    logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
     if (!exists) reject('Project doesn\'t exist');
     db.put('/project/'+project+'/prefix', prefix).then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix, app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix, app_response: {success: false, 'error': err}});
         reject(err);
       }
     })
     db.get('/project/'+project+'/frameOffset', frameOffset).then((err, value) => {
-        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset, app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset, app_response: {success: false, 'error': err}});
       if (err) reject(err);
     })
-    logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix, app_response: {success: true});
-    logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset, app_response: {success: true});
+    logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix, app_response: {success: true}});
+    logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset, app_response: {success: true}});
     resolve(null);
   })
 }
@@ -359,17 +359,17 @@ const getNumFrames = (db, project) => {
       return projects.includes(project);
     });
     if (!exists) {
-      logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': 'Project doesn\'t exist'});
+      logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
     }
     numFrames = db.get('/project/'+project+'/numFrames').then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err}});
         reject(err);
       }
       return value;
     })
-    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: true, '/project/'+project+'/numFrames': numFrames});
+    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: true, '/project/'+project+'/numFrames': numFrames}});
     resolve(numFrames);
   })
 }
@@ -381,16 +381,16 @@ const setNumFrames = (db, project, numFrames) => {
         return projects.includes(project);
     });
     if (!exists) {
-      logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames, app_response: {success: false, 'error': 'Project doesn\'t exist'});
+      logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
     }
     db.put('/project/'+project+'/numFrames', numFrames).then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames, app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames, app_response: {success: false, 'error': err}});
         reject(err);
       }
     })
-    logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames, app_response: {success: true});
+    logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames, app_response: {success: true}});
     resolve(null);
   })
 }
@@ -402,17 +402,17 @@ const getFramesList = (db, project) => {
       return projects.includes(project);
     });
     if (!exists) {
-      logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'});
+      logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
     }
     framesList = db.get('/project/'+project+'/framesList').then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err}});
         reject(err);
       }
       return value;
     })
-    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: true, '/project/'+project+'/framesList': framesList});
+    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: true, '/project/'+project+'/framesList': framesList}});
     resolve(framesList);
   })
 }
@@ -424,16 +424,16 @@ const setFramesList = (db, project, framesList) => {
         return projects.includes(project);
     });
     if (!exists) {
-      logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList, app_response: {success: false, 'error': 'Project doesn\'t exist'});
+      logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
     }
     db.put('/project/'+project+'/framesList', framesList).then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList, app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList, app_response: {success: false, 'error': err}});
         reject(err);
       }
     })
-    logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList, app_response: {success: true});
+    logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList, app_response: {success: true}});
     resolve(null);
   })
 }
@@ -446,46 +446,46 @@ const deleteProject = (db, project) => {
     });
     exists = projects.includes(project)
     if (!exists) {
-      logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': 'Project doesn\'t exist'});
-      logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': 'Project doesn\'t exist'});
-      logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': 'Project doesn\'t exist'});
-      logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'});
+      logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+      logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+      logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+      logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
     }
     db.del('/project/'+project+'/prefix').then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err});
-        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err});
-        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err});
-        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err}});
+        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err}});
+        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err}});
+        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err}});
         reject(err);
       }
     })
-    logger.debug({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: true});
+    logger.debug({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: true}});
     db.del('/project/'+project+'/frameOffset').then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err});
-        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err});
-        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err}});
+        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err}});
+        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err}});
         reject(err);
       }
     })
-    logger.debug({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: true});
+    logger.debug({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: true}});
     db.del('/project/'+project+'/numFrames').then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err});
-        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err}});
+        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err}});
         reject(err);
       }
     })
-    logger.debug({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: true});
+    logger.debug({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: true}});
     db.del('/project/'+project+'/framesList').then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err});
+        logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err}});
         reject(err);
       }
     })
-    logger.debug({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: true});
+    logger.debug({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: true}});
     projects = projects.filter((value, index, arr) => {
         return value !== project;
     })
