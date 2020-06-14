@@ -52,7 +52,7 @@ app.get('/startpngtranscode', function (req, res) {
 })
 
 app.get('/abortpngtranscode', function (req, res) {
-  logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/abortpngtranscode\', function (req, res) {', function (req, res) {', app_file: '/server/BackendDB.js'});
+  logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/abortpngtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (ffmpeg_running) {
     ffmpeg.kill();
     ffmpeg_running = false;
