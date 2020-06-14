@@ -322,8 +322,8 @@ const getSettings = (db, project) => {
       }
       return value;
     })
-    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: true, '/project/'+project+'/prefix': prefix}});
-    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: true, '/project/'+project+'/frameOffset': frameOffset}});
+    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: true, [`/project/${project}/prefix`]: prefix}});
+    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: true, [`/project/${project}/frameOffset`]: frameOffset}});
     resolve({'prefix': prefix, 'frameOffset': frameOffset});
   })
 }
@@ -371,7 +371,7 @@ const getNumFrames = (db, project) => {
       }
       return value;
     })
-    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: true, '/project/'+project+'/numFrames': numFrames}});
+    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: true, [`/project/${project}/numFrames`]: numFrames}});
     resolve(numFrames);
   })
 }
@@ -414,7 +414,7 @@ const getFramesList = (db, project) => {
       }
       return value;
     })
-    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: true, '/project/'+project+'/framesList': framesList}});
+    logger.debug({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: true, [`/project/${project}/framesList`]: framesList}});
     resolve(framesList);
   })
 }
