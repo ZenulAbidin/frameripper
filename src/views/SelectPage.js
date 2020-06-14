@@ -1,8 +1,9 @@
 import React from "react";
 import "./styles.css";
-var process = require('process');
 import {Link} from "react-router-dom";
 import {Form, FormGroup, Button, Input, Label, Tooltip} from "reactstrap";
+
+var process = require('process');
 
 const address = process.env.SERVER_ADDRESS;
 
@@ -57,7 +58,7 @@ class SelectPage extends React.Component {
   }
   componentWillUnmount() {
     if (!this.state.canceled) {
-      body = {'framesList': this.state.framesList};
+      var body = {'framesList': this.state.framesList};
       // send PUT request
       fetch(address+'/frameslist', {
           method: 'put',
@@ -81,10 +82,10 @@ class SelectPage extends React.Component {
   }
   
   toggleFrameNumbersTooltipOpen() {
-    this.setState({frameNumbersTooltipOpen: !frameNumbersTooltipOpen});
+    this.setState({this.state.frameNumbersTooltipOpen: !this.state.frameNumbersTooltipOpen});
   }
   toggleExtractTooltipOpen() {
-    this.setState({extractTooltipOpen: !extractTooltipOpen});
+    this.setState({this.state.extractTooltipOpen: !this.state.extractTooltipOpen});
   }
 
   frameNumbersHelpText() {
