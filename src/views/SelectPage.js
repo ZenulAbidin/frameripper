@@ -1,7 +1,8 @@
 import React from "react";
 import "./styles.css";
 var process = require('process');
-import {Form, FormGroup, Button, Input, Label, Link, Tooltip} from "reactstrap";
+import Link from "react-router";
+import {Form, FormGroup, Button, Input, Label, Tooltip} from "reactstrap";
 
 const address = process.env.SERVER_ADDRESS;
 

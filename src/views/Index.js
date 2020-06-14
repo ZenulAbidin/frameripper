@@ -2,7 +2,8 @@
 import React from "react";
 import SelectedComponent from "./SelectedComponent.js";
 var process = require('process');
-import {Button, Container, Row, Col, Link, Tooltip, Jumbotron,
+import Link from "react-router";
+import {Button, Container, Row, Col, Tooltip, Jumbotron,
     Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 
 const address = process.env.SERVER_ADDRESS;
