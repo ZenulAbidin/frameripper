@@ -16,49 +16,53 @@ const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination({des
 var JPGcomplete = false;
 var PNGcomplete = false;
 
+var ffmpeg = null;
+var ffmpeg_running = false;
+
 logger.trace({app_subsystem: 'program_entry_point', app_file: '/server/BackendDB.js'});
 
 var app = express();
 app.use(express.json())
 
 app.get('/startjpgtranscode', function (req, res) {
-  //Do ffmpeg stuff
+  logger.debug({app_subsystem: 'endpoint', app_url: '/startjpgtranscode', app_request: 'get', app_status: 200});
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/startjpgtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  getProjects(db).then(function(projects) {
-    res.status(200).json({'projects': projects})
-  }).catch(function(err) {
-    res.status(400).json({'error': err})
-  })
+  runFFmpegJPG();
+  res.status(200);
 })
 
 app.get('/abortjpgtranscode', function (req, res) {
-  //Do ffmpeg stuff
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/abortjpgtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  getProjects(db).then(function(projects) {
-    res.status(200).json({'projects': projects})
-  }).catch(function(err) {
-    res.status(400).json({'error': err})
-  })
+  if (ffmpeg_running) {
+    ffmpeg.kill();
+    ffmpeg_running = false;
+    logger.debug({app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 200});
+    res.status(200)
+  } else {
+    logger.error({app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 400, app_response: {'error': err}});
+    res.status(400).json({'error': 'ffmpeg is not running'})
+  }
 })
 
 app.get('/startpngtranscode', function (req, res) {
-  //Do ffmpeg stuff
-  logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/startpngtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  getProjects(db).then(function(projects) {
-    res.status(200).json({'projects': projects})
-  }).catch(function(err) {
-    res.status(400).json({'error': err})
+  logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/startpngtranscode\', function (req, res) {', function (req, res) {', app_file: '/server/BackendDB.js'});
+  runFFmpegPNG();
+  logger.debug({app_subsystem: 'endpoint', app_url: '/startpngtranscode', app_request: 'get', app_status: 200});
+  res.status(200);
   })
 })
 
 app.get('/abortpngtranscode', function (req, res) {
-  //Do ffmpeg stuff
-  logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/abortpngtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  getProjects(db).then(function(projects) {
-    res.status(200).json({'projects': projects})
-  }).catch(function(err) {
-    res.status(400).json({'error': err})
-  })
+  logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/abortpngtranscode\', function (req, res) {', function (req, res) {', app_file: '/server/BackendDB.js'});
+  if (ffmpeg_running) {
+    ffmpeg.kill();
+    ffmpeg_running = false;
+    logger.debug({app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 200});
+    res.status(200)
+  } else {
+    logger.error({app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 400, app_response: {'error': err}});
+    res.status(400).json({'error': 'ffmpeg is not running'})
+  }
 })
 
 app.get('/projects', function (req, res) {
@@ -490,7 +494,10 @@ const deleteProject = (db, project) => {
   })
 }
 
-const runFFmpegJPG = framesList => {
+const runFFmpegJPG = () => {
+  const framesList = getFramesList(db).then(function(framesList) {
+    return framesList;
+  })
   logger.trace({app_subsystem: 'function_call', app_func: 'const runFFmpegJPG = framesList => {', app_file: '/server/BackendDB.js'});
   JPGcomplete = false;
 
@@ -510,9 +517,10 @@ const runFFmpegJPG = framesList => {
   const args = ["-i", video_arg, "-nostdin", "-y", "-vf", "fps=1", settings.prefix+"%06d.jpg"]
   logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'spawn', options: args});
   //var options = "-i argv.videopath/filename -nostdin -y -vf fps=1 prefix%06d.jpg" (jpgdir)
-  const ffmpeg = spawn({"cwd": path.join(argv.jpgpath, currentProject)},  "ffmpeg", args, {
-        cwd: pngdir
-    });
+  ffmpeg = spawn({"cwd": path.join(argv.jpgpath, currentProject)},  "ffmpeg", args, {
+    cwd: pngdir
+  });
+  ffmpeg_running = true;
 
   ffmpeg.stdout.on("data", data => {
       logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stdout', output: data});
@@ -530,13 +538,17 @@ const runFFmpegJPG = framesList => {
   ffmpeg.on("close", code => {
       logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'close', output: code});
       JPGcomplete = true;
+      ffmpeg_running = false;
   });
 }
 
-const runFFmpegPNG = framesList => {
+const runFFmpegPNG = () => {
   logger.trace({app_subsystem: 'function_call', app_func: 'const runFFmpegPNG = framesList => {', app_file: '/server/BackendDB.js'});
   PNGcomplete = false;
 
+  const framesList = getFramesList(db).then(function(framesList) {
+    return framesList;
+  })
   const currentProject = getCurrentProject(db).then({currentProject => (
     return currentProject;
   )}
@@ -561,9 +573,11 @@ const runFFmpegPNG = framesList => {
   video_arg = path.join(argv.videopath, currentProject)
   const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
   logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
-  const ffmpeg = spawn({"cwd": path.join(argv.pngpath, currentProject)}, "ffmpeg", args, {
+  ffmpeg = spawn({"cwd": path.join(argv.pngpath, currentProject)}, "ffmpeg", args, {
       cwd: pngdir
   });
+
+  ffmpeg_running = true;
 
   ffmpeg.stdout.on("data", data => {
     logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stdout', output: data});
@@ -594,6 +608,7 @@ const runFFmpegPNG = framesList => {
       });
     }
     PNGcomplete = true;
+    ffmpeg_running = false;
   });
 }
 
