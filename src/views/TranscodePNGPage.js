@@ -2,7 +2,7 @@ import React from "react";
 import {Checkmark} from 'react-checkmark';
 const fetch = require('node-fetch');
 var process = require('process');
-import Link from "react-router";
+import Link from "react-router-dom";
 import {Spinner, Button, Col} from "reactstrap";
 
 const address = process.env.SERVER_ADDRESS;

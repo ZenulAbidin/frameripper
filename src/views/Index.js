@@ -2,7 +2,7 @@
 import React from "react";
 import SelectedComponent from "./SelectedComponent.js";
 var process = require('process');
-import Link from "react-router";
+import Link from "react-router-dom";
 import {Button, Container, Row, Col, Tooltip, Jumbotron,
     Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 
