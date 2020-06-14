@@ -13,9 +13,9 @@ class SelectPage extends React.Component {
     this.state = {
       frameNumbersTooltipOpen: false,
       extractTooltipOpen: false,
-      framesList: undefined,
-      numFrames: undefined,
-      project: undefined,
+      framesList: null,
+      numFrames: null,
+      project: null,
       invalid: false
     };
   }
@@ -96,6 +96,16 @@ class SelectPage extends React.Component {
     );
   }
 
+  validateInput() {
+    if (/* your input is invalid */ ) {
+      event.preventDefault();
+      this.state.invalid = true;
+    }
+    else {
+      this.state.invalid = false;
+    }
+  }
+
   render() {
     return (
       <>
@@ -108,11 +118,11 @@ class SelectPage extends React.Component {
               (this.state.invalid ? this.helpText() : null)
             </FormGroup>
           </Form>
-          <Link to="/transcode-png">
+          <Link to="/transcode-png" onclick={this.validateInput()}>
             <Button id="createTooltip" color="primary">Create</Button>
           </Link>
-          <Link to="/">
-            <Button id="createTooltip" color="primary" onclick={this.state.canceled = true}>Cancel</Button>
+          <Link to="/" onclick={this.state.canceled = true}>
+            <Button id="createTooltip" color="primary">Cancel</Button>
           </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.frameNumbersTooltipOpen} target="frameNumbersToolTip" toggle={toggleFrameNumbersTooltipOpen}>

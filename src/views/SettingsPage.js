@@ -13,9 +13,9 @@ class SettingsPage extends React.Component {
       prefixTooltipOpen: false,
       offsetTooltipOpen: false,
       saveTooltipOpen: false,
-      prefix: undefined,
-      frameOffset: undefined,
-      project: undefined,
+      prefix: null,
+      frameOffset: null,
+      project: null,
       canceled: false
     };
   }

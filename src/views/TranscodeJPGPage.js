@@ -11,7 +11,7 @@ class TranscodeJPGPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      project: undefined,
+      project: null,
       completed: false,
       canceled: false
     };

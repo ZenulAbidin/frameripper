@@ -15,9 +15,9 @@ class NewProjectPage extends React.Component {
       offsetTooltipOpen: false,
       runFFmpegTooltipOpen: false,
       createTooltipOpen: false,
-      path: undefined,
-      prefix: undefined,
-      offset: undefined,
+      path: null,
+      prefix: null,
+      offset: null,
       canceled: false
     };
   }

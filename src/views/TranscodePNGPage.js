@@ -10,7 +10,7 @@ class TranscodePNGPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      project: undefined,
+      project: null,
       frameNumber: 0,
       totalFrames: 1,
       completed: false,

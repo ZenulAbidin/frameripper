@@ -8,6 +8,10 @@
   "dependencies": {
     "react-checkmark": "latest",
     "yargs": "latest",
+    "level": "latest",
+    "express": "latest",
+    "pino": "latest",
+    "glob": "latest",
     "classnames": "latest",
     "moment": "latest",
     "nouislider": "latest",
@@ -21,7 +25,8 @@
     "reactstrap": "latest"
   },
   "devDependencies": {
-    "typescript": "3.8.3"
+    "typescript": "latest",
+    "pino-pretty": "latest"
   },
   "scripts": {
     "start": "HOST=95.217.11.19 PORT=3011 react-scripts start",
