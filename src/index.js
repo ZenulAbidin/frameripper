@@ -21,6 +21,8 @@ if (address === '' || !address.startsWith('http://') || address.startsWith('http
 Check that the SERVER_ADDRESS environment variable is set with the domain IP address and has http:// or https:// in front of it.`)
 }
 
+require('server/BackendDB.js');
+
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
