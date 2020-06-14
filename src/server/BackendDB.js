@@ -45,7 +45,7 @@ app.get('/abortjpgtranscode', function (req, res) {
 })
 
 app.get('/startpngtranscode', function (req, res) {
-  logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/startpngtranscode\', function (req, res) {', function (req, res) {', app_file: '/server/BackendDB.js'});
+  logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/startpngtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
   runFFmpegPNG();
   logger.debug({app_subsystem: 'endpoint', app_url: '/startpngtranscode', app_request: 'get', app_status: 200});
   res.status(200);
