@@ -49,7 +49,6 @@ app.get('/startpngtranscode', function (req, res) {
   runFFmpegPNG();
   logger.debug({app_subsystem: 'endpoint', app_url: '/startpngtranscode', app_request: 'get', app_status: 200});
   res.status(200);
-  })
 })
 
 app.get('/abortpngtranscode', function (req, res) {
