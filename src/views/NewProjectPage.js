@@ -29,7 +29,7 @@ class NewProjectPage extends React.Component {
     this.state.pathTooltipOpen = !this.state.pathTooltipOpen;
   }
   togglePrefixTooltipOpen() {
-    this.state.prefixTooltipOpen: !this.state.prefixTooltipOpen;
+    this.state.prefixTooltipOpen = !this.state.prefixTooltipOpen;
   }
   toggleOffsetTooltipOpen() {
     this.state.offsetTooltipOpen = !this.state.offsetTooltipOpen;
