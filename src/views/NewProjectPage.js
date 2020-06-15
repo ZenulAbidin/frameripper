@@ -1,8 +1,9 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {Form, FormGroup, Button, Col, Input, Label, Tooltip} from "reactstrap";
-var process = require('process');
 import "./styles.css";
+
+var process = require('process');
 
 const address = process.env.SERVER_ADDRESS;
 
@@ -58,7 +59,7 @@ class NewProjectPage extends React.Component {
           console.error(`PUT /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
         }
       });
-      body = {'prefix': prefix, 'frameOffset': frameOffset};
+      body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
       // send PUT request
       fetch(address+'/currentsettings', {
           method: 'put',
