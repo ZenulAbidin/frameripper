@@ -92,7 +92,9 @@ class NewProjectPage extends React.Component {
 
   validatePrefixInput(e) {
     if (e.target.value.length === 0) {
-      this.state.prefixInputInvalid = true;
+      this.setState({
+        prefixInputInvalid: true
+      });
     }
     for (var i = 0; i <  e.target.value.length; i++) {
       var c = e.target.value[i];
@@ -101,8 +103,10 @@ class NewProjectPage extends React.Component {
         break;
       }
     }
-    this.state.prefixInput = e.target.value;
-    this.state.prefixInputInvalid = false;
+    this.setState({
+      prefix: e.target.value,
+      prefixInputInvalid: true
+    });
   }
 
   prefixHelpText() {
@@ -117,7 +121,9 @@ class NewProjectPage extends React.Component {
 
   validatePathInput(e) {
     if (e.target.value.length === 0) {
-      this.state.pathInputInvalid = true;
+      this.setState({
+        pathInputInvalid: true
+      });
     }
     for (var i = 0; i <  e.target.value.length; i++) {
       var c = e.target.value[i];
@@ -126,8 +132,10 @@ class NewProjectPage extends React.Component {
         break;
       }
     }
-    this.state.path = e.target.value;
-    this.state.pathInputInvalid = false;
+    this.setState({
+      path: e.target.value,
+      pathInputInvalid: true
+    });
   }
 
   pathHelpText() {
