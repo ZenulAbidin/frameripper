@@ -138,10 +138,10 @@ class SelectPage extends React.Component {
             <Button id="createTooltip" color="primary">Cancel</Button>
           </Link>
         </div>
-        <Tooltip placement="left" isOpen={this.state.frameNumbersTooltipOpen} target="frameNumbersToolTip" toggle={toggleFrameNumbersTooltipOpen}>
+        <Tooltip placement="left" isOpen={this.state.frameNumbersTooltipOpen} target="frameNumbersToolTip" toggle={this.toggleFrameNumbersTooltipOpen}>
           Frame numbers must be zero based, one on each line.
         </Tooltip>
-        <Tooltip placement="bottom" isOpen={this.state.extractTooltipOpen} target="extractTooltip" toggle={toggleExtractTooltip}>
+        <Tooltip placement="bottom" isOpen={this.state.extractTooltipOpen} target="extractTooltip" toggle={this.toggleExtractTooltip}>
           Begin extracting PNG images of the selected frames.
         </Tooltip>
       </>

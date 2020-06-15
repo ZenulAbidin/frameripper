@@ -123,13 +123,13 @@ class SettingsPage extends React.Component {
             <Button id="createTooltip" color="primary" onclick={this.state.canceled = true}>Cancel</Button>
           </Link>
         </div>
-        <Tooltip placement="left" isOpen={this.state.prefixTooltipOpen} target="prefixTooltip" toggle={togglePrefixTooltipOpen}>
+        <Tooltip placement="left" isOpen={this.state.prefixTooltipOpen} target="prefixTooltip" toggle={this.togglePrefixTooltipOpen}>
           The text to put at the beginning of each file name. The rest of the filename is the frame number counting from 0.
         </Tooltip>
-        <Tooltip placement="left" isOpen={this.state.offsetTooltipOpen} target="offsetTooltip" toggle={toggleOffsetTooltipOpen}>
+        <Tooltip placement="left" isOpen={this.state.offsetTooltipOpen} target="offsetTooltip" toggle={this.toggleOffsetTooltipOpen}>
           The change in frame number to pass to ffmpeg. Some videos do not have the frames of the stream counting from 0.
         </Tooltip>
-        <Tooltip placement="bottom" isOpen={this.state.saveTooltipOpen} target="saveTooltip" toggle={toggleSaveTooltip}>
+        <Tooltip placement="bottom" isOpen={this.state.saveTooltipOpen} target="saveTooltip" toggle={this.toggleSaveTooltip}>
           Save the settings.
         </Tooltip>
       </>

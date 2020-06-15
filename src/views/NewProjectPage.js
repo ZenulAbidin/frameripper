@@ -196,19 +196,19 @@ class NewProjectPage extends React.Component {
             <Button color="primary" onclick={this.state.canceled = true}>Cancel</Button>
           </Link>
         </div>
-        <Tooltip placement="left" isOpen={this.state.pathTooltipOpen} target="pathTooltip" toggle={togglePathTooltipOpen}>
+        <Tooltip placement="left" isOpen={this.state.pathTooltipOpen} target="pathTooltip" toggle={this.togglePathTooltipOpen}>
           Full path to the video.
         </Tooltip>
-        <Tooltip placement="left" isOpen={this.state.prefixTooltipOpen} target="prefixTooltip" toggle={togglePrefixTooltipOpen}>
+        <Tooltip placement="left" isOpen={this.state.prefixTooltipOpen} target="prefixTooltip" toggle={this.togglePrefixTooltipOpen}>
           The text to put at the beginning of each file name. The rest of the filename is the frame number counting from 0.
         </Tooltip>
-        <Tooltip placement="left" isOpen={this.state.offsetTooltipOpen} target="offsetTooltip" toggle={toggleOffsetTooltipOpen}>
+        <Tooltip placement="left" isOpen={this.state.offsetTooltipOpen} target="offsetTooltip" toggle={this.toggleOffsetTooltipOpen}>
           The change in frame number to pass to ffmpeg. Some videos do not have the frames of the stream counting from 0.
         </Tooltip>
-        <Tooltip placement="left" isOpen={this.state.runFFmpegTooltipOpen} target="runFFmpegTooltip" toggle={toggleRunFFmpegTooltipOpen}>
+        <Tooltip placement="left" isOpen={this.state.runFFmpegTooltipOpen} target="runFFmpegTooltip" toggle={this.toggleRunFFmpegTooltipOpen}>
           Do not run ffmpeg. Useful for recreating the database if it got corrupted.
         </Tooltip>
-        <Tooltip placement="bottom" isOpen={this.state.createTooltipOpen} target="createTooltip" toggle={toggleCreateTooltip}>
+        <Tooltip placement="bottom" isOpen={this.state.createTooltipOpen} target="createTooltip" toggle={this.toggleCreateTooltip}>
           Begin extracting all frames from the video.
         </Tooltip>
       </>

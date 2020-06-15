@@ -96,20 +96,20 @@ class Index extends React.Component {
             <Button id="deleteTooltip" color="danger">Delete</Button>
           </Link>
         </div>
-        <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={toggleNewTooltip}>
+        <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={this.toggleNewTooltip}>
           Creates a new project.
         </Tooltip>
-        <Tooltip placement="bottom" isOpen={this.state.deleteTooltipOpen} target="deleteTooltip" toggle={toggleDeleteTooltipOpen}>
+        <Tooltip placement="bottom" isOpen={this.state.deleteTooltipOpen} target="deleteTooltip" toggle={this.toggleDeleteTooltipOpen}>
           Deletes the selected project.
         </Tooltip>
-        <Modal isOpen={this.state.deleteModalOpen} toggle={toggleDeleteModalOpen}>
-          <ModalHeader toggle={toggleDeleteModalOpen}>Delete project</ModalHeader>
+        <Modal isOpen={this.state.deleteModalOpen} toggle={this.toggleDeleteModalOpen}>
+          <ModalHeader toggle={this.toggleDeleteModalOpen}>Delete project</ModalHeader>
           <ModalBody>
             You are about to delete project {selectedProject}. This cannot be undone!
           </ModalBody>
           <ModalFooter>
-            <Button color="danger" onClick={toggleDeleteModalOpen}>Delete</Button>
-            <Button color="primary" onClick={deleteProject}>Cancel</Button>
+            <Button color="danger" onClick={this.toggleDeleteModalOpen}>Delete</Button>
+            <Button color="primary" onClick={this.deleteProject}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </>
