@@ -636,7 +636,7 @@ const argv = yargs
             type: 'string',
             demandOption: true
         }
-    }))
+    })
     .option('test-client', {
         alias: 'c',
         description: 'Run frameripper in client test mode. Doesn\'t run server-side functions.',
