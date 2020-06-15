@@ -1,5 +1,5 @@
 import React from "react";
-import "./styles.css";
+import "../assets/css/styles.css";
 import {Link} from "react-router-dom";
 import {Form, FormGroup, Button, Input, Label, Tooltip} from "reactstrap";
 
