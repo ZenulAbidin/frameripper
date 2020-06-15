@@ -99,13 +99,15 @@ class NewProjectPage extends React.Component {
     for (var i = 0; i <  e.target.value.length; i++) {
       var c = e.target.value[i];
       if (!c.match('[0-9a-zA-Z]') && c !== '_' && c !== '-' && c !== '.' ) {
-        this.state.prefixInputInvalid = true;
+        this.setState({
+          prefixInputInvalid: true
+        });
         break;
       }
     }
     this.setState({
       prefix: e.target.value,
-      prefixInputInvalid: true
+      prefixInputInvalid: false
     });
   }
 
@@ -128,13 +130,15 @@ class NewProjectPage extends React.Component {
     for (var i = 0; i <  e.target.value.length; i++) {
       var c = e.target.value[i];
       if (!c.match('[0-9a-zA-Z]') && c !== '_' && c !== '-' && c !== '.' ) {
-        this.state.pathInputInvalid = true;
+        this.setState({
+          pathInputInvalid: true
+        });
         break;
       }
     }
     this.setState({
       path: e.target.value,
-      pathInputInvalid: true
+      pathInputInvalid: false
     });
   }
 
@@ -188,7 +192,7 @@ class NewProjectPage extends React.Component {
             <Button id="createTooltip" color="primary">Create</Button>
           </Link>
           <Link to="/">
-            <Button color="primary" onclick={this.state.canceled = true}>Cancel</Button>
+            <Button color="primary" onclick={this.setState({canceled: true})}>Cancel</Button>
           </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.pathTooltipOpen} target="pathTooltip" toggle={this.togglePathTooltipOpen}>
