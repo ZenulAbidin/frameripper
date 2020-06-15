@@ -29,7 +29,7 @@
     "pino-pretty": "latest"
   },
   "scripts": {
-    "start": "HOST=95.217.11.19 PORT=3011 react-scripts start",
+    "start": "node src/BackendDB.js & && HOST=95.217.11.19 PORT=3011 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
