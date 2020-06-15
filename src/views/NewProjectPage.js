@@ -27,19 +27,29 @@ class NewProjectPage extends React.Component {
   }
 
   togglePathTooltipOpen() {
-    this.state.pathTooltipOpen = !this.state.pathTooltipOpen;
+    this.setState({
+      pathTooltipOpen: !this.state.pathTooltipOpen
+    });
   }
   togglePrefixTooltipOpen() {
-    this.state.prefixTooltipOpen = !this.state.prefixTooltipOpen;
+    this.setState({
+      prefixTooltipOpen: !this.state.prefixTooltipOpen
+    });
   }
   toggleOffsetTooltipOpen() {
-    this.state.offsetTooltipOpen = !this.state.offsetTooltipOpen;
+    this.setState({
+      offsetTooltipOpen: !this.state.offsetTooltipOpen
+    });
   }
   toggleRunFFmpegTooltipOpen() {
-    this.state.runFFmpegTooltipOpen = !this.state.runFFmpegTooltipOpen;
+    this.setState({
+     runFFmpegTooltipOpen: !this.state.runFFmpegTooltipOpen
+    });
   }
   toggleCreateTooltipOpen() {
-    this.state.createTooltipOpen = !this.state.createTooltipOpen;
+    this.setState({
+     createTooltipOpen: !this.state.createTooltipOpen
+    });
   }
 
 
