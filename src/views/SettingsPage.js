@@ -62,13 +62,13 @@ class SettingsPage extends React.Component {
   }
 
   togglePrefixTooltipOpen() {
-    this.setState({prefixTooltipOpen: !prefixTooltipOpen});
+    this.setState({this.state.prefixTooltipOpen: !this.state.prefixTooltipOpen});
   }
   toggleOffsetTooltipOpen() {
-    this.setState({offsetTooltipOpen: !offsetTooltipOpen});
+    this.setState({this.state.offsetTooltipOpen: !this.state.offsetTooltipOpen});
   }
   toggleSaveTooltipOpen() {
-    this.setState({saveTooltipOpen: !saveTooltipOpen});
+    this.setState({this.state.saveTooltipOpen: !this.state.saveTooltipOpen});
   }
 
   validatePrefixInput(e) {
