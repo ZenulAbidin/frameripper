@@ -553,9 +553,9 @@ const runFFmpegPNG = () => {
   const currentProject = getCurrentProject(db).then(currentProject => {
     return currentProject;
   })
-  const settings = getSettings(db).then({settings => (
+  const settings = getSettings(db).then(settings => {
     return settings;
-  )}
+  })
 
   // Wipe all the image files from the directory before transcoding
   files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
