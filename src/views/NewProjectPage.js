@@ -176,7 +176,7 @@ class NewProjectPage extends React.Component {
             <FormGroup row>
               <Label id="offsetToolTip" for="offsetInput">Frame offset</Label>
               <Col sm={10}>
-                <Input min={-10} max={10} id="offsetInput" type="number" step="1" placeholder="-2" onchange={e => this.setState({frameOffset: e.target.value})/>
+                <Input min={-10} max={10} id="offsetInput" type="number" step="1" placeholder="-2" onchange={e => this.setState({frameOffset: e.target.value})}/>
               </Col>
             </FormGroup>
             <FormGroup row>
