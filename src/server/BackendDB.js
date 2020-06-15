@@ -180,17 +180,6 @@ app.put('/deleteproject', function (req, res) {
   res.status(200)
 })
 
-app.get('/currentframe', function (req, res) {
-  logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/currentframe\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  getCurrentFrame().then(function(frame) {
-    logger.debug({app_subsystem: 'endpoint', app_url: '/currentframe', app_request: 'get', app_status: 200, app_response: {'currentFrame': frame}});
-    res.status(200).json({'currentFrame': frame})
-  }).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/currentframe', app_request: 'get', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
-})
-
 app.get('/istranscodingjpgcomplete', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/istranscodingjpgcomplete\', function (req, res) {', app_file: '/server/BackendDB.js'});
   isTranscodingJPGComplete().then(function(complete) {
