@@ -26,180 +26,254 @@ var app = express();
 app.use(express.json())
 
 app.get('/startjpgtranscode', function (req, res) {
-  logger.debug({app_subsystem: 'endpoint', app_url: '/startjpgtranscode', app_request: 'get', app_status: 200});
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/startjpgtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  runFFmpegJPG();
+  if (!argv.client_test) {
+    runFFmpegJPG();
+  }
+  logger.debug({app_subsystem: 'endpoint', app_url: '/startjpgtranscode', app_request: 'get', app_status: 200});
   res.status(200);
 })
 
 app.get('/abortjpgtranscode', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/abortjpgtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (ffmpeg_running) {
-    ffmpeg.kill();
-    ffmpeg_running = false;
+  if (!argv.client_test) {
+    if (ffmpeg_running) {
+      ffmpeg.kill();
+      ffmpeg_running = false;
+      logger.debug({app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 200});
+      res.status(200)
+    } else {
+      logger.error({app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 400, app_response: {'error': 'ffmpeg is not running'}});
+      res.status(400).json({'error': 'ffmpeg is not running'})
+    }
+  } else {
     logger.debug({app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 200});
     res.status(200)
-  } else {
-    logger.error({app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 400, app_response: {'error': 'ffmpeg is not running'}});
-    res.status(400).json({'error': 'ffmpeg is not running'})
   }
 })
 
 app.get('/startpngtranscode', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/startpngtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  runFFmpegPNG();
+  if (!argv.client_test) {
+    runFFmpegPNG();
+  }
   logger.debug({app_subsystem: 'endpoint', app_url: '/startpngtranscode', app_request: 'get', app_status: 200});
   res.status(200);
 })
 
 app.get('/abortpngtranscode', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/abortpngtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (ffmpeg_running) {
-    ffmpeg.kill();
-    ffmpeg_running = false;
+  if (!argv.client_test) {
+    if (ffmpeg_running) {
+      ffmpeg.kill();
+      ffmpeg_running = false;
+      logger.debug({app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 200});
+      res.status(200)
+    } else {
+      logger.error({app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 400, app_response: {'error': 'ffmpeg is not running'}});
+      res.status(400).json({'error': 'ffmpeg is not running'})
+    }
+  } else {
     logger.debug({app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 200});
     res.status(200)
-  } else {
-    logger.error({app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 400, app_response: {'error': 'ffmpeg is not running'}});
-    res.status(400).json({'error': 'ffmpeg is not running'})
   }
 })
 
 app.get('/projects', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/projects\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  getProjects(db).then(function(projects) {
-    logger.debug({app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 200, app_response: {'projects': projects}});
+  if (!argv.client_test) {
+    getProjects(db).then(function(projects) {
+      logger.debug({app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 200, app_response: {'projects': projects}});
+      res.status(200).json({'projects': projects})
+    }).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  } else {
+    var projects = ['Big-Buck-Bunny.mp4', 'Crab-Rave.mp4', 'FooBar2000test.mp4'];
+    logger.debug({app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 200, app_response: {'projects': null}});
     res.status(200).json({'projects': projects})
-  }).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  }
 })
 
 app.put('/projects', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.put(\'/projects\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  setProjects(db, req.body.projects).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  if (!argv.client_test) {
+    setProjects(db, req.body.projects).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  }
   logger.debug({app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 200});
   res.status(200)
 })
 
 app.get('/currentproject', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/currentproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  getCurrentProject(db).then(function(project) {
-    logger.debug({app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 200, app_response: {'currentProject': project}});
+  if (!argv.client_test) {
+    getCurrentProject(db).then(function(project) {
+      logger.debug({app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 200, app_response: {'currentProject': project}});
+      res.status(200).json({'currentProject': project})
+    }).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  } else {
+    var project = 'Big-Buck-Bunny.mp4';
+    logger.debug({app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 200, app_response: {'currentProject': null}});
     res.status(200).json({'currentProject': project})
-  }).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  }
 })
 
 app.put('/currentproject', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.put(\'/currentproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  setCurrentProject(db, req.body.project).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  if (!argv.client_test) {
+    setCurrentProject(db, req.body.project).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  }
   logger.debug({app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 200});
   res.status(200)
 })
 
 app.get('/currentsettings', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/currentsettings\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  getSettings(db).then(function(settings) {
+  if (!argv.client_test) {
+    getSettings(db).then(function(settings) {
+      logger.debug({app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 200, app_response: settings});
+      res.status(200).json(settings)
+    }).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  } else {
+    var settings = {prefix: 'bbb', frameOffset: -2};
     logger.debug({app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 200, app_response: settings});
     res.status(200).json(settings)
-  }).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  }
 })
 
 app.put('/currentsettings', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.put(\'/currentsettings\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  getSettings(db, req.body.settings).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  if (!argv.client_test) {
+    getSettings(db, req.body.settings).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  }
   logger.debug({app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 200});
   res.status(200)
 })
 
 app.get('/numframes', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/numframes\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  getNumFrames(db).then(function(numFrames) {
+  if (!argv.client_test) {
+    getNumFrames(db).then(function(numFrames) {
+      logger.debug({app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 200, app_response: {'numFrames': numFrames}});
+      res.status(200).json({'numFrames': numFrames})
+    }).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  } else {
+    var numFrames = 23;
     logger.debug({app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 200, app_response: {'numFrames': numFrames}});
     res.status(200).json({'numFrames': numFrames})
-  }).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  }
 })
 
 app.put('/numframes', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.put(\'/numframes\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  setNumFrames(db, req.body.numFrames).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  if (!argv.client_test) {
+    setNumFrames(db, req.body.numFrames).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  }
   logger.debug({app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 200});
   res.status(200)
 })
 
 app.get('/frameslist', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/frameslist\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  getFramesList(db).then(function(framesList) {
+  if (!argv.client_test) {
+    getFramesList(db).then(function(framesList) {
+      logger.debug({app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 200, app_response: {'framesList': framesList}});
+      res.status(200).json({'framesList': framesList})
+    }).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  } else {
+    var framesList = [0, 1, 3, 4, 5, 6, 14, 16, 22];
     logger.debug({app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 200, app_response: {'framesList': framesList}});
     res.status(200).json({'framesList': framesList})
-  }).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  }
 })
 
 app.put('/frameslist', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/frameslist\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  setFramesList(db, req.body.framesList).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  if (!argv.client_test) {
+    setFramesList(db, req.body.framesList).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  }
   logger.debug({app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 200});
   res.status(200)
 })
 
 app.put('/deleteproject', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.put(\'/deleteproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  deleteProject(db, req.body.project).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'put', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  if (!argv.client_test) {
+    deleteProject(db, req.body.project).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'put', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  }
   logger.debug({app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'put', app_status: 200});
   res.status(200)
 })
 
+var ticker_jpg = 0;
 app.get('/istranscodingjpgcomplete', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/istranscodingjpgcomplete\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  isTranscodingJPGComplete().then(function(complete) {
+  if (!argv.client_test) {
+    isTranscodingJPGComplete().then(function(complete) {
+      logger.debug({app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
+      res.status(200).json({'complete': complete})
+    }).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  } else {
+    ticker_jpg += 1;
+    var complete = (ticker_jpg % 50 == 0) ? true : false;
+    console.log(`ticker_jpg = ${ticker_jpg}`);
     logger.debug({app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
     res.status(200).json({'complete': complete})
-  }).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  }
 })
 
+var ticker_png = 0;
 app.get('/istranscodingpngcomplete', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.get(\'/istranscodingpngcomplete\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  isTranscodingPNGComplete().then(function(complete) {
+  if (!argv.client_test) {
+    isTranscodingPNGComplete().then(function(complete) {
+      logger.debug({app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
+      res.status(200).json({'complete': complete})
+    }).catch(function(err) {
+      logger.error({app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 400, app_response: {'error': err}});
+      res.status(400).json({'error': err})
+    })
+  } else {
+    ticker_jpg += 1;
+    var complete = (ticker_jpg % 50 == 0) ? true : false;
+    console.log(`ticker_jpg = ${ticker_jpg}`);
     logger.debug({app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
     res.status(200).json({'complete': complete})
-  }).catch(function(err) {
-    logger.error({app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 400, app_response: {'error': err}});
-    res.status(400).json({'error': err})
-  })
+  }
 })
 
 
@@ -499,41 +573,48 @@ const runFFmpegJPG = () => {
     return currentProject;
   })
 
-  // Wipe all the image files from the directory before transcoding
-  var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.jpg"));
-  logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
-  for (const file of files) {
-    logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'del', app_file: file});
-    fs.unlinkSync(file);
-  }
+  if (!argv.server_test) {
+    // Wipe all the image files from the directory before transcoding
+    var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.jpg"));
+    logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
+    for (const file of files) {
+      logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'del', app_file: file});
+      fs.unlinkSync(file);
+    }
 
-  var video_arg = path.join(argv.videopath, currentProject)
-  const args = ["-i", video_arg, "-nostdin", "-y", "-vf", "fps=1", settings.prefix+"%06d.jpg"]
-  logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'spawn', options: args});
-  //var options = "-i argv.videopath/filename -nostdin -y -vf fps=1 prefix%06d.jpg" (jpgdir)
-  ffmpeg = child_process.spawn({"cwd": path.join(argv.jpgpath, currentProject)},  "ffmpeg", args, {
-    cwd: argv.jpgdir
-  });
-  ffmpeg_running = true;
+    var video_arg = path.join(argv.videopath, currentProject)
+    const args = ["-i", video_arg, "-nostdin", "-y", "-vf", "fps=1", settings.prefix+"%06d.jpg"]
+    logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'spawn', options: args});
+    //var options = "-i argv.videopath/filename -nostdin -y -vf fps=1 prefix%06d.jpg" (jpgdir)
+    ffmpeg = child_process.spawn({"cwd": path.join(argv.jpgpath, currentProject)},  "ffmpeg", args, {
+      cwd: argv.jpgdir
+    });
+    ffmpeg_running = true;
 
-  ffmpeg.stdout.on("data", data => {
-      logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stdout', output: data});
-  });
+    ffmpeg.stdout.on("data", data => {
+        logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stdout', output: data});
+    });
 
-  ffmpeg.stderr.on("data", data => {
-      logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stderr', output: data});
-  });
+    ffmpeg.stderr.on("data", data => {
+        logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stderr', output: data});
+    });
 
-  ffmpeg.on('error', (error) => {
-      //error.message
-      logger.error({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'error', output: error});
-  });
+    ffmpeg.on('error', (error) => {
+        //error.message
+        logger.error({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'error', output: error});
+    });
 
-  ffmpeg.on("close", code => {
-      logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'close', output: code});
+    ffmpeg.on("close", code => {
+        logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'close', output: code});
+        JPGcomplete = true;
+        ffmpeg_running = false;
+    });
+  } else {
+    setTimeout(function() {
       JPGcomplete = true;
       ffmpeg_running = false;
-  });
+    }, 5000);
+  }
 }
 
 const runFFmpegPNG = () => {
@@ -550,60 +631,67 @@ const runFFmpegPNG = () => {
     return settings;
   })
 
-  // Wipe all the image files from the directory before transcoding
-  var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
-  logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
-  for (const file of files) {
-    logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'del', app_file: file});
-    fs.unlinkSync(file);
-  }
-
-  /* "select='eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'"*/
-  var select_arg = "select='" //eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'";
-  for (const frame of framesList) {
-    select_arg += `eq(n\\,${frame}-${settings.frameOffset})+`
-  }
-  select_arg = select_arg.substring(0,select_arg.length-1) + "'";
-  var video_arg = path.join(argv.videopath, currentProject)
-  const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
-  logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
-  ffmpeg = child_process.spawn({"cwd": path.join(argv.pngpath, currentProject)}, "ffmpeg", args, {
-      cwd: argv.pngdir
-  });
-
-  ffmpeg_running = true;
-
-  ffmpeg.stdout.on("data", data => {
-    logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stdout', output: data});
-  });
-
-  ffmpeg.stderr.on("data", data => {
-    logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stderr', output: data});
-  });
-
-  ffmpeg.on('error', (error) => {
-    logger.error({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'error', output: error});
-  });
-
-  ffmpeg.on("close", code => {
-    logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'close', output: code});
-    // Rename all the numbers from 1,2,3 to the actual frame numbers.
+  if (!argv.server_test) {
+    // Wipe all the image files from the directory before transcoding
     var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
     logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
-    for (var i = 0; i < files.length; i++) {
-      // filename plus the image path and current project is guarrenteed to be at least 10 characters long
-      var renamed_file = files[i].substr(0, files[i].length-10) + ('000000'+framesList[i]).slice(-6) + files[i].substr(files[i].length-4);
-      fs.rename(files[i], renamed_file, function(err) {
-          if (err) {
-            logger.error({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: files[i], app_newfile: renamed_file, app_response: {sucess: false, 'error': err}});
-          } else {
-            logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: files[i], app_newfile: renamed_file, app_response: {sucess: true}});
-          }
-      });
+    for (const file of files) {
+      logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'del', app_file: file});
+      fs.unlinkSync(file);
     }
-    PNGcomplete = true;
-    ffmpeg_running = false;
-  });
+
+    /* "select='eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'"*/
+    var select_arg = "select='" //eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'";
+    for (const frame of framesList) {
+      select_arg += `eq(n\\,${frame}-${settings.frameOffset})+`
+    }
+    select_arg = select_arg.substring(0,select_arg.length-1) + "'";
+    var video_arg = path.join(argv.videopath, currentProject)
+    const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
+    logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
+    ffmpeg = child_process.spawn({"cwd": path.join(argv.pngpath, currentProject)}, "ffmpeg", args, {
+        cwd: argv.pngdir
+    });
+
+    ffmpeg_running = true;
+
+    ffmpeg.stdout.on("data", data => {
+      logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stdout', output: data});
+    });
+
+    ffmpeg.stderr.on("data", data => {
+      logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stderr', output: data});
+    });
+
+    ffmpeg.on('error', (error) => {
+      logger.error({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'error', output: error});
+    });
+
+    ffmpeg.on("close", code => {
+      logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'close', output: code});
+      // Rename all the numbers from 1,2,3 to the actual frame numbers.
+      var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
+      logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
+      for (var i = 0; i < files.length; i++) {
+        // filename plus the image path and current project is guarrenteed to be at least 10 characters long
+        var renamed_file = files[i].substr(0, files[i].length-10) + ('000000'+framesList[i]).slice(-6) + files[i].substr(files[i].length-4);
+        fs.rename(files[i], renamed_file, function(err) {
+            if (err) {
+              logger.error({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: files[i], app_newfile: renamed_file, app_response: {sucess: false, 'error': err}});
+            } else {
+              logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: files[i], app_newfile: renamed_file, app_response: {sucess: true}});
+            }
+        });
+      }
+      PNGcomplete = true;
+      ffmpeg_running = false;
+    });
+  } else {
+    setTimeout(function() {
+      JPGcomplete = true;
+      ffmpeg_running = false;
+    }, 5000);
+  }
 }
 
 var db = openDB();
