@@ -28,7 +28,9 @@ class SettingsPage extends React.Component {
     fetch(address+'/currentproject').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          this.state.project = json.project;
+          this.setState({
+            project: json.project
+          });
         })
       }
       else {
@@ -38,8 +40,10 @@ class SettingsPage extends React.Component {
     fetch(address+'/currentsettings').then(res => {
     	if (res.ok) {
         res.json().then(json => {
-          this.state.prefix = json.prefix;
-          this.state.frameOffset = json.frameOffset;
+          this.setState({
+            prefix: json.prefix,
+            frameOffset: json.frameOffset,
+          });
         })
       }
     })

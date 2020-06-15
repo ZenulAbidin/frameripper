@@ -158,7 +158,7 @@ app.get('/currentsettings', function (req, res) {
 app.put('/currentsettings', function (req, res) {
   logger.trace({app_subsystem: 'function_call', app_func: 'app.put(\'/currentsettings\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.client_test) {
-    getSettings(db, req.body.settings).catch(function(err) {
+    setSettings(db, req.body.settings).catch(function(err) {
       logger.error({app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
     })

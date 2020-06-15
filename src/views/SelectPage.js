@@ -27,7 +27,9 @@ class SelectPage extends React.Component {
     fetch(address+'/currentproject').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          this.state.project = json.project;
+          this.setState({
+            project: json.project
+          });
         })
       }
       else {
@@ -37,7 +39,9 @@ class SelectPage extends React.Component {
     fetch(address+'/frameslist').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          this.state.framesList = json.framesList;
+          this.setState({
+            framesList: json.framesList
+          });
         })
       }
       else {
@@ -104,13 +108,12 @@ class SelectPage extends React.Component {
   }
 
   validateFrameNumbersInput(e) {
-    this.state.inputFrameNumbers = e.target.value;
-    if (this.state.inputFrameNumbers.length === 0) {
+    if (e.target.value.length === 0) {
       this.setState({
         frameNumbersInvalid: true
       });
     }
-    var nums = this.state.inputFrameNumbers.split('\n');
+    var nums = e.target.value.split('\n');
     var frames = [];
     for (var i = 0; i < nums.length; i++) {
       var n = parseInt(nums[i])
