@@ -9,6 +9,7 @@ var pino = require('pino');
 var glob = require('glob');
 
 const homedir = require('os').homedir();
+fs.mkdirSync(path.join(homedir, ".frameripper"), { recursive: true })
 const DBfile = path.join(homedir, ".frameripper", "frameripper.db");
 const logfile = path.join(homedir, ".frameripper", `frameripper_${moment().format('yyyy-mm-dd-hh-mm-ss')}.log`);
 
