@@ -46,7 +46,7 @@ class SettingsPage extends React.Component {
   }
   componentWillUnmount() {
     if (!this.state.canceled) {
-      body = {'prefix': prefix, 'frameOffset': frameOffset};
+      var body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
       // send PUT request
       fetch(address+'/currentsettings', {
           method: 'put',

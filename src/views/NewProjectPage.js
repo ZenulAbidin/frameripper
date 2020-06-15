@@ -47,7 +47,7 @@ class NewProjectPage extends React.Component {
   }
   componentWillUnmount() {
     if (!this.state.canceled) {
-      body = {'project': this.state.path};
+      var body = {'project': this.state.path};
       // send PUT request
       fetch(address+'/currentproject', {
           method: 'put',
