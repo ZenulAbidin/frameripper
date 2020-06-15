@@ -512,7 +512,7 @@ const runFFmpegJPG = () => {
   logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'spawn', options: args});
   //var options = "-i argv.videopath/filename -nostdin -y -vf fps=1 prefix%06d.jpg" (jpgdir)
   ffmpeg = child_process.spawn({"cwd": path.join(argv.jpgpath, currentProject)},  "ffmpeg", args, {
-    cwd: pngdir
+    cwd: argv.jpgdir
   });
   ffmpeg_running = true;
 
@@ -551,7 +551,7 @@ const runFFmpegPNG = () => {
   })
 
   // Wipe all the image files from the directory before transcoding
-  files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
+  var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
   logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
   for (const file of files) {
     logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'del', app_file: file});
@@ -568,7 +568,7 @@ const runFFmpegPNG = () => {
   const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
   logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
   ffmpeg = child_process.spawn({"cwd": path.join(argv.pngpath, currentProject)}, "ffmpeg", args, {
-      cwd: pngdir
+      cwd: argv.pngdir
   });
 
   ffmpeg_running = true;
