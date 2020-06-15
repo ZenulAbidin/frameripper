@@ -82,10 +82,10 @@ class SelectPage extends React.Component {
   }
   
   toggleFrameNumbersTooltipOpen() {
-    this.setState({this.state.frameNumbersTooltipOpen: !this.state.frameNumbersTooltipOpen});
+    this.state.frameNumbersTooltipOpen = !this.state.frameNumbersTooltipOpen;
   }
   toggleExtractTooltipOpen() {
-    this.setState({this.state.extractTooltipOpen: !this.state.extractTooltipOpen});
+    this.state.extractTooltipOpen = !this.state.extractTooltipOpen;
   }
 
   frameNumbersHelpText() {
