@@ -140,30 +140,6 @@ class NewProjectPage extends React.Component {
     );
   }
 
-  validatePathInput(e) {
-    if (e.target.value.length === 0) {
-      this.state.prefixInputInvalid = true;
-    }
-    for (var i = 0; i <  e.target.value.length; i++) {
-      var c = e.target.value[i];
-      if (!c.match('[0-9a-zA-Z]') && c !== '_' && c !== '-' && c !== '.' ) {
-        this.state.pathInputInvalid = true;
-        break;
-      }
-    }
-    this.state.path = e.target.value;
-    this.state.pathInputInvalid = false;
-  }
-
-  pathHelpText() {
-    return (
-      <>
-        <span className="small invalid_text">Please ensure your file name contains only {'".", "-", "_"'} and{' '}
-          alphanumeric characters and is not empty.
-        </span>
-      </>
-    );
-  }
 
   render() {
     return (
