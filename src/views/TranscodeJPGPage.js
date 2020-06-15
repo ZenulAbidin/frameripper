@@ -85,7 +85,7 @@ class TranscodeJPGPage extends React.Component {
           <h3>All JPG frames extracted</h3>
         </div>
         <Link to="/select">
-          <Buttoncolor="primary">OK</Button>
+          <Button color="primary">OK</Button>
         </Link>
       </>
     );
