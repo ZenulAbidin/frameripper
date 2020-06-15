@@ -250,7 +250,7 @@ app.get('/istranscodingjpgcomplete', function (req, res) {
     })
   } else {
     ticker_jpg += 1;
-    var complete = (ticker_jpg % 50 == 0) ? true : false;
+    var complete = (ticker_jpg % 50 === 0) ? true : false;
     console.log(`ticker_jpg = ${ticker_jpg}`);
     logger.debug({app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
     res.status(200).json({'complete': complete})
@@ -270,7 +270,7 @@ app.get('/istranscodingpngcomplete', function (req, res) {
     })
   } else {
     ticker_jpg += 1;
-    var complete = (ticker_jpg % 50 == 0) ? true : false;
+    var complete = (ticker_jpg % 50 === 0) ? true : false;
     console.log(`ticker_jpg = ${ticker_jpg}`);
     logger.debug({app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
     res.status(200).json({'complete': complete})
