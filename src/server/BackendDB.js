@@ -655,12 +655,12 @@ const argv = yargs
 try {
   if (fs.lstatSync(argv.jpgpath).isDirectory() && fs.lstatSync(argv.pngpath).isDirectory() && fs.lstatSync(argv.videopath).isDirectory()) {
     console.log(`Storing JPGs in ${argv.jpgpath}, PNGs in ${argv.pngpath}. Using video directory ${argv.videopath}`);
-  logger.debug({app_subsystem: 'argv', app_response: {success=true, jpgpath: argv.jpgpath, pngpath: argv.pngpath, videopath: argv.videopath, test_client: argv['test-client'], test_server: argv['test-server']}});
+  logger.debug({app_subsystem: 'argv', app_response: {success: true, jpgpath: argv.jpgpath, pngpath: argv.pngpath, videopath: argv.videopath, test_client: argv['test-client'], test_server: argv['test-server']}});
   }
 } catch(err) {
   console.error("One or more folders don't exist. Please ensure they exist before running.");
   console.error(err);
-  logger.fatal({app_subsystem: 'argv', app_response: {success=false, error_type: 'directory_notexists', 'error': err}});
+  logger.fatal({app_subsystem: 'argv', app_response: {success: false, error_type: 'directory_notexists', 'error': err}});
   process.exit(1);
 }
 
