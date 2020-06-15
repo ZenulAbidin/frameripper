@@ -271,16 +271,16 @@ const setCurrentProject = (db, project) => {
       return projects.includes(project);
     });
     if (!exists) {
-        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: value, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
         reject('Project doesn\'t exist');
     }
     db.set('/currentProject', project).then((err, value) => {
       if (err) {
-        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: value, app_response: {success: false, 'error': err}});
+        logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project, app_response: {success: false, 'error': err}});
         reject(err);
       }
       else {
-        logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: value, app_response: {success: true}});
+        logger.debug({app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project, app_response: {success: true}});
         resolve(null);
       }
     })
@@ -489,6 +489,9 @@ const runFFmpegJPG = () => {
   const framesList = getFramesList(db).then(function(framesList) {
     return framesList;
   })
+  const settings = getSettings(db).then(settings => {
+    return settings;
+  })
   logger.trace({app_subsystem: 'function_call', app_func: 'const runFFmpegJPG = framesList => {', app_file: '/server/BackendDB.js'});
   JPGcomplete = false;
 
@@ -497,18 +500,18 @@ const runFFmpegJPG = () => {
   })
 
   // Wipe all the image files from the directory before transcoding
-  files = glob.sync(path.join(argv.jpgpath, currentProject, "*.jpg"));
+  var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.jpg"));
   logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
   for (const file of files) {
     logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'del', app_file: file});
     fs.unlinkSync(file);
   }
 
-  video_arg = path.join(argv.videopath, currentProject)
+  var video_arg = path.join(argv.videopath, currentProject)
   const args = ["-i", video_arg, "-nostdin", "-y", "-vf", "fps=1", settings.prefix+"%06d.jpg"]
   logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'spawn', options: args});
   //var options = "-i argv.videopath/filename -nostdin -y -vf fps=1 prefix%06d.jpg" (jpgdir)
-  ffmpeg = spawn({"cwd": path.join(argv.jpgpath, currentProject)},  "ffmpeg", args, {
+  ffmpeg = child_process.spawn({"cwd": path.join(argv.jpgpath, currentProject)},  "ffmpeg", args, {
     cwd: pngdir
   });
   ffmpeg_running = true;
@@ -564,7 +567,7 @@ const runFFmpegPNG = () => {
   var video_arg = path.join(argv.videopath, currentProject)
   const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
   logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
-  ffmpeg = spawn({"cwd": path.join(argv.pngpath, currentProject)}, "ffmpeg", args, {
+  ffmpeg = child_process.spawn({"cwd": path.join(argv.pngpath, currentProject)}, "ffmpeg", args, {
       cwd: pngdir
   });
 
