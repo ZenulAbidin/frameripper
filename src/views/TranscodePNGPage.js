@@ -23,7 +23,9 @@ class TranscodePNGPage extends React.Component {
     fetch(address+'/currentproject').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          this.state.project = json.project;
+          this.setState({
+            project: json.project
+          });
         })
       }
       else {
@@ -48,7 +50,9 @@ class TranscodePNGPage extends React.Component {
     	if (res.ok) {
         res.json().then(json => {
           if (json.complete === true) {
-            this.state.completed = true;
+            this.setState({
+              completed: true
+            });
           }
         })
       }
@@ -69,7 +73,7 @@ class TranscodePNGPage extends React.Component {
           <h3>Extracting PNG frames, please wait...</h3>
         </div>
         <Link to="/">
-          <Button color="primary" onclick={this.state.canceled = true}>Cancel</Button>
+          <Button color="primary" onclick={this.setState({canceled: true})}>Cancel</Button>
         </Link>
       </>
     );

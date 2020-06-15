@@ -24,7 +24,9 @@ class TranscodeJPGPage extends React.Component {
     fetch(address+'/currentproject').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          this.state.project = json.project;
+          this.setState({
+            project: json.project
+          });
         })
       }
       else {
@@ -49,7 +51,9 @@ class TranscodeJPGPage extends React.Component {
     	if (res.ok) {
         res.json().then(json => {
           if (json.complete === true) {
-            this.state.completed = true;
+            this.setState({
+              completed: true
+            });
           }
         })
       }
@@ -70,7 +74,7 @@ class TranscodeJPGPage extends React.Component {
           <h3>Extracting JPG frames, please wait...</h3>
         </div>
         <Link to="/">
-          <Button color="primary" onclick={this.state.canceled = true}>Cancel</Button>
+          <Button color="primary" onclick={this.setState({canceled: true})}>Cancel</Button>
         </Link>
       </>
     );
