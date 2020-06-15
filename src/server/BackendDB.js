@@ -738,4 +738,5 @@ try {
   process.exit(1);
 }
 
+exports.data = {}
 
