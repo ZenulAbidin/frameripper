@@ -71,7 +71,7 @@ class SettingsPage extends React.Component {
   }
 
   validatePrefixInput(e) {
-    if (e.target.value;.length === 0) {
+    if (e.target.value.length === 0) {
       this.state.prefixInputInvalid = true;
     }
     for (var i = 0; i <  e.target.value.length; i++) {
