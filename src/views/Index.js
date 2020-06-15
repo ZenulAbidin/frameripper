@@ -1,5 +1,5 @@
 import React from "react";
-import SelectedComponent from "./SelectedComponent.js";
+import SelectedComponent from "./SelectedComponents.js";
 import {Link} from "react-router-dom";
 import {Button, Container, Row, Col, Tooltip, Jumbotron,
     Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
