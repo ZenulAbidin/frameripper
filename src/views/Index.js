@@ -78,15 +78,15 @@ class Index extends React.Component {
     return (
       <>
         <h1>Projects</h1>
-        <h3>Select a project to open<h3>
+        <h3>Select a project to open</h3>
         <div>
-        <Jumbotron>
-          <Container>
-            <Row>
-              {this.buttonsList()}
-            </Row>
-          </Container>
-        </Jumbotron>
+          <Jumbotron>
+            <Container>
+              <Row>
+                {this.buttonsList()}
+              </Row>
+            </Container>
+          </Jumbotron>
         </div>
         <div>
           <Link to="/new">
