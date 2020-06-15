@@ -85,7 +85,7 @@ class Index extends React.Component {
             <Row>
               {this.buttonsList()}
             </Row>
-          <Container>
+          </Container>
         </Jumbotron>
         </div>
         <div>
