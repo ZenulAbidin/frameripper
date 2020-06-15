@@ -43,8 +43,8 @@ const SelectedComponent = ({
   };
 
   useEffect(() => {
-    setIsSelected(selected);
-  }, [selected]);
+    setIsSelected(isSelected);
+  }, [isSelected]);
 
   return (
     <div
