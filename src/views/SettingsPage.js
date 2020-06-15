@@ -128,7 +128,7 @@ class SettingsPage extends React.Component {
             <FormGroup row>
               <Label id="offsetToolTip" for="offsetInput">Frame offset</Label>
               <Col sm={10}>
-                <Input min={-10} max={10} type="number" step="1" placeholder="-2" onchange={e => this.setState{this.state.frameOffset, e.target.value}} />
+                <Input min={-10} max={10} type="number" step="1" placeholder="-2" onchange={e => this.setState({this.state.frameOffset, e.target.value})} />
               </Col>
             </FormGroup>
           </Form>
