@@ -36,7 +36,7 @@ const cont = {
 const SelectedComponent = ({
   Component
 }) => {
-  const [isSelected, setIsSelected] = useState(selected);
+  const [isSelected, setIsSelected] = useState(false);
 
   const handleOnClick = e => {
     setIsSelected(!isSelected);
