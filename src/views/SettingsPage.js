@@ -74,7 +74,7 @@ class SettingsPage extends React.Component {
     if (e.target.value;.length === 0) {
       this.state.prefixInputInvalid = true;
     }
-    for (var i = 0; i <  e.target.value;.length; i++) {
+    for (var i = 0; i <  e.target.value.length; i++) {
       var c = e.target.value[i];
       if (!c.match('[0-9a-zA-Z]') && c !== '_' && c !== '-' && c !== '.' ) {
         this.state.prefixInputInvalid = true;
