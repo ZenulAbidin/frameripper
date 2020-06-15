@@ -1,11 +1,12 @@
 const level = require('level')
 var express = require('express');
 var fs = require("fs");
-var fs = require("path");
+var path = require("path");
 const yargs = require('yargs');
 const child_process = require('child_process');
 var moment = require('moment');
 var pino = require('pino');
+var glob = require('glob');
 
 const homedir = require('os').homedir();
 const DBfile = path.join(homedir, ".frameripper", "frameripper.db");
@@ -39,7 +40,7 @@ app.get('/abortjpgtranscode', function (req, res) {
     logger.debug({app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 200});
     res.status(200)
   } else {
-    logger.error({app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 400, app_response: {'error': err}});
+    logger.error({app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 400, app_response: {'error': 'ffmpeg is not running'}});
     res.status(400).json({'error': 'ffmpeg is not running'})
   }
 })
@@ -59,7 +60,7 @@ app.get('/abortpngtranscode', function (req, res) {
     logger.debug({app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 200});
     res.status(200)
   } else {
-    logger.error({app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 400, app_response: {'error': err}});
+    logger.error({app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 400, app_response: {'error': 'ffmpeg is not running'}});
     res.status(400).json({'error': 'ffmpeg is not running'})
   }
 })
@@ -277,7 +278,7 @@ const getCurrentProject = db => {
 const setCurrentProject = (db, project) => {
   logger.trace({app_subsystem: 'function_call', app_func: 'const setCurrentProject = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    exists = getProjects(db).then(projects => {
+    var exists = getProjects(db).then(projects => {
       return projects.includes(project);
     });
     if (!exists) {
@@ -300,7 +301,7 @@ const setCurrentProject = (db, project) => {
 const getSettings = (db, project) => {
   logger.trace({app_subsystem: 'function_call', app_func: 'const getSettings = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    exists = getProjects(db).then(projects => {
+    var exists = getProjects(db).then(projects => {
       return projects.includes(project);
     });
     if (!exists) {
@@ -308,14 +309,14 @@ const getSettings = (db, project) => {
         logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
         reject('Project doesn\'t exist');
     }
-    prefix = db.get('/project/'+project+'/prefix').then((err, value) => {
+    var prefix = db.get('/project/'+project+'/prefix').then((err, value) => {
       if (err) {
         logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err}});
         reject(err);
       }
       return value;
     })
-    frameOffset = db.get('/project/'+project+'/frameOffset').then((err, value) => {
+    var frameOffset = db.get('/project/'+project+'/frameOffset').then((err, value) => {
       if (err) {
         logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err}});
         reject(err);
@@ -331,7 +332,7 @@ const getSettings = (db, project) => {
 const setSettings = (db, project, prefix, frameOffset) => {
   logger.trace({app_subsystem: 'function_call', app_func: 'const setSettings = (db, project, prefix, frameOffset) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    exists = getProjects(db).then(projects => {
+    var exists = getProjects(db).then(projects => {
       return projects.includes(project);
     });
     logger.error({app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
@@ -357,14 +358,14 @@ const setSettings = (db, project, prefix, frameOffset) => {
 const getNumFrames = (db, project) => {
   logger.trace({app_subsystem: 'function_call', app_func: 'const getNumFrames = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    exists = getProjects(db).then(projects => {
+    var exists = getProjects(db).then(projects => {
       return projects.includes(project);
     });
     if (!exists) {
       logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
     }
-    numFrames = db.get('/project/'+project+'/numFrames').then((err, value) => {
+    var numFrames = db.get('/project/'+project+'/numFrames').then((err, value) => {
       if (err) {
         logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err}});
         reject(err);
@@ -379,7 +380,7 @@ const getNumFrames = (db, project) => {
 const setNumFrames = (db, project, numFrames) => {
   logger.trace({app_subsystem: 'function_call', app_func: 'const setNumFrames = (db, project, numFrames) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    exists = getProjects(db).then(projects => {
+    var exists = getProjects(db).then(projects => {
         return projects.includes(project);
     });
     if (!exists) {
@@ -400,14 +401,14 @@ const setNumFrames = (db, project, numFrames) => {
 const getFramesList = (db, project) => {
   logger.trace({app_subsystem: 'function_call', app_func: 'const getFramesList = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    exists = getProjects(db).then(projects => {
+    var exists = getProjects(db).then(projects => {
       return projects.includes(project);
     });
     if (!exists) {
       logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
     }
-    framesList = db.get('/project/'+project+'/framesList').then((err, value) => {
+    var framesList = db.get('/project/'+project+'/framesList').then((err, value) => {
       if (err) {
         logger.error({app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err}});
         reject(err);
@@ -422,7 +423,7 @@ const getFramesList = (db, project) => {
 const setFramesList = (db, project, framesList) => {
   logger.trace({app_subsystem: 'function_call', app_func: 'const setFramesList = (db, project, framesList) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    exists = getProjects(db).then(projects => {
+    var exists = getProjects(db).then(projects => {
         return projects.includes(project);
     });
     if (!exists) {
@@ -443,10 +444,10 @@ const setFramesList = (db, project, framesList) => {
 const deleteProject = (db, project) => {
   logger.trace({app_subsystem: 'function_call', app_func: 'const deleteProject = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    projects = getProjects(db).then(projects => {
+    var projects = getProjects(db).then(projects => {
         return projects;
     });
-    exists = projects.includes(project)
+    var exists = projects.includes(project)
     if (!exists) {
       logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       logger.error({app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
@@ -571,7 +572,7 @@ const runFFmpegPNG = () => {
     select_arg += `eq(n\\,${frame}-${settings.frameOffset})+`
   }
   select_arg = select_arg.substring(0,select_arg.length-1) + "'";
-  video_arg = path.join(argv.videopath, currentProject)
+  var video_arg = path.join(argv.videopath, currentProject)
   const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
   logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
   ffmpeg = spawn({"cwd": path.join(argv.pngpath, currentProject)}, "ffmpeg", args, {
@@ -595,16 +596,16 @@ const runFFmpegPNG = () => {
   ffmpeg.on("close", code => {
     logger.debug({app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'close', output: code});
     // Rename all the numbers from 1,2,3 to the actual frame numbers.
-    files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
+    var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
     logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
     for (var i = 0; i < files.length; i++) {
       // filename plus the image path and current project is guarrenteed to be at least 10 characters long
       var renamed_file = files[i].substr(0, files[i].length-10) + ('000000'+framesList[i]).slice(-6) + files[i].substr(files[i].length-4);
       fs.rename(files[i], renamed_file, function(err) {
           if (err) {
-            logger.error({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: file, app_newfile: renamed_file, app_response: {sucess: false, 'error': err}});
+            logger.error({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: files[i], app_newfile: renamed_file, app_response: {sucess: false, 'error': err}});
           } else {
-            logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: file, app_newfile: renamed_file, app_response: {sucess: true}});
+            logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: files[i], app_newfile: renamed_file, app_response: {sucess: true}});
           }
       });
     }
