@@ -82,10 +82,14 @@ class SelectPage extends React.Component {
   }
   
   toggleFrameNumbersTooltipOpen() {
-    this.state.frameNumbersTooltipOpen = !this.state.frameNumbersTooltipOpen;
+    this.setState({
+      frameNumbersTooltipOpen: !this.state.frameNumbersTooltipOpen
+    });
   }
   toggleExtractTooltipOpen() {
-    this.state.extractTooltipOpen = !this.state.extractTooltipOpen;
+    this.setState({
+      extractTooltipOpen: !this.state.extractTooltipOpen
+    });
   }
 
   frameNumbersHelpText() {
@@ -102,21 +106,27 @@ class SelectPage extends React.Component {
   validateFrameNumbersInput(e) {
     this.state.inputFrameNumbers = e.target.value;
     if (this.state.inputFrameNumbers.length === 0) {
-      this.state.frameNumbersInvalid = true;
+      this.setState({
+        frameNumbersInvalid: true
+      });
     }
     var nums = this.state.inputFrameNumbers.split('\n');
     var frames = [];
     for (var i = 0; i < nums.length; i++) {
       var n = parseInt(nums[i])
       if (isNaN(n)) {
-        this.state.frameNumbersInvalid = true;
+        this.setState({
+          frameNumbersInvalid: true
+        });
         break;
       } else {
         frames.push(n);
       }
     }
-    this.state.framesList = frames;
-    this.state.frameNumbersInvalid = false;
+    this.setState({
+      framesList: frames,
+      frameNumbersInvalid: false
+    });
   }
 
   render() {
@@ -134,7 +144,7 @@ class SelectPage extends React.Component {
           <Link to="/transcode-png">
             <Button id="createTooltip" color="primary">Create</Button>
           </Link>
-          <Link to="/" onclick={this.state.canceled = true}>
+          <Link to="/" onclick={this.setState({canceled: true})}>
             <Button id="createTooltip" color="primary">Cancel</Button>
           </Link>
         </div>

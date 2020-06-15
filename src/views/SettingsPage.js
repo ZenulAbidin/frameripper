@@ -62,28 +62,40 @@ class SettingsPage extends React.Component {
   }
 
   togglePrefixTooltipOpen() {
-    this.state.prefixTooltipOpen = !this.state.prefixTooltipOpen;
+    this.setState({
+      prefixTooltipOpen: !this.state.prefixTooltipOpen
+    });
   }
   toggleOffsetTooltipOpen() {
-    this.state.offsetTooltipOpen = !this.state.offsetTooltipOpen;
+    this.setState({
+      offsetTooltipOpen: !this.state.offsetTooltipOpen
+    });
   }
   toggleSaveTooltipOpen() {
-    this.state.saveTooltipOpen = !this.state.saveTooltipOpen;
+    this.setState({
+      saveTooltipOpen: !this.state.saveTooltipOpen
+    });
   }
 
   validatePrefixInput(e) {
     if (e.target.value.length === 0) {
-      this.state.prefixInputInvalid = true;
+      this.setState({
+        prefixInputInvalid: true
+      });
     }
     for (var i = 0; i <  e.target.value.length; i++) {
       var c = e.target.value[i];
       if (!c.match('[0-9a-zA-Z]') && c !== '_' && c !== '-' && c !== '.' ) {
-        this.state.prefixInputInvalid = true;
+        this.setState({
+          prefixInputInvalid: true
+        });
         break;
       }
     }
-    this.state.prefixInput = e.target.value;
-    this.state.prefixInputInvalid = false;
+    this.setState({
+      prefix: e.target.value,
+      prefixInputInvalid: false
+    });
   }
 
   prefixHelpText() {
@@ -120,7 +132,7 @@ class SettingsPage extends React.Component {
             <Button id="createTooltip" color="primary">Save</Button>
           </Link>
           <Link to="/">
-            <Button id="createTooltip" color="primary" onclick={this.state.canceled = true}>Cancel</Button>
+            <Button id="createTooltip" color="primary" onclick={this.setState({canceled: true})}>Cancel</Button>
           </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.prefixTooltipOpen} target="prefixTooltip" toggle={this.togglePrefixTooltipOpen}>

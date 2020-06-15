@@ -39,7 +39,9 @@ class Index extends React.Component {
     fetch(address+'/projects').then(res => {
     	if (res.ok) {
         res.json().then(json => {
-          this.state.projects = json.projects;
+          this.setState({
+            project: json.project
+          });
         })
       }
     })
