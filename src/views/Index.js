@@ -1,11 +1,10 @@
-
 import React from "react";
 import SelectedComponent from "./SelectedComponent.js";
-var process = require('process');
 import {Link} from "react-router-dom";
 import {Button, Container, Row, Col, Tooltip, Jumbotron,
     Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 
+var process = require('process');
 const address = process.env.SERVER_ADDRESS;
 
 class Index extends React.Component {
@@ -44,8 +43,8 @@ class Index extends React.Component {
   }
 
   deleteProject() {
-    toggleDeleteModalOpen()
-    body = {'project': selectedProject};
+    this.toggleDeleteModalOpen()
+    var body = {'project': this.state.selectedProject};
     // send PUT request
     fetch(address+'/deleteproject', {
         method: 'put',
@@ -105,7 +104,7 @@ class Index extends React.Component {
         <Modal isOpen={this.state.deleteModalOpen} toggle={this.toggleDeleteModalOpen}>
           <ModalHeader toggle={this.toggleDeleteModalOpen}>Delete project</ModalHeader>
           <ModalBody>
-            You are about to delete project {selectedProject}. This cannot be undone!
+            You are about to delete project {this.state.selectedProject}. This cannot be undone!
           </ModalBody>
           <ModalFooter>
             <Button color="danger" onClick={this.toggleDeleteModalOpen}>Delete</Button>
