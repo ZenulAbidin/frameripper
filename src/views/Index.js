@@ -23,7 +23,7 @@ class Index extends React.Component {
     this.state.newTooltipOpen = !this.state.newTooltipOpen;
   }
   toggleDeleteTooltipOpen() {
-    this.state.deleteTooltipOpen: !this.state.deleteTooltipOpen;
+    this.state.deleteTooltipOpen = !this.state.deleteTooltipOpen;
   }
   toggleDeleteModalOpen() {
     this.state.deleteModalOpen = !this.state.deleteModalOpen;
