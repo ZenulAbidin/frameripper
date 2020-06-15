@@ -561,9 +561,6 @@ const deleteProject = (db, project) => {
 }
 
 const runFFmpegJPG = () => {
-  const framesList = getFramesList(db).then(function(framesList) {
-    return framesList;
-  })
   const settings = getSettings(db).then(settings => {
     return settings;
   })
@@ -678,7 +675,6 @@ const runFFmpegPNG = () => {
         var renamed_file = files[i].substr(0, files[i].length-10) + ('000000'+framesList[i]).slice(-6) + files[i].substr(files[i].length-4);
         fs.renameSync(files[i], renamed_file)
         logger.debug({app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: files[i], app_newfile: renamed_file});
-        });
       }
       PNGcomplete = true;
       ffmpeg_running = false;
