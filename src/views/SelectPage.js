@@ -52,7 +52,9 @@ class SelectPage extends React.Component {
     fetch(address+'/numframes').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          this.state.numFrames = json.numFrames;
+          this.setState({
+            numFrames: json.numFrames
+          });
         })
       }
       else {
