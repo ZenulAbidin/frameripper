@@ -550,9 +550,9 @@ const runFFmpegPNG = () => {
   const framesList = getFramesList(db).then(function(framesList) {
     return framesList;
   })
-  const currentProject = getCurrentProject(db).then({currentProject => (
+  const currentProject = getCurrentProject(db).then(currentProject => {
     return currentProject;
-  )}
+  })
   const settings = getSettings(db).then({settings => (
     return settings;
   )}
