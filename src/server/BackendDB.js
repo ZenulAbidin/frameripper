@@ -502,9 +502,9 @@ const runFFmpegJPG = () => {
   logger.trace({app_subsystem: 'function_call', app_func: 'const runFFmpegJPG = framesList => {', app_file: '/server/BackendDB.js'});
   JPGcomplete = false;
 
-  const currentProject = getCurrentProject(db).then({currentProject => (
+  const currentProject = getCurrentProject(db).then(currentProject => {
     return currentProject;
-  )}
+  })
 
   // Wipe all the image files from the directory before transcoding
   files = glob.sync(path.join(argv.jpgpath, currentProject, "*.jpg"));
