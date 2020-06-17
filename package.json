@@ -30,7 +30,7 @@
   },
   "scripts": {
     "server": "node src/server/BackendDB.js",
-    "start": "HOST=95.217.11.19 PORT=3011 react-scripts start",
+    "start": "SERVER_NAME=https://iamomegastorm.tk:3001 HOST=95.217.11.19 PORT=3011 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
