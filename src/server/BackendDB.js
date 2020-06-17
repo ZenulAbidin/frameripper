@@ -737,7 +737,7 @@ try {
   pino.final(logger, (err, finalLogger) => {
     finalLogger.fatal({app_subsystem: 'argv', app_response: {success: false, error_type: 'directory_notexists', 'error': err}});
     process.exit(1);
-  }
+  })
 }
 
 
