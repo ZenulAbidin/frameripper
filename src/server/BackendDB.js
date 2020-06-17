@@ -5,7 +5,7 @@ var path = require("path");
 const yargs = require('yargs');
 const child_process = require('child_process');
 var moment = require('moment');
-var pino = require('pino');
+var winston = require('winston');
 var glob = require('glob');
 
 const homedir = require('os').homedir();
@@ -14,8 +14,11 @@ const DBfile = path.join(homedir, ".frameripper", "frameripper.db");
 const logfile = path.join(homedir, ".frameripper", `frameripper_${moment().format('YYYY-MM-DD-HH-mm-ss')}.log`);
 
 //const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination({dest: logfile, minLength: 4096, sync: true}));
-console.error(logfile);
-const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination('./borg.txt'));
+const logger = winston.createLogger({
+  transports: [
+    new winston.transports.File({ filename: logfile })
+  ]
+});
 
 var JPGcomplete = false;
 var PNGcomplete = false;
@@ -736,7 +739,7 @@ try {
 } catch(err) {
   console.error("One or more folders don't exist. Please ensure they exist before running.");
   console.error(err);
-  logger.fatal({app_subsystem: 'argv', app_response: {success: false, error_type: 'directory_notexists', 'error': err}});
+  logger.error({app_subsystem: 'argv', app_response: {success: false, error_type: 'directory_notexists', 'error': err}});
   process.exit(1);
 }
 
