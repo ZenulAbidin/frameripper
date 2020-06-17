@@ -15,11 +15,11 @@ const logfile = path.join(homedir, ".frameripper", `frameripper_${moment().forma
 
 //const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination({dest: logfile, minLength: 4096, sync: true}));
 const logger = winston.createLogger({
+  level: 'debug',
   transports: [
     new winston.transports.File({ filename: logfile })
   ]
 });
-console.log(logger);
 
 var JPGcomplete = false;
 var PNGcomplete = false;
