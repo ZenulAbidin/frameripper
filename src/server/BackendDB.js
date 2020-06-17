@@ -11,7 +11,7 @@ var glob = require('glob');
 const homedir = require('os').homedir();
 fs.mkdirSync(path.join(homedir, ".frameripper"), { recursive: true })
 const DBfile = path.join(homedir, ".frameripper", "frameripper.db");
-const logfile = path.join(homedir, ".frameripper", `frameripper_${moment().format('yyyy-mm-DD-hh-mm-ss')}.log`);
+const logfile = path.join(homedir, ".frameripper", `frameripper_${moment().format('YYYY-MM-DD-HH-mm-ss')}.log`);
 
 const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination({dest: logfile, minLength: 4096, sync: false}));
 
