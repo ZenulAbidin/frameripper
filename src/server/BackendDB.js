@@ -734,10 +734,9 @@ try {
 } catch(err) {
   console.error("One or more folders don't exist. Please ensure they exist before running.");
   console.error(err);
-  pino.final(logger, (err, finalLogger) => {
-    finalLogger.fatal({app_subsystem: 'argv', app_response: {success: false, error_type: 'directory_notexists', 'error': err}});
-    process.exit(1);
-  })
+  var finalLogger = pino.final(logger)
+  finalLogger.fatal({app_subsystem: 'argv', app_response: {success: false, error_type: 'directory_notexists', 'error': err}});
+  process.exit(1);
 }
 
 
