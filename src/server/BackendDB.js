@@ -13,7 +13,7 @@ fs.mkdirSync(path.join(homedir, ".frameripper"), { recursive: true })
 const DBfile = path.join(homedir, ".frameripper", "frameripper.db");
 const logfile = path.join(homedir, ".frameripper", `frameripper_${moment().format('YYYY-MM-DD-HH-mm-ss')}.log`);
 
-const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination({dest: logfile, minLength: 4096, sync: false}));
+const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination({dest: logfile, minLength: 4096, sync: true}));
 
 var JPGcomplete = false;
 var PNGcomplete = false;
@@ -734,9 +734,10 @@ try {
 } catch(err) {
   console.error("One or more folders don't exist. Please ensure they exist before running.");
   console.error(err);
-  var finalLogger = pino.final(logger)
-  finalLogger.fatal({app_subsystem: 'argv', app_response: {success: false, error_type: 'directory_notexists', 'error': err}});
-  process.exit(1);
+  pino.final(logger, (err, finalLogger) => {
+    finalLogger.fatal({app_subsystem: 'argv', app_response: {success: false, error_type: 'directory_notexists', 'error': err}});
+    process.exit(1);
+  })
 }
 
 
