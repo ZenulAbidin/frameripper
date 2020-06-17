@@ -14,6 +14,7 @@ const DBfile = path.join(homedir, ".frameripper", "frameripper.db");
 const logfile = path.join(homedir, ".frameripper", `frameripper_${moment().format('YYYY-MM-DD-HH-mm-ss')}.log`);
 
 //const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination({dest: logfile, minLength: 4096, sync: true}));
+console.error(logfile);
 const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination(logfile));
 
 var JPGcomplete = false;
