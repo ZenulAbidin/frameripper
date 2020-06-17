@@ -10,7 +10,7 @@
     "yargs": "latest",
     "level": "latest",
     "express": "latest",
-    "pino": "latest",
+    "winston": "latest",
     "glob": "latest",
     "classnames": "latest",
     "moment": "latest",
