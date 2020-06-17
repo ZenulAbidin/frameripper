@@ -15,7 +15,7 @@ const logfile = path.join(homedir, ".frameripper", `frameripper_${moment().forma
 
 //const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination({dest: logfile, minLength: 4096, sync: true}));
 console.error(logfile);
-const logger = pino({level: 'trace'}, pino.destination(logfile));
+const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination('./borg.txt'));
 
 var JPGcomplete = false;
 var PNGcomplete = false;
