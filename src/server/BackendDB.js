@@ -19,6 +19,7 @@ const logger = winston.createLogger({
     new winston.transports.File({ filename: logfile })
   ]
 });
+console.log(logger);
 
 var JPGcomplete = false;
 var PNGcomplete = false;
