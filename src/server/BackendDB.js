@@ -732,16 +732,38 @@ const argv = yargs
     .usage('Usage: $0 --argv.jpgpath JPGFOLDER --argv.pngpath PNGFOLDER')
     .argv;
 
+
 try {
-  if (fs.lstatSync(argv.jpgpath).isDirectory() && fs.lstatSync(argv.pngpath).isDirectory() && fs.lstatSync(argv.videopath).isDirectory()) {
-    console.log(`Storing JPGs in ${argv.jpgpath}, PNGs in ${argv.pngpath}. Using video directory ${argv.videopath}`);
-  logger.verbose({time: moment().format(), app_subsystem: 'argv', app_response: {success: true, jpgpath: argv.jpgpath, pngpath: argv.pngpath, videopath: argv.videopath, test_client: argv['test-client'], test_server: argv['test-server']}});
+  if (fs.lstatSync(argv.jpgpath).isDirectory()) {
+    console.log(`Storing JPGs in ${argv.jpgpath}`);
+    logger.verbose({time: moment().format(), app_subsystem: 'argv_dirs',  app_dir: 'jpg', app_jpgpath: argv.jpgpath});
   }
 } catch(err) {
-  console.error("One or more folders don't exist. Please ensure they exist before running.");
+  console.error(`The JPG folder ${argv.jpgpath} doesn't exist. Please create it before running.`);
   console.error(err);
-  logger.error({time: moment().format(), app_subsystem: 'argv', app_response: {success: false, error_type: 'directory_notexists', 'error': err}});
+  logger.error({time: moment().format(), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'jpg'}});
   process.exitCode = 1;
 }
-
+try {
+  if (fs.lstatSync(argv.pngpath).isDirectory()) {
+    console.log(`Storing PNGs in ${argv.pngpath}`);
+    logger.verbose({time: moment().format(), app_subsystem: 'argv_dirs',  app_dir: 'png', app_pngpath: argv.pngpath});
+  }
+} catch(err) {
+  console.error(`The PNG folder ${argv.pngpath} doesn't exist. Please create it before running.`);
+  console.error(err);
+  logger.error({time: moment().format(), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'png'}});
+  process.exitCode = 1;
+}
+try {
+  if (fs.lstatSync(argv.videopath).isDirectory()) {
+    console.log(`Using video directory ${argv.videopath}`);
+    logger.verbose({time: moment().format(), app_subsystem: 'argv_dirs',  app_dir: 'video', app_videopath: argv.videopath});
+  }
+} catch(err) {
+  console.error(`The video folder ${argv.videopath} doesn't exist. Please create it before running.`);
+  console.error(err);
+  logger.error({time: moment().format(), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'video'}});
+  process.exitCode = 1;
+}
 
