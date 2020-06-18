@@ -17,7 +17,7 @@ const logfile = path.join(homedir, ".frameripper", `frameripper_${moment().forma
 const logger = winston.createLogger({
   level: 'debug',
   transports: [
-    new winston.transports.File({ filename: "\\root\\.frameripper\\test.log" })
+    new winston.transports.File({ filename: logfile })
   ]
 });
 
@@ -741,7 +741,7 @@ try {
   console.error("One or more folders don't exist. Please ensure they exist before running.");
   console.error(err);
   logger.error({app_subsystem: 'argv', app_response: {success: false, error_type: 'directory_notexists', 'error': err}});
-  process.exit(1);
+  process.exitCode = 1;
 }
 
 
