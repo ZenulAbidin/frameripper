@@ -732,36 +732,36 @@ const argv = yargs
     .usage('Usage: $0 --argv.jpgpath JPGFOLDER --argv.pngpath PNGFOLDER')
     .argv;
 
-
+console.log(argv);
 try {
   if (fs.lstatSync(argv.jpgpath).isDirectory()) {
-    console.log(`Storing JPGs in ${argv.jpgpath}`);
+    console.log(`Storing JPGs in "${argv.jpgpath}"`);
     logger.verbose({time: moment().format(), app_subsystem: 'argv_dirs',  app_dir: 'jpg', app_jpgpath: argv.jpgpath});
   }
 } catch(err) {
-  console.error(`The JPG folder ${argv.jpgpath} doesn't exist. Please create it before running.`);
+  console.error(`The JPG folder "${argv.jpgpath}" doesn't exist. Please create it before running.`);
   console.error(err);
   logger.error({time: moment().format(), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'jpg'}});
   process.exitCode = 1;
 }
 try {
   if (fs.lstatSync(argv.pngpath).isDirectory()) {
-    console.log(`Storing PNGs in ${argv.pngpath}`);
+    console.log(`Storing PNGs in "${argv.pngpath}"`);
     logger.verbose({time: moment().format(), app_subsystem: 'argv_dirs',  app_dir: 'png', app_pngpath: argv.pngpath});
   }
 } catch(err) {
-  console.error(`The PNG folder ${argv.pngpath} doesn't exist. Please create it before running.`);
+  console.error(`The PNG folder "${argv.pngpath}" doesn't exist. Please create it before running.`);
   console.error(err);
   logger.error({time: moment().format(), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'png'}});
   process.exitCode = 1;
 }
 try {
   if (fs.lstatSync(argv.videopath).isDirectory()) {
-    console.log(`Using video directory ${argv.videopath}`);
+    console.log(`Using video directory "${argv.videopath}"`);
     logger.verbose({time: moment().format(), app_subsystem: 'argv_dirs',  app_dir: 'video', app_videopath: argv.videopath});
   }
 } catch(err) {
-  console.error(`The video folder ${argv.videopath} doesn't exist. Please create it before running.`);
+  console.error(`The video folder "${argv.videopath}" doesn't exist. Please create it before running.`);
   console.error(err);
   logger.error({time: moment().format(), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'video'}});
   process.exitCode = 1;
