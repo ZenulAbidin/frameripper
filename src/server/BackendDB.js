@@ -12,10 +12,11 @@ const homedir = require('os').homedir();
 fs.mkdirSync(path.join(homedir, ".frameripper"), { recursive: true })
 const DBfile = path.join(homedir, ".frameripper", "frameripper.db");
 const logfile = path.join(homedir, ".frameripper", `frameripper_${moment().format('YYYY-MM-DD-HH-mm-ss')}.log`);
+fs.appendFileSync(logfile, '', function (err) {})
 
 //const logger = pino({name: 'frameripper', level: 'trace'}, pino.destination({dest: logfile, minLength: 4096, sync: true}));
 const logger = winston.createLogger({
-
+  level: 'debug',
   transports: [
     new winston.transports.File({ filename: logfile })
   ]
