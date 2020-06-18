@@ -727,6 +727,11 @@ const argv = yargs
         description: 'Run frameripper in server test mode. Doesn\'t run ffmpeg or filesystem operations.',
         type: 'boolean',
     })
+    .option('port', {
+        alias: 'p',
+        description: 'Alternative port number to listen on (default 3030).',
+        type: 'number',
+    })
     .help()
     .alias('help', 'h')
     .usage('Usage: $0 --argv.jpgpath JPGFOLDER --argv.pngpath PNGFOLDER')
@@ -766,4 +771,8 @@ try {
   logger.error({time: moment().format(), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'video'}});
   process.exitCode = 1;
 }
+
+const port = argv.port || 3030;
+app.listen(port)
+
 
