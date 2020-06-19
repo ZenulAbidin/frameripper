@@ -34,7 +34,7 @@ app.use(express.json())
 
 app.get('/startjpgtranscode', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.get(\'/startjpgtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     runFFmpegJPG();
   }
   logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/startjpgtranscode', app_request: 'get', app_status: 200});
@@ -43,7 +43,7 @@ app.get('/startjpgtranscode', function (req, res) {
 
 app.get('/abortjpgtranscode', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.get(\'/abortjpgtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     if (ffmpeg_running) {
       ffmpeg.kill();
       ffmpeg_running = false;
@@ -61,7 +61,7 @@ app.get('/abortjpgtranscode', function (req, res) {
 
 app.get('/startpngtranscode', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.get(\'/startpngtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     runFFmpegPNG();
   }
   logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/startpngtranscode', app_request: 'get', app_status: 200});
@@ -70,7 +70,7 @@ app.get('/startpngtranscode', function (req, res) {
 
 app.get('/abortpngtranscode', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.get(\'/abortpngtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     if (ffmpeg_running) {
       ffmpeg.kill();
       ffmpeg_running = false;
@@ -88,7 +88,7 @@ app.get('/abortpngtranscode', function (req, res) {
 
 app.get('/projects', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.get(\'/projects\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     getProjects(db).then(function(projects) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 200, app_response: {'projects': projects}});
       res.status(200).json({'projects': projects})
@@ -105,7 +105,7 @@ app.get('/projects', function (req, res) {
 
 app.put('/projects', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.put(\'/projects\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     setProjects(db, req.body.projects).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -117,7 +117,7 @@ app.put('/projects', function (req, res) {
 
 app.get('/currentproject', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.get(\'/currentproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     getCurrentProject(db).then(function(project) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 200, app_response: {'currentProject': project}});
       res.status(200).json({'currentProject': project})
@@ -134,7 +134,7 @@ app.get('/currentproject', function (req, res) {
 
 app.put('/currentproject', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.put(\'/currentproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     setCurrentProject(db, req.body.project).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -146,7 +146,7 @@ app.put('/currentproject', function (req, res) {
 
 app.get('/currentsettings', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.get(\'/currentsettings\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     getSettings(db).then(function(settings) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 200, app_response: settings});
       res.status(200).json(settings)
@@ -163,7 +163,7 @@ app.get('/currentsettings', function (req, res) {
 
 app.put('/currentsettings', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.put(\'/currentsettings\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     setSettings(db, req.body.settings).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -175,7 +175,7 @@ app.put('/currentsettings', function (req, res) {
 
 app.get('/numframes', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.get(\'/numframes\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     getNumFrames(db).then(function(numFrames) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 200, app_response: {'numFrames': numFrames}});
       res.status(200).json({'numFrames': numFrames})
@@ -192,7 +192,7 @@ app.get('/numframes', function (req, res) {
 
 app.put('/numframes', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.put(\'/numframes\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     setNumFrames(db, req.body.numFrames).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -204,7 +204,7 @@ app.put('/numframes', function (req, res) {
 
 app.get('/frameslist', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.get(\'/frameslist\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     getFramesList(db).then(function(framesList) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 200, app_response: {'framesList': framesList}});
       res.status(200).json({'framesList': framesList})
@@ -221,7 +221,7 @@ app.get('/frameslist', function (req, res) {
 
 app.put('/frameslist', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.get(\'/frameslist\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     setFramesList(db, req.body.framesList).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -233,7 +233,7 @@ app.put('/frameslist', function (req, res) {
 
 app.put('/deleteproject', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.put(\'/deleteproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     deleteProject(db, req.body.project).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'put', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -246,7 +246,7 @@ app.put('/deleteproject', function (req, res) {
 var ticker_jpg = 0;
 app.get('/istranscodingjpgcomplete', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.get(\'/istranscodingjpgcomplete\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     isTranscodingJPGComplete().then(function(complete) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
       res.status(200).json({'complete': complete})
@@ -266,7 +266,7 @@ app.get('/istranscodingjpgcomplete', function (req, res) {
 var ticker_png = 0;
 app.get('/istranscodingpngcomplete', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.get(\'/istranscodingpngcomplete\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (!argv.client_test) {
+  if (!argv.testClient) {
     isTranscodingPNGComplete().then(function(complete) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
       res.status(200).json({'complete': complete})
@@ -583,7 +583,7 @@ const runFFmpegJPG = () => {
     throw err;
   })
 
-  if (!argv.server_test) {
+  if (!argv.testServer) {
     // Wipe all the image files from the directory before transcoding
     var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.jpg"));
     logger.verbose({time: moment().format(), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
@@ -647,7 +647,7 @@ const runFFmpegPNG = () => {
     throw err;
   })
 
-  if (!argv.server_test) {
+  if (!argv.testServer) {
     // Wipe all the image files from the directory before transcoding
     var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
     logger.verbose({time: moment().format(), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
