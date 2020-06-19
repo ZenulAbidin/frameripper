@@ -323,10 +323,10 @@ const setProjects = (db, projects) => {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'const setProjects = (db, projects) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
     db.put('/projects', projects).then(value => {
-      logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: value, app_response: {success: true}});
+      logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects, app_response: {success: true}});
       resolve(null);
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: value, app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects, app_response: {success: false, 'error': err}});
       reject(err);
     })
   })
