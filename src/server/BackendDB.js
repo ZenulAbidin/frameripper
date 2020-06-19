@@ -313,7 +313,7 @@ const getProjects = db => {
       logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: true, '/projects': value}});
       return resolve(value);
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
   })
@@ -326,7 +326,7 @@ const setProjects = (db, projects) => {
       logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects, app_response: {success: true}});
       resolve(null);
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects, app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects, app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
   })
@@ -339,7 +339,7 @@ const getCurrentProject = db => {
       logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: true, '/currentProject': value}});
       return resolve(value);
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_value: value, app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_value: value, app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
   })
@@ -361,7 +361,7 @@ const setCurrentProject = (db, project) => {
       logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project, app_response: {success: true}});
       resolve(null);
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project, app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project, app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
   })
@@ -383,13 +383,13 @@ const getSettings = (db, project) => {
     var prefix = db.get('/project/'+project+'/prefix').then(value => {
       return value;
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
     var frameOffset = db.get('/project/'+project+'/frameOffset').then((err, value) => {
       return value;
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
     logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: true, [`/project/${project}/prefix`]: prefix}});
@@ -412,14 +412,14 @@ const setSettings = (db, project, prefix, frameOffset) => {
     db.put('/project/'+project+'/prefix', prefix).then(value => {
       logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix, app_response: {success: true}});
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix, app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix, app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
     db.put('/project/'+project+'/frameOffset', frameOffset).then((value) => {
       logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset, app_response: {success: true}});
       resolve(null);
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset, app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset, app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
   })
@@ -441,7 +441,7 @@ const getNumFrames = (db, project) => {
     var numFrames = db.get('/project/'+project+'/numFrames').then(value => {
       return value;
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
     logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: true, [`/project/${project}/numFrames`]: numFrames}});
@@ -465,7 +465,7 @@ const setNumFrames = (db, project, numFrames) => {
       logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames, app_response: {success: true}});
       resolve(null);
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames, app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames, app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
   })
@@ -486,7 +486,7 @@ const getFramesList = (db, project) => {
     var framesList = db.get('/project/'+project+'/framesList').then(value => {
       return value;
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
     logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: true, [`/project/${project}/framesList`]: framesList}});
@@ -510,7 +510,7 @@ const setFramesList = (db, project, framesList) => {
       logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList, app_response: {success: true}});
       resolve(null);
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList, app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList, app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
   })
@@ -536,27 +536,27 @@ const deleteProject = (db, project) => {
     db.del('/project/'+project+'/prefix').then(value => {
       logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: true}});
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err}});
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err}});
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err}});
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err.stack}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err.stack}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
 
     db.del('/project/'+project+'/frameOffset').then(value => {
       logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: true}});
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err}});
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err}});
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err.stack}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
 
     db.del('/project/'+project+'/numFrames').then(value => {
     logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: true}});
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err}});
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
 
@@ -567,7 +567,7 @@ const deleteProject = (db, project) => {
       })
       resolve(null);
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
   })
