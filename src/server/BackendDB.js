@@ -17,6 +17,7 @@ const logfile = path.join(homedir, ".frameripper", `frameripper_${moment().forma
 const logger = winston.createLogger({
   level: 'debug',
   transports: [
+    new winston.transports.Console(),
     new winston.transports.File({ filename: logfile })
   ]
 });
@@ -749,7 +750,6 @@ const argv = yargs
     .usage('Usage: $0 --argv.jpgpath JPGFOLDER --argv.pngpath PNGFOLDER')
     .argv;
 
-console.log(argv);
 try {
   if (fs.lstatSync(argv.jpgpath).isDirectory()) {
     console.log(`Storing JPGs in "${argv.jpgpath}"`);
