@@ -107,13 +107,17 @@ app.get('/projects', function (req, res) {
 app.put('/projects', function (req, res) {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.put(\'/projects\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
-    setProjects(db, req.body.projects).catch(function(err) {
+    setProjects(db, req.body.projects).then(value => {
+      logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 200});
+      res.json({ok:true})
+    })catch(err => {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
     })
+  } else {
+    logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 200});
+    res.json({ok:true})
   }
-  logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 200});
-  res.json({ok:true})
 })
 
 app.get('/currentproject', function (req, res) {
