@@ -322,7 +322,7 @@ const getProjects = db => {
 const setProjects = (db, projects) => {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'const setProjects = (db, projects) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    db.set('/projects', projects).then(value => {
+    db.put('/projects', projects).then(value => {
       logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: value, app_response: {success: true}});
       resolve(null);
     }).catch(err => {
@@ -357,7 +357,7 @@ const setCurrentProject = (db, project) => {
         logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
         reject('Project doesn\'t exist');
     }
-    db.set('/currentProject', project).then(value => {
+    db.put('/currentProject', project).then(value => {
       logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project, app_response: {success: true}});
       resolve(null);
     }).catch(err => {
