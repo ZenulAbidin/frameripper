@@ -39,7 +39,7 @@ app.get('/startjpgtranscode', function (req, res) {
     runFFmpegJPG();
   }
   logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/startjpgtranscode', app_request: 'get', app_status: 200});
-  res.status(200);
+  res.json({ok:true});
 })
 
 app.get('/abortjpgtranscode', function (req, res) {
@@ -49,14 +49,14 @@ app.get('/abortjpgtranscode', function (req, res) {
       ffmpeg.kill();
       ffmpeg_running = false;
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 200});
-      res.status(200)
+      res.json({ok:true})
     } else {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 400, app_response: {'error': 'ffmpeg is not running'}});
       res.status(400).json({'error': 'ffmpeg is not running'})
     }
   } else {
     logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 200});
-    res.status(200)
+    res.json({ok:true})
   }
 })
 
@@ -66,7 +66,7 @@ app.get('/startpngtranscode', function (req, res) {
     runFFmpegPNG();
   }
   logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/startpngtranscode', app_request: 'get', app_status: 200});
-  res.status(200);
+  res.json({ok:true});
 })
 
 app.get('/abortpngtranscode', function (req, res) {
@@ -76,14 +76,14 @@ app.get('/abortpngtranscode', function (req, res) {
       ffmpeg.kill();
       ffmpeg_running = false;
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 200});
-      res.status(200)
+      res.json({ok:true})
     } else {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 400, app_response: {'error': 'ffmpeg is not running'}});
       res.status(400).json({'error': 'ffmpeg is not running'})
     }
   } else {
     logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 200});
-    res.status(200)
+    res.json({ok:true})
   }
 })
 
@@ -92,7 +92,7 @@ app.get('/projects', function (req, res) {
   if (!argv.testClient) {
     getProjects(db).then(function(projects) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 200, app_response: {'projects': projects}});
-      res.status(200).json({'projects': projects})
+      res.json({ok:true}).json({'projects': projects})
     }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -100,7 +100,7 @@ app.get('/projects', function (req, res) {
   } else {
     var projects = ['Big-Buck-Bunny.mp4', 'Crab-Rave.mp4', 'FooBar2000test.mp4'];
     logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 200, app_response: {'projects': null}});
-    res.status(200).json({'projects': projects})
+    res.json({ok:true}).json({'projects': projects})
   }
 })
 
@@ -113,7 +113,7 @@ app.put('/projects', function (req, res) {
     })
   }
   logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 200});
-  res.status(200)
+  res.json({ok:true})
 })
 
 app.get('/currentproject', function (req, res) {
@@ -121,7 +121,7 @@ app.get('/currentproject', function (req, res) {
   if (!argv.testClient) {
     getCurrentProject(db).then(function(project) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 200, app_response: {'currentProject': project}});
-      res.status(200).json({'currentProject': project})
+      res.json({ok:true}).json({'currentProject': project})
     }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -129,7 +129,7 @@ app.get('/currentproject', function (req, res) {
   } else {
     var project = 'Big-Buck-Bunny.mp4';
     logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 200, app_response: {'currentProject': null}});
-    res.status(200).json({'currentProject': project})
+    res.json({ok:true}).json({'currentProject': project})
   }
 })
 
@@ -142,7 +142,7 @@ app.put('/currentproject', function (req, res) {
     })
   }
   logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 200});
-  res.status(200)
+  res.json({ok:true})
 })
 
 app.get('/currentsettings', function (req, res) {
@@ -150,7 +150,7 @@ app.get('/currentsettings', function (req, res) {
   if (!argv.testClient) {
     getSettings(db).then(function(settings) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 200, app_response: settings});
-      res.status(200).json(settings)
+      res.json({ok:true}).json(settings)
     }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -158,7 +158,7 @@ app.get('/currentsettings', function (req, res) {
   } else {
     var settings = {prefix: 'bbb', frameOffset: -2};
     logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 200, app_response: settings});
-    res.status(200).json(settings)
+    res.json({ok:true}).json(settings)
   }
 })
 
@@ -171,7 +171,7 @@ app.put('/currentsettings', function (req, res) {
     })
   }
   logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 200});
-  res.status(200)
+  res.json({ok:true})
 })
 
 app.get('/numframes', function (req, res) {
@@ -179,7 +179,7 @@ app.get('/numframes', function (req, res) {
   if (!argv.testClient) {
     getNumFrames(db).then(function(numFrames) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 200, app_response: {'numFrames': numFrames}});
-      res.status(200).json({'numFrames': numFrames})
+      res.json({ok:true}).json({'numFrames': numFrames})
     }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -187,7 +187,7 @@ app.get('/numframes', function (req, res) {
   } else {
     var numFrames = 23;
     logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 200, app_response: {'numFrames': numFrames}});
-    res.status(200).json({'numFrames': numFrames})
+    res.json({ok:true}).json({'numFrames': numFrames})
   }
 })
 
@@ -200,7 +200,7 @@ app.put('/numframes', function (req, res) {
     })
   }
   logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 200});
-  res.status(200)
+  res.json({ok:true})
 })
 
 app.get('/frameslist', function (req, res) {
@@ -208,7 +208,7 @@ app.get('/frameslist', function (req, res) {
   if (!argv.testClient) {
     getFramesList(db).then(function(framesList) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 200, app_response: {'framesList': framesList}});
-      res.status(200).json({'framesList': framesList})
+      res.json({ok:true}).json({'framesList': framesList})
     }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -216,7 +216,7 @@ app.get('/frameslist', function (req, res) {
   } else {
     var framesList = [0, 1, 3, 4, 5, 6, 14, 16, 22];
     logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 200, app_response: {'framesList': framesList}});
-    res.status(200).json({'framesList': framesList})
+    res.json({ok:true}).json({'framesList': framesList})
   }
 })
 
@@ -229,7 +229,7 @@ app.put('/frameslist', function (req, res) {
     })
   }
   logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 200});
-  res.status(200)
+  res.json({ok:true})
 })
 
 app.put('/deleteproject', function (req, res) {
@@ -241,7 +241,7 @@ app.put('/deleteproject', function (req, res) {
     })
   }
   logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'put', app_status: 200});
-  res.status(200)
+  res.json({ok:true})
 })
 
 var ticker_jpg = 0;
@@ -250,7 +250,7 @@ app.get('/istranscodingjpgcomplete', function (req, res) {
   if (!argv.testClient) {
     isTranscodingJPGComplete().then(function(complete) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
-      res.status(200).json({'complete': complete})
+      res.json({ok:true}).json({'complete': complete})
     }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -260,7 +260,7 @@ app.get('/istranscodingjpgcomplete', function (req, res) {
     var complete = (ticker_jpg % 50 === 0) ? true : false;
     console.log(`ticker_jpg = ${ticker_jpg}`);
     logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
-    res.status(200).json({'complete': complete})
+    res.json({ok:true}).json({'complete': complete})
   }
 })
 
@@ -270,7 +270,7 @@ app.get('/istranscodingpngcomplete', function (req, res) {
   if (!argv.testClient) {
     isTranscodingPNGComplete().then(function(complete) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
-      res.status(200).json({'complete': complete})
+      res.json({ok:true}).json({'complete': complete})
     }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
@@ -280,7 +280,7 @@ app.get('/istranscodingpngcomplete', function (req, res) {
     var complete = (ticker_png % 50 === 0) ? true : false;
     console.log(`ticker_png = ${ticker_png}`);
     logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
-    res.status(200).json({'complete': complete})
+    res.json({ok:true}).json({'complete': complete})
   }
 })
 
