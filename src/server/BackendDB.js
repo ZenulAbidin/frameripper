@@ -110,7 +110,7 @@ app.put('/projects', function (req, res) {
     setProjects(db, req.body.projects).then(value => {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 200});
       res.json({ok:true})
-    })catch(err => {
+    }).catch(err => {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 400, app_response: {'error': err}});
       res.status(400).json({'error': err})
     })
