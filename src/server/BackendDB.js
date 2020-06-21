@@ -29,6 +29,8 @@ var ffmpeg = null;
 var ffmpeg_running = false;
 var default_null = '(null/undefined)';
 
+var currentProject = null;
+
 logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'program_entry_point', app_file: '/server/BackendDB.js'});
 
 var app = express();
@@ -369,8 +371,13 @@ const setProjects = (db, projects) => {
 const getCurrentProject = db => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const getCurrentProject = db => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
+    // Use cached value if exists to avoid expensive DB call
+    if (currentProject) {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: true, '/currentProject': currentProject, cached: true}});
+      return resolve(currentProject);
+    }
     db.get('/currentProject').then(value => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: true, '/currentProject': value}});
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: true, '/currentProject': value, cached: false}});
       return resolve(value);
     }).catch(err => {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_value: value || default_null, app_response: {success: false, 'error': err.stack}});
@@ -393,6 +400,7 @@ const setCurrentProject = (db, project) => {
     }
     db.put('/currentProject', project).then(value => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: true}});
+      currentProject = project;
       resolve(null);
     }).catch(err => {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: false, 'error': err.stack}});
@@ -510,10 +518,6 @@ const getFramesList = (db, project) => {
   return new Promise((resolve, reject) => {
     getProjects(db).then(projects => {
       var exists = project != null && projects.includes(project);
-      console.log(`exists = ${exists}`);
-      console.log(`projects = ${projects}`);
-      console.log(`project = ${project}`);
-      console.log(`${projects.includes(project)}`);
       if (!exists) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
         reject('Project doesn\'t exist');
@@ -825,6 +829,13 @@ try {
   logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'video'}});
   process.exitCode = 1;
 }
+
+getCurrentProject(db).then(function(project) {
+  currentProject = project;
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'init', app_operation: 'currentProjectCache', app_response: {success: true}});
+}).catch(function(err) {
+  logger.warn({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'init', app_operation: 'currentProjectCache', app_response: {success: false, 'error': 'currentProject not set in DB'}});
+})
 
 const port = argv.port || 3030;
 app.listen(port)
