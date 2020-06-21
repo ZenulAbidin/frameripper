@@ -200,10 +200,12 @@ app.get('/numframes', function (req, res) {
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
         res.status(400).json({'error': err.toString()})
+        //FIXME
       })
     }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
+      //FIXME too it's returning success with blank JSON response
     })
   } else {
     var numFrames = 23;
@@ -511,6 +513,7 @@ const getFramesList = (db, project) => {
     }).catch(err => {
       reject(err);
     });
+    console.log(`exists = ${exists}`)
     if (!exists) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
