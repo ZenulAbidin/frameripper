@@ -349,7 +349,7 @@ const getCurrentProject = db => {
 const setCurrentProject = (db, project) => {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'const setCurrentProject = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    var exists = getProjects(db).then(projects => {
+    var exists = project != null && getProjects(db).then(projects => {
       return projects.includes(project);
     }).catch(err => {
       reject(err);
@@ -371,7 +371,7 @@ const setCurrentProject = (db, project) => {
 const getSettings = (db, project) => {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'const getSettings = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    var exists = getProjects(db).then(projects => {
+    var exists = project != null && getProjects(db).then(projects => {
       return projects.includes(project);
     }).catch(err => {
       reject(err);
@@ -402,7 +402,7 @@ const getSettings = (db, project) => {
 const setSettings = (db, project, prefix, frameOffset) => {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'const setSettings = (db, project, prefix, frameOffset) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    var exists = getProjects(db).then(projects => {
+    var exists = project != null && getProjects(db).then(projects => {
       return projects.includes(project);
     }).catch(err => {
       reject(err);
@@ -430,7 +430,7 @@ const setSettings = (db, project, prefix, frameOffset) => {
 const getNumFrames = (db, project) => {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'const getNumFrames = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    var exists = getProjects(db).then(projects => {
+    var exists = project != null && getProjects(db).then(projects => {
       return projects.includes(project);
     }).catch(err => {
       reject(err);
@@ -453,7 +453,7 @@ const getNumFrames = (db, project) => {
 const setNumFrames = (db, project, numFrames) => {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'const setNumFrames = (db, project, numFrames) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    var exists = getProjects(db).then(projects => {
+    var exists = project != null && getProjects(db).then(projects => {
         return projects.includes(project);
     }).catch(err => {
       reject(err);
@@ -475,7 +475,7 @@ const setNumFrames = (db, project, numFrames) => {
 const getFramesList = (db, project) => {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'const getFramesList = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    var exists = getProjects(db).then(projects => {
+    var exists = project != null && getProjects(db).then(projects => {
       return projects.includes(project);
     }).catch(err => {
       reject(err);
@@ -498,7 +498,7 @@ const getFramesList = (db, project) => {
 const setFramesList = (db, project, framesList) => {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'const setFramesList = (db, project, framesList) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    var exists = getProjects(db).then(projects => {
+    var exists = project != null && getProjects(db).then(projects => {
         return projects.includes(project);
     }).catch(err => {
       reject(err);
@@ -520,12 +520,11 @@ const setFramesList = (db, project, framesList) => {
 const deleteProject = (db, project) => {
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'const deleteProject = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    var projects = getProjects(db).then(projects => {
-        return projects;
+    var exists = project != null && getProjects(db).then(projects => {
+      return projects;
     }).catch(err => {
       reject(err);
-    });
-    var exists = projects.includes(project)
+    }).includes(project);
     if (!exists) {
       logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
