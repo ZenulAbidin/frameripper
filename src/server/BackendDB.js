@@ -509,11 +509,11 @@ const getFramesList = (db, project) => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const getFramesList = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
     var exists = project != null && getProjects(db).then(projects => {
+      console.log(`exists = ${projects.includes(project)}`)
       return projects.includes(project);
     }).catch(err => {
       reject(err);
     });
-    console.log(`exists = ${exists}`)
     if (!exists) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
