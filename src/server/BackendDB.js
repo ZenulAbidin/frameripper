@@ -143,7 +143,7 @@ app.get('/currentproject', function (req, res) {
 app.put('/currentproject', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.put(\'/currentproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
-    setCurrentProject(db, req.body.project).catch(function(err) {
+    setCurrentProject(db, req.body.currentProject).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
@@ -832,7 +832,7 @@ try {
 
 getCurrentProject(db).then(function(project) {
   currentProject = project;
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'init', app_operation: 'currentProjectCache', app_response: {success: true}});
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'init', app_operation: 'currentProjectCache', app_response: {success: true, 'currentProject': currentProject}});
 }).catch(function(err) {
   logger.warn({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'init', app_operation: 'currentProjectCache', app_response: {success: false, 'error': 'currentProject not set in DB'}});
 })
