@@ -155,7 +155,7 @@ app.get('/currentsettings', function (req, res) {
   if (!argv.testClient) {
     var project = getCurrentProject(db).then(project => {
       return project;
-    }).catch(function(err) => {
+    }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
@@ -178,7 +178,7 @@ app.put('/currentsettings', function (req, res) {
   if (!argv.testClient) {
     var project = getCurrentProject(db).then(project => {
       return project;
-    }).catch(function(err) => {
+    }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
@@ -196,7 +196,7 @@ app.get('/numframes', function (req, res) {
   if (!argv.testClient) {
     var project = getCurrentProject(db).then(project => {
       return project;
-    }).catch(function(err) => {
+    }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
@@ -219,7 +219,7 @@ app.put('/numframes', function (req, res) {
   if (!argv.testClient) {
     var project = getCurrentProject(db).then(project => {
       return project;
-    }).catch(function(err) => {
+    }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
@@ -237,7 +237,7 @@ app.get('/frameslist', function (req, res) {
   if (!argv.testClient) {
     var project = getCurrentProject(db).then(project => {
       return project;
-    }).catch(function(err) => {
+    }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
@@ -260,7 +260,7 @@ app.put('/frameslist', function (req, res) {
   if (!argv.testClient) {
     var project = getCurrentProject(db).then(project => {
       return project;
-    }).catch(function(err) => {
+    }).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
