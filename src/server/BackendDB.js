@@ -153,16 +153,14 @@ app.put('/currentproject', function (req, res) {
 app.get('/currentsettings', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.get(\'/currentsettings\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
-    var project = getCurrentProject(db).then(value => {
-      console.log(value);
-      return value;
-    }).catch(function(err) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
-      res.status(400).json({'error': err.toString()})
-    })
-    getSettings(db, project).then(function(settings) {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 200, app_response: settings});
-      res.status(200).json(settings)
+    var project = getCurrentProject(db).then(project => {
+      getSettings(db, project).then(function(settings) {
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 200, app_response: settings});
+        res.status(200).json(settings)
+      }).catch(function(err) {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
+        res.status(400).json({'error': err.toString()})
+      })
     }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
