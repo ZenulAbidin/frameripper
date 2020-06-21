@@ -510,6 +510,10 @@ const getFramesList = (db, project) => {
   return new Promise((resolve, reject) => {
     getProjects(db).then(projects => {
       var exists = project != null && projects.includes(project);
+      console.log(`exists = ${exists}`);
+      console.log(`projects = ${projects}`);
+      console.log(`project = ${project}`);
+      console.log(`${projects.includes(project)}`);
       if (!exists) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
         reject('Project doesn\'t exist');
