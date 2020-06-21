@@ -106,7 +106,6 @@ app.get('/projects', function (req, res) {
 })
 
 app.put('/projects', function (req, res) {
-  console.log(req)
   logger.debug({time: moment().format(), app_subsystem: 'function_call', app_func: 'app.put(\'/projects\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
     setProjects(db, req.body.projects).then(value => {
