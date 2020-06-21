@@ -159,7 +159,7 @@ app.get('/currentsettings', function (req, res) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
-    getSettings(db).then(function(settings) {
+    getSettings(db, project).then(function(settings) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 200, app_response: settings});
       res.status(200).json(settings)
     }).catch(function(err) {
@@ -182,7 +182,7 @@ app.put('/currentsettings', function (req, res) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
-    setSettings(db, project req.body.settings.prefix, req.body.settings.frameOffset).catch(function(err) {
+    setSettings(db, project, req.body.settings.prefix, req.body.settings.frameOffset).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
@@ -200,7 +200,7 @@ app.get('/numframes', function (req, res) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
-    getNumFrames(db).then(function(numFrames) {
+    getNumFrames(db, project).then(function(numFrames) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 200, app_response: {'numFrames': numFrames}});
       res.status(200).json({'numFrames': numFrames})
     }).catch(function(err) {
@@ -223,7 +223,7 @@ app.put('/numframes', function (req, res) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
-    setNumFrames(db, req.body.numFrames).catch(function(err) {
+    setNumFrames(db, project, req.body.numFrames).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
@@ -241,7 +241,7 @@ app.get('/frameslist', function (req, res) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
-    getFramesList(db).then(function(framesList) {
+    getFramesList(db, project).then(function(framesList) {
       logger.verbose({time: moment().format(), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 200, app_response: {'framesList': framesList}});
       res.status(200).json({'framesList': framesList})
     }).catch(function(err) {
@@ -264,7 +264,7 @@ app.put('/frameslist', function (req, res) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
-    setFramesList(db, req.body.framesList).catch(function(err) {
+    setFramesList(db, project, req.body.framesList).catch(function(err) {
       logger.error({time: moment().format(), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
