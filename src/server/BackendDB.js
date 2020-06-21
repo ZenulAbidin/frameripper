@@ -504,14 +504,14 @@ const setFramesList = (db, project, framesList) => {
       reject(err);
     });
     if (!exists) {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value || default_null: framesList, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
     }
     db.put('/project/'+project+'/framesList', framesList).then(value => {
-      logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value || default_null: framesList, app_response: {success: true}});
+      logger.verbose({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList || default_null, app_response: {success: true}});
       resolve(null);
     }).catch(err => {
-      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value || default_null: framesList, app_response: {success: false, 'error': err.stack}});
+      logger.error({time: moment().format(), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList || default_null, app_response: {success: false, 'error': err.stack}});
       reject(err);
     })
   })
