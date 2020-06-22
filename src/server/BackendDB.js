@@ -150,11 +150,13 @@ app.put('/currentproject', function (req, res) {
   if (req.body.currentProject == null) {
     logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "currentProject" doesn\'t exist'}});
     res.status(400).json({'error': 'Required key "currentProject" doesn\'t exist'})
+    return;
   }
   if (!argv.testClient) {
     setCurrentProject(db, req.body.currentProject).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
+      return;
     })
   }
   logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 200});
