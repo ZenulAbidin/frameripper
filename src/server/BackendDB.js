@@ -114,14 +114,15 @@ app.put('/projects', function (req, res) {
     if (req.body.projects == null) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "projects" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "projects" doesn\'t exist'})
+    } else {
+      setProjects(db, req.body.projects).then(value => {
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 200});
+        res.json({ok:true})
+      }).catch(err => {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
+        res.status(400).json({'error': err.toString()})
+      })
     }
-    setProjects(db, req.body.projects).then(value => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 200});
-      res.json({ok:true})
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
-      res.status(400).json({'error': err.toString()})
-    })
   } else {
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 200});
     res.json({ok:true})
@@ -151,14 +152,15 @@ app.put('/currentproject', function (req, res) {
     if (req.body.currentProject == null) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "currentProject" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "currentProject" doesn\'t exist'})
+    } else {
+      setCurrentProject(db, req.body.currentProject).then(value => {
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 200});
+        res.json({ok:true})
+      }).catch(function(err) {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
+        res.status(400).json({'error': err.toString()})
+      })
     }
-    setCurrentProject(db, req.body.currentProject).then(value => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 200});
-      res.json({ok:true})
-    }).catch(function(err) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
-      res.status(400).json({'error': err.toString()})
-    })
   }
   else {
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 200});
@@ -203,18 +205,20 @@ app.put('/currentsettings', function (req, res) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "settings.frameOffset" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "settings.frameOffset" doesn\'t exist'})
     }
-    var project = getCurrentProject(db).then(project => {
-      setSettings(db, project, req.body.settings.prefix, req.body.settings.frameOffset).then(value => {
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 200});
-        res.json({ok:true})
+    else {
+      var project = getCurrentProject(db).then(project => {
+        setSettings(db, project, req.body.settings.prefix, req.body.settings.frameOffset).then(value => {
+          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 200});
+          res.json({ok:true})
+        }).catch(function(err) {
+          logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
+          res.status(400).json({'error': err.toString()})
+        })
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
         res.status(400).json({'error': err.toString()})
       })
-    }).catch(function(err) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
-      res.status(400).json({'error': err.toString()})
-    })
+    }
   } else {
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 200});
     res.json({ok:true})
@@ -249,19 +253,20 @@ app.put('/numframes', function (req, res) {
     if (req.body.numFrames == null) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "numFrames" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "numFrames" doesn\'t exist'})
-    }
-    var project = getCurrentProject(db).then(project => {
-      setNumFrames(db, project, req.body.numFrames).then(value => {
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 200});
-        res.json({ok:true})
+    } else {
+      var project = getCurrentProject(db).then(project => {
+        setNumFrames(db, project, req.body.numFrames).then(value => {
+          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 200});
+          res.json({ok:true})
+        }).catch(function(err) {
+          logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
+          res.status(400).json({'error': err.toString()})
+        })
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
         res.status(400).json({'error': err.toString()})
       })
-    }).catch(function(err) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
-      res.status(400).json({'error': err.toString()})
-    })
+    }
   } else {
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 200});
     res.json({ok:true})
@@ -296,19 +301,20 @@ app.put('/frameslist', function (req, res) {
     if (req.body.framesList == null) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "framesList" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "framesList" doesn\'t exist'})
-    }
-    var project = getCurrentProject(db).then(project => {
-      setFramesList(db, project, req.body.framesList).then(value => {
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 200});
-        res.json({ok:true})
+    } else {
+      var project = getCurrentProject(db).then(project => {
+        setFramesList(db, project, req.body.framesList).then(value => {
+          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 200});
+          res.json({ok:true})
+        }).catch(function(err) {
+          logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
+          res.status(400).json({'error': err.toString()})
+        })
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
         res.status(400).json({'error': err.toString()})
       })
-    }).catch(function(err) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
-      res.status(400).json({'error': err.toString()})
-    })
+    }
   } else {
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 200});
     res.json({ok:true})
