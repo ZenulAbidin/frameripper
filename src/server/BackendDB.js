@@ -110,11 +110,11 @@ app.get('/projects', function (req, res) {
 app.put('/projects', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.put(\'/projects\', function (req, res) {', app_file: '/server/BackendDB.js'});
   // Intentional, grabs undefined but not other falsy values which don't gum leveldb
-  if (req.body.projects == null) {
-    logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "projects" doesn\'t exist'}});
-    res.status(400).json({'error': 'Required key "projects" doesn\'t exist'})
-  }
   if (!argv.testClient) {
+    if (req.body.projects == null) {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "projects" doesn\'t exist'}});
+      res.status(400).json({'error': 'Required key "projects" doesn\'t exist'})
+    }
     setProjects(db, req.body.projects).then(value => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 200});
       res.json({ok:true})
@@ -147,11 +147,11 @@ app.get('/currentproject', function (req, res) {
 
 app.put('/currentproject', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.put(\'/currentproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (req.body.currentProject == null) {
-    logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "currentProject" doesn\'t exist'}});
-    res.status(400).json({'error': 'Required key "currentProject" doesn\'t exist'})
-  }
   if (!argv.testClient) {
+    if (req.body.currentProject == null) {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "currentProject" doesn\'t exist'}});
+      res.status(400).json({'error': 'Required key "currentProject" doesn\'t exist'})
+    }
     setCurrentProject(db, req.body.currentProject).then(value => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 200});
       res.json({ok:true})
@@ -190,19 +190,19 @@ app.get('/currentsettings', function (req, res) {
 
 app.put('/currentsettings', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.put(\'/currentsettings\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (req.body.settings == null) {
-    logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "settings" doesn\'t exist'}});
-    res.status(400).json({'error': 'Required key "settings" doesn\'t exist'})
-  }
-  else if (req.body.settings.prefix == null) {
-    logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "settings.prefix" doesn\'t exist'}});
-    res.status(400).json({'error': 'Required key "settings.prefix" doesn\'t exist'})
-  }
-  else if (req.body.settings.frameOffset == null) {
-    logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "settings.frameOffset" doesn\'t exist'}});
-    res.status(400).json({'error': 'Required key "settings.frameOffset" doesn\'t exist'})
-  }
   if (!argv.testClient) {
+    if (req.body.settings == null) {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "settings" doesn\'t exist'}});
+      res.status(400).json({'error': 'Required key "settings" doesn\'t exist'})
+    }
+    else if (req.body.settings.prefix == null) {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "settings.prefix" doesn\'t exist'}});
+      res.status(400).json({'error': 'Required key "settings.prefix" doesn\'t exist'})
+    }
+    else if (req.body.settings.frameOffset == null) {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "settings.frameOffset" doesn\'t exist'}});
+      res.status(400).json({'error': 'Required key "settings.frameOffset" doesn\'t exist'})
+    }
     var project = getCurrentProject(db).then(project => {
       setSettings(db, project, req.body.settings.prefix, req.body.settings.frameOffset).then(value => {
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 200});
@@ -231,12 +231,10 @@ app.get('/numframes', function (req, res) {
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
         res.status(400).json({'error': err.toString()})
-        //FIXME
       })
     }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
-      //FIXME too it's returning success with blank JSON response if key doesn't exist
     })
   } else {
     var numFrames = 23;
@@ -247,11 +245,11 @@ app.get('/numframes', function (req, res) {
 
 app.put('/numframes', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.put(\'/numframes\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  if (req.body.numFrames == null) {
-    logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "numFrames" doesn\'t exist'}});
-    res.status(400).json({'error': 'Required key "numFrames" doesn\'t exist'})
-  }
   if (!argv.testClient) {
+    if (req.body.numFrames == null) {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "numFrames" doesn\'t exist'}});
+      res.status(400).json({'error': 'Required key "numFrames" doesn\'t exist'})
+    }
     var project = getCurrentProject(db).then(project => {
       setNumFrames(db, project, req.body.numFrames).then(value => {
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 200});
@@ -294,12 +292,11 @@ app.get('/frameslist', function (req, res) {
 
 app.put('/frameslist', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.get(\'/frameslist\', function (req, res) {', app_file: '/server/BackendDB.js'});
-  console.log(`${req.body.framesList == null}`)
-  if (req.body.framesList == null) {
-    logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "framesList" doesn\'t exist'}});
-    res.status(400).json({'error': 'Required key "framesList" doesn\'t exist'})
-  }
   if (!argv.testClient) {
+    if (req.body.framesList == null) {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "framesList" doesn\'t exist'}});
+      res.status(400).json({'error': 'Required key "framesList" doesn\'t exist'})
+    }
     var project = getCurrentProject(db).then(project => {
       setFramesList(db, project, req.body.framesList).then(value => {
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 200});
