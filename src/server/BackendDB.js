@@ -150,17 +150,20 @@ app.put('/currentproject', function (req, res) {
   if (req.body.currentProject == null) {
     logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "currentProject" doesn\'t exist'}});
     res.status(400).json({'error': 'Required key "currentProject" doesn\'t exist'})
-    return;
   }
   if (!argv.testClient) {
-    setCurrentProject(db, req.body.currentProject).catch(function(err) {
+    setCurrentProject(db, req.body.currentProject).then(value => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 200});
+      res.json({ok:true})
+    }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
-      return;
     })
   }
-  logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 200});
-  res.json({ok:true})
+  else {
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 200});
+    res.json({ok:true})
+  }
 })
 
 app.get('/currentsettings', function (req, res) {
@@ -201,7 +204,10 @@ app.put('/currentsettings', function (req, res) {
   }
   if (!argv.testClient) {
     var project = getCurrentProject(db).then(project => {
-      setSettings(db, project, req.body.settings.prefix, req.body.settings.frameOffset).catch(function(err) {
+      setSettings(db, project, req.body.settings.prefix, req.body.settings.frameOffset).then(value => {
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 200});
+        res.json({ok:true})
+      })catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
         res.status(400).json({'error': err.toString()})
       })
@@ -209,10 +215,10 @@ app.put('/currentsettings', function (req, res) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
-
+  } else {
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 200});
+    res.json({ok:true})
   }
-  logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 200});
-  res.json({ok:true})
 })
 
 app.get('/numframes', function (req, res) {
@@ -247,7 +253,10 @@ app.put('/numframes', function (req, res) {
   }
   if (!argv.testClient) {
     var project = getCurrentProject(db).then(project => {
-      setNumFrames(db, project, req.body.numFrames).catch(function(err) {
+      setNumFrames(db, project, req.body.numFrames).then(value => {
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 200});
+        res.json({ok:true})
+      }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
         res.status(400).json({'error': err.toString()})
       })
@@ -255,9 +264,10 @@ app.put('/numframes', function (req, res) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
+  } else {
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 200});
+    res.json({ok:true})
   }
-  logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 200});
-  res.json({ok:true})
 })
 
 app.get('/frameslist', function (req, res) {
@@ -290,7 +300,10 @@ app.put('/frameslist', function (req, res) {
   }
   if (!argv.testClient) {
     var project = getCurrentProject(db).then(project => {
-      setFramesList(db, project, req.body.framesList).catch(function(err) {
+      setFramesList(db, project, req.body.framesList).then(value => {
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 200});
+        res.json({ok:true})
+      }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
         res.status(400).json({'error': err.toString()})
       })
@@ -298,21 +311,26 @@ app.put('/frameslist', function (req, res) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
+  } else {
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 200});
+    res.json({ok:true})
   }
-  logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 200});
-  res.json({ok:true})
 })
 
 app.put('/deleteproject', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.put(\'/deleteproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
-    deleteProject(db, req.body.project).catch(function(err) {
+    deleteProject(db, req.body.project).then(value => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'put', app_status: 200});
+      res.json({ok:true})
+    }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
       res.status(400).json({'error': err.toString()})
     })
+  } else {
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'put', app_status: 200});
+    res.json({ok:true})
   }
-  logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'put', app_status: 200});
-  res.json({ok:true})
 })
 
 var ticker_jpg = 0;
