@@ -420,6 +420,7 @@ const setCurrentProject = (db, project) => {
   return new Promise((resolve, reject) => {
     var exists = project != null && getProjects(db).then(projects => {
       console.log(`${projects.includes('Borg')}`)
+      console.log(`${projects.includes(project)}`)
       return projects.includes(project);
     }).catch(err => {
       reject(err);
