@@ -294,6 +294,7 @@ app.get('/frameslist', function (req, res) {
 
 app.put('/frameslist', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.get(\'/frameslist\', function (req, res) {', app_file: '/server/BackendDB.js'});
+  console.log(`${req.body.framesList == null}`)
   if (req.body.framesList == null) {
     logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "framesList" doesn\'t exist'}});
     res.status(400).json({'error': 'Required key "framesList" doesn\'t exist'})
@@ -439,8 +440,6 @@ const setCurrentProject = (db, project) => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setCurrentProject = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
     getProjects(db).then(projects => {
-      console.log(`${projects.includes('Borg')}`)
-      console.log(`${projects.includes(project)}`)
       if (project == null || !projects.includes(project)) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
         reject('Project doesn\'t exist');
