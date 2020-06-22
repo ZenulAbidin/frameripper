@@ -418,17 +418,16 @@ const getCurrentProject = db => {
 const setCurrentProject = (db, project) => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setCurrentProject = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    var exists = project != null && getProjects(db).then(projects => {
+    getProjects(db).then(projects => {
       console.log(`${projects.includes('Borg')}`)
       console.log(`${projects.includes(project)}`)
-      return projects.includes(project);
+      if (project == null || !projects.includes(project)) {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+        reject('Project doesn\'t exist');
+      }
     }).catch(err => {
       reject(err);
     });
-    if (!exists) {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-        reject('Project doesn\'t exist');
-    }
     db.put('/currentProject', project).then(value => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: true}});
       currentProject = project;
