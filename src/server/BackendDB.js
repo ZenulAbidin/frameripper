@@ -207,7 +207,7 @@ app.put('/currentsettings', function (req, res) {
       setSettings(db, project, req.body.settings.prefix, req.body.settings.frameOffset).then(value => {
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 200});
         res.json({ok:true})
-      })catch(function(err) {
+      }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err.stack}});
         res.status(400).json({'error': err.toString()})
       })
