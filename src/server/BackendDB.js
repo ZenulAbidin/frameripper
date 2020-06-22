@@ -651,12 +651,22 @@ const deleteProject = (db, project) => {
 
       db.del('/project/'+project+'/framesList').then(value => {
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: true}});
-        projects = projects.filter((value, index, arr) => {
-          return value !== project;
-        })
-        resolve(null);
       }).catch(err => {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack}});
+        reject(err);
+      })
+
+      projects = projects.filter((value, index, arr) => {
+        return value !== project;
+      })
+      setProjects(db, projects).then(value => {
+        if (project == currentProject) {
+          currentProject = null;
+        }
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del_projremove', app_key: '/project/'+project, app_response: {success: true}});
+        resolve(null);
+      }).catch(err => {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del_projremove', app_key: '/project/'+project, app_response:  {success: false, 'error': err.stack}});
         reject(err);
       })
     }).catch(err => {
