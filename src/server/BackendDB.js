@@ -419,7 +419,7 @@ const setCurrentProject = (db, project) => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setCurrentProject = (db, project) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
     var exists = project != null && getProjects(db).then(projects => {
-      console.log(`${projects[1]}`)
+      console.log(`${projects.includes('Borg')}`)
       return projects.includes(project);
     }).catch(err => {
       reject(err);
