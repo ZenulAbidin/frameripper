@@ -750,7 +750,7 @@ const runFFmpegPNG = () => {
     }).catch(err => {
       throw err;
     })
-    getSettings(db, currentProject).then(settings => {
+    getSettings(db, currentProject).then(value => {
       settings = value;
     }).catch(err => {
       throw err;
