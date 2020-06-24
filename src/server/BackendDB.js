@@ -711,8 +711,10 @@ const runFFmpegJPG = () => {
         var files = glob.sync(path.join(argv.jpgpath, settings.prefix, "*.jpg"));
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
         for (var file of files) {
-          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'del', app_file: file});
-          fs.unlinkSync(file);
+          fs.unlinkSync(deleted_file, (err) => {
+            if (err) throw err;
+            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'del', app_file: deleted_file});
+          });
         }
 
         var video_arg = path.join(argv.videopath, project)
@@ -744,7 +746,7 @@ const runFFmpegJPG = () => {
         ffmpeg.on("close", code => {
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'close', output: code});
             setNumFrames(db, project, files.length).then(value => {
-              logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_db', app_transcode: 'jpg', app_key: 'numframes', app_value: value,  app_response: {success: true}});
+              logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_db', app_transcode: 'jpg', app_key: 'numframes', app_value: value,  app_response: {success: true, 'numFrames': files.length});
             }).catch(function(err) {
               logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_db', app_transcode: 'jpg', app_key: 'numframes', app_value: value,  app_response: {success: false, 'error': err}});
             })
@@ -777,14 +779,14 @@ const runFFmpegPNG = () => {
           var files = glob.sync(path.join(argv.pngpath, settings.prefix, "*.png"));
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
           for (var file of files) {
-            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'del', app_file: file});
-            fs.unlinkSync(file);
+            //logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'del', app_file: file});
+            fs.unlink(file);
           }
 
           /* "select='eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'"*/
           var select_arg = "select='" //eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'";
           for (const frame of framesList) {
-            select_arg += `eq(n\\,${frame}${formatNumberSign(settings.frameOffset)})+`
+            select_arg += `eq(n\\,${frame}${formatNumberSign(settings.frameOffset-1)})+`
           }
           select_arg = select_arg.substring(0,select_arg.length-1) + "'";
           var video_arg = path.join(argv.videopath, project)
