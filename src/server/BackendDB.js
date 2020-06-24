@@ -761,8 +761,8 @@ const runFFmpegPNG = () => {
   })
 */
 
-   getFramesList(db, currentProject).then(framesList => {
-     getSettings(db, currentProject).then(settings => {
+   getFramesList(db, currentProject).then(function(framesList) {
+     getSettings(db, currentProject).then(function(settings) {
        if (!argv.testServer) {
          // Wipe all the image files from the directory before transcoding
          var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
