@@ -743,14 +743,14 @@ const runFFmpegPNG = () => {
   PNGcomplete = false;
 
   var currentProject, framesList, settings;
-  getCurrentProject(db).then(proj => {
-    currentProject = proj;
-    getFramesList(db, proj).then(value => {
+  getCurrentProject(db).then(value => {
+    currentProject = value;
+    getFramesList(db, currentProject).then(value => {
       framesList = value;
     }).catch(err => {
       throw err;
     })
-    getSettings(db, proj).then(value => {
+    getSettings(db, currentProject).then(value => {
       settings = value;
     }).catch(err => {
       throw err;
