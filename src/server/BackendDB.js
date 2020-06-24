@@ -748,6 +748,7 @@ const runFFmpegPNG = () => {
   }).catch(err => {
     throw err;
   })
+  console.log(framesList);
   const currentProject = getCurrentProject(db).then(currentProject => {
     return currentProject;
   }).catch(err => {
