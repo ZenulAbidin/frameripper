@@ -710,7 +710,7 @@ const runFFmpegJPG = () => {
         // Wipe all the image files from the directory before transcoding
         var files = glob.sync(path.join(argv.jpgpath, settings.prefix, "*.jpg"));
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
-        for (const file of files) {
+        for (var file of files) {
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'del', app_file: file});
           fs.unlinkSync(file);
         }
@@ -776,7 +776,7 @@ const runFFmpegPNG = () => {
           // Wipe all the image files from the directory before transcoding
           var files = glob.sync(path.join(argv.pngpath, settings.prefix, "*.png"));
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
-          for (const file of files) {
+          for (var file of files) {
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'del', app_file: file});
             fs.unlinkSync(file);
           }
