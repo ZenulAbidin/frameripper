@@ -748,12 +748,12 @@ const runFFmpegPNG = () => {
   }).catch(err => {
     throw err;
   })
-  getFramesList(db).then(value => {
+  getFramesList(db, currentProject).then(value => {
     framesList = value;
   }).catch(err => {
     throw err;
   })
-  getSettings(db).then(settings => {
+  getSettings(db, currentProject).then(settings => {
     settings = value;
   }).catch(err => {
     throw err;
