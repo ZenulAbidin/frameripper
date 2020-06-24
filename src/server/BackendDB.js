@@ -739,15 +739,15 @@ const runFFmpegPNG = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const runFFmpegPNG = framesList => {', app_file: '/server/BackendDB.js'});
   PNGcomplete = false;
 
-  getCurrentProject(db).then(currentProject => {
+  getCurrentProject(db).then(function(currentProject) {
     return new Promise((resolve, reject) => {
       resolve([currentProject, getFramesList(db, currentProject)])
     });
-  }).then([currentProject, framesList] => {
+  }).then(function([currentProject, framesList]) {
     return new Promise((resolve, reject) => {
       resolve([currentProject, framesList, getSettings(db, currentProject)])
     });
-  }).then([currentProject, framesList, settings] => {
+  }).then(function([currentProject, framesList, settings]) {
     if (!argv.testServer) {
       // Wipe all the image files from the directory before transcoding
       var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
