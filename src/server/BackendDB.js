@@ -33,6 +33,16 @@ var currentProject = null;
 
 logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'program_entry_point', app_file: '/server/BackendDB.js'});
 
+// Credits: https://stackoverflow.com/a/4347066/12452330
+function formatNumberSign(theNumber)
+{
+    if(theNumber > 0){
+        return "+" + theNumber;
+    }else{
+        return theNumber.toString();
+    }
+}
+
 var app = express();
 app.use(express.json())
 
@@ -751,7 +761,7 @@ const runFFmpegPNG = () => {
           /* "select='eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'"*/
           var select_arg = "select='" //eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'";
           for (const frame of framesList) {
-            select_arg += `eq(n\\,${frame}-${settings.frameOffset})+`
+            select_arg += `eq(n\\,${frame}${formatNumberSign(settings.frameOffset)})+`
           }
           select_arg = select_arg.substring(0,select_arg.length-1) + "'";
           var video_arg = path.join(argv.videopath, project)
