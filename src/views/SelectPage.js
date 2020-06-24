@@ -119,6 +119,7 @@ class SelectPage extends React.Component {
     var frames = [];
     for (var i = 0; i < nums.length; i++) {
       var n = parseInt(nums[i])
+      //TODO if n > numFrames || n <= 0
       if (isNaN(n)) {
         this.setState({
           frameNumbersInvalid: true
