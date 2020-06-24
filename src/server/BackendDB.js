@@ -722,8 +722,6 @@ const runFFmpegJPG = () => {
             fs.mkdirSync(working_dir);
         }
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'spawn', options: args});
-        console.log(working_dir);
-        return;
         //var options = "-i argv.videopath/filename -nostdin -y -vf fps=1 prefix%06d.jpg" (jpgdir)
         ffmpeg = child_process.spawn("ffmpeg", args, {
           cwd: working_dir
