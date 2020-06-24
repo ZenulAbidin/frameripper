@@ -740,15 +740,10 @@ const runFFmpegPNG = () => {
   PNGcomplete = false;
 
   const framesList = getFramesList(db).then(function(framesList) {
-    return new Promise((resolve, reject) => {
-      resolve(framesList);
-    });
-  }).then(function(framesList) {
     return framesList;
   }).catch(err => {
     throw err;
   })
-  console.log(framesList);
   const currentProject = getCurrentProject(db).then(currentProject => {
     return currentProject;
   }).catch(err => {
