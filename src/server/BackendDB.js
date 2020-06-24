@@ -679,17 +679,17 @@ const deleteProject = (db, project) => {
 }
 
 const runFFmpegJPG = () => {
-  const settings = getSettings(db).then(settings => {
-    return settings;
-  }).catch(err => {
-    throw err;
-  })
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const runFFmpegJPG = framesList => {', app_file: '/server/BackendDB.js'});
   JPGcomplete = false;
 
-  var currentProject;
+  var currentProject, settings;
   getCurrentProject(db).then(value => {
     currentProject = value;
+    getSettings(db).then(value => {
+      return settings;
+    }).catch(err => {
+      throw err;
+    })
   }).catch(err => {
     throw err;
   })
@@ -743,7 +743,7 @@ const runFFmpegPNG = () => {
   PNGcomplete = false;
 
   var currentProject, framesList, settings;
-  getCurrentProject(db).then(currentProject => {
+  getCurrentProject(db).then(value => {
     currentProject = value;
     getFramesList(db, currentProject).then(value => {
       framesList = value;
