@@ -726,7 +726,7 @@ const runFFmpegJPG = () => {
         return;
         //var options = "-i argv.videopath/filename -nostdin -y -vf fps=1 prefix%06d.jpg" (jpgdir)
         ffmpeg = child_process.spawn("ffmpeg", args, {
-          cwd: argv.working_dir
+          cwd: working_dir
         });
         ffmpeg_running = true;
 
@@ -771,7 +771,7 @@ const runFFmpegPNG = () => {
       getSettings(db, project).then(function(settings) {
         if (!argv.testServer) {
           // Wipe all the image files from the directory before transcoding
-          var files = glob.sync(path.join(argv.jpgpath, project, "*.png"));
+          var files = glob.sync(path.join(argv.pngpath, project, "*.png"));
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
           for (const file of files) {
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'del', app_file: file});
@@ -792,7 +792,7 @@ const runFFmpegPNG = () => {
           }
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
           ffmpeg = child_process.spawn("ffmpeg", args, {
-              cwd: working_dir
+            cwd: working_dir
           });
 
           ffmpeg_running = true;
