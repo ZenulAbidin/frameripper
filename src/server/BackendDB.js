@@ -719,7 +719,7 @@ const runFFmpegJPG = () => {
         const args = ["-i", video_arg, "-nostdin", "-y", settings.prefix+"%06d.jpg"]
         var working_dir = path.join(argv.jpgpath, project)
         if (!fs.existsSync(working_dir)){
-            fs.mkdirSync(working_dir);
+            fs.mkdirSync(working_dir, { recursive: true });
         }
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'spawn', options: args});
         //var options = "-i argv.videopath/filename -nostdin -y -vf fps=1 prefix%06d.jpg" (jpgdir)
@@ -786,7 +786,7 @@ const runFFmpegPNG = () => {
           const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
           var working_dir = path.join(argv.pngpath, project)
           if (!fs.existsSync(working_dir)){
-              fs.mkdirSync(working_dir);
+              fs.mkdirSync(working_dir, { recursive: true });
           }
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
           ffmpeg = child_process.spawn("ffmpeg", args, {
