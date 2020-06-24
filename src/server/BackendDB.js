@@ -712,7 +712,7 @@ const runFFmpegJPG = () => {
         //logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
         console.log(files[0]);
         for (var file of files) {
-          fs.unlinkSync(file, (err) => {
+          fs.unlink(file, (err) => {
             if (err) throw err;
             //logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'del', app_file: file});
           });
