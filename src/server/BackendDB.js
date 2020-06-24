@@ -717,7 +717,7 @@ const runFFmpegJPG = () => {
 
         var video_arg = path.join(argv.videopath, project)
         const args = ["-i", video_arg, "-nostdin", "-y", settings.prefix+"%06d.jpg"]
-        var working_dir = path.join(argv.jpgpath, project)
+        var working_dir = path.join(argv.jpgpath, prefix)
         if (!fs.existsSync(working_dir)){
             fs.mkdirSync(working_dir, { recursive: true });
         }
@@ -784,7 +784,7 @@ const runFFmpegPNG = () => {
           select_arg = select_arg.substring(0,select_arg.length-1) + "'";
           var video_arg = path.join(argv.videopath, project)
           const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
-          var working_dir = path.join(argv.pngpath, project)
+          var working_dir = path.join(argv.pngpath, prefix)
           if (!fs.existsSync(working_dir)){
               fs.mkdirSync(working_dir, { recursive: true });
           }
