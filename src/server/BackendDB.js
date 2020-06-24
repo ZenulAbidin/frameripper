@@ -743,7 +743,7 @@ const runFFmpegPNG = () => {
     return new Promise((resolve, reject) => {
       resolve(framesList);
     });
-  }).then(funcion(framesList) {
+  }).then(function(framesList) {
     return framesList;
   }).catch(err => {
     throw err;
