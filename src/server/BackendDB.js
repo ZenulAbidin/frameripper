@@ -743,7 +743,7 @@ const runFFmpegPNG = () => {
     return new Promise((resolve, reject) => {
       resolve([currentProject, getFramesList(db, currentProject)])
     });
-  }).then([currentProject, framesList]) => {
+  }).then([currentProject, framesList] => {
     return new Promise((resolve, reject) => {
       resolve([currentProject, framesList, getSettings(db, currentProject)])
     });
