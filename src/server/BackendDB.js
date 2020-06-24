@@ -742,6 +742,7 @@ const runFFmpegPNG = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const runFFmpegPNG = framesList => {', app_file: '/server/BackendDB.js'});
   PNGcomplete = false;
 
+/*
   var currentProject, framesList, settings;
   getCurrentProject(db).then(value => {
     currentProject = value;
@@ -758,63 +759,73 @@ const runFFmpegPNG = () => {
   }).catch(err => {
     throw err;
   })
+*/
 
-  if (!argv.testServer) {
-    // Wipe all the image files from the directory before transcoding
-    var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
-    for (const file of files) {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'del', app_file: file});
-      fs.unlinkSync(file);
-    }
+   getFramesList(db, currentProject).then(framesList => {
+     getSettings(db, currentProject).then(settings => {
+       if (!argv.testServer) {
+         // Wipe all the image files from the directory before transcoding
+         var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
+         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
+         for (const file of files) {
+           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'del', app_file: file});
+           fs.unlinkSync(file);
+         }
 
-    /* "select='eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'"*/
-    var select_arg = "select='" //eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'";
-    for (const frame of framesList) {
-      select_arg += `eq(n\\,${frame}-${settings.frameOffset})+`
-    }
-    select_arg = select_arg.substring(0,select_arg.length-1) + "'";
-    var video_arg = path.join(argv.videopath, currentProject)
-    const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
-    ffmpeg = child_process.spawn({"cwd": path.join(argv.pngpath, currentProject)}, "ffmpeg", args, {
-        cwd: argv.pngdir
-    });
+         /* "select='eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'"*/
+         var select_arg = "select='" //eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'";
+         for (const frame of framesList) {
+           select_arg += `eq(n\\,${frame}-${settings.frameOffset})+`
+         }
+         select_arg = select_arg.substring(0,select_arg.length-1) + "'";
+         var video_arg = path.join(argv.videopath, currentProject)
+         const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
+         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
+         ffmpeg = child_process.spawn({"cwd": path.join(argv.pngpath, currentProject)}, "ffmpeg", args, {
+             cwd: argv.pngdir
+         });
 
-    ffmpeg_running = true;
+         ffmpeg_running = true;
 
-    ffmpeg.stdout.on("data", data => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stdout', output: data});
-    });
+         ffmpeg.stdout.on("data", data => {
+           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stdout', output: data});
+         });
 
-    ffmpeg.stderr.on("data", data => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stderr', output: data});
-    });
+         ffmpeg.stderr.on("data", data => {
+           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stderr', output: data});
+         });
 
-    ffmpeg.on('error', (error) => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'error', output: error});
-    });
+         ffmpeg.on('error', (error) => {
+           logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'error', output: error});
+         });
 
-    ffmpeg.on("close", code => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'close', output: code});
-      // Rename all the numbers from 1,2,3 to the actual frame numbers.
-      var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
-      for (var i = 0; i < files.length; i++) {
-        // filename plus the image path and current project is guarrenteed to be at least 10 characters long
-        var renamed_file = files[i].substr(0, files[i].length-10) + ('000000'+framesList[i]).slice(-6) + files[i].substr(files[i].length-4);
-        fs.renameSync(files[i], renamed_file)
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: files[i], app_newfile: renamed_file});
-      }
-      PNGcomplete = true;
-      ffmpeg_running = false;
-    });
-  } else {
-    setTimeout(function() {
-      JPGcomplete = true;
-      ffmpeg_running = false;
-    }, 5000);
-  }
+         ffmpeg.on("close", code => {
+           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'close', output: code});
+           // Rename all the numbers from 1,2,3 to the actual frame numbers.
+           var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
+           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
+           for (var i = 0; i < files.length; i++) {
+             // filename plus the image path and current project is guarrenteed to be at least 10 characters long
+             var renamed_file = files[i].substr(0, files[i].length-10) + ('000000'+framesList[i]).slice(-6) + files[i].substr(files[i].length-4);
+             fs.renameSync(files[i], renamed_file)
+             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: files[i], app_newfile: renamed_file});
+           }
+           PNGcomplete = true;
+           ffmpeg_running = false;
+         });
+       } else {
+         setTimeout(function() {
+           JPGcomplete = true;
+           ffmpeg_running = false;
+         }, 5000);
+       }
+     }).catch(err => {
+       throw err;
+     });
+   }).catch(err => {
+     throw err;
+   });
+
 }
 
 var db = openDB();
