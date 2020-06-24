@@ -478,26 +478,6 @@ const getSettings = (db, project) => {
         reject('Project doesn\'t exist');
     }
 
-    var prefix, frameOffset;
-    db.get('/project/'+project+'/prefix').then((value) => {
-      prefix = value;
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    });
-
-    db.get('/project/'+project+'/frameOffset').then((frameOffset) => {
-      frameOffset = value;
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    });
-
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: true, [`/project/${project}/prefix`]: prefix}});
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: true, [`/project/${project}/frameOffset`]: frameOffset}});
-    resolve({'prefix': prefix, 'frameOffset': frameOffset});
-
-/*
     db.get('/project/'+project+'/prefix').then((prefix) => {
       db.get('/project/'+project+'/frameOffset').then((frameOffset) => {
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: true, [`/project/${project}/prefix`]: prefix}});
@@ -511,8 +491,6 @@ const getSettings = (db, project) => {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err.stack || default_null}});
       reject(err);
     })
-*/
-
   })
 }
 
@@ -556,14 +534,14 @@ const getNumFrames = (db, project) => {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
     }
-    var numFrames = db.get('/project/'+project+'/numFrames').then(value => {
-      return value;
+    db.get('/project/'+project+'/numFrames').then(numFrames => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: true, [`/project/${project}/numFrames`]: numFrames}});
+      resolve(numFrames);
     }).catch(err => {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack || default_null}});
       reject(err);
     })
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: true, [`/project/${project}/numFrames`]: numFrames}});
-    resolve(numFrames);
+
   })
 }
 
@@ -601,14 +579,13 @@ const getFramesList = (db, project) => {
     }).catch(err => {
       reject(err);
     });
-    var framesList = db.get('/project/'+project+'/framesList').then(value => {
-      return value;
+    db.get('/project/'+project+'/framesList').then(framesList => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: true, [`/project/${project}/framesList`]: framesList}});
+      resolve(framesList);
     }).catch(err => {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack || default_null}});
       reject(err);
     })
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: true, [`/project/${project}/framesList`]: framesList}});
-    resolve(framesList);
   })
 }
 
