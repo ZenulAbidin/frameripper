@@ -769,8 +769,8 @@ const runFFmpegPNG = () => {
           console.log(path.join(argv.pngpath, project));
           console.log(args);
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
-          ffmpeg = child_process.spawn({"cwd": path.join(argv.pngpath, project)}, "ffmpeg", args, {
-              cwd: argv.pngdir
+          ffmpeg = child_process.spawn("ffmpeg", args, {
+              cwd: path.join(argv.pngpath, project)
           });
 
           ffmpeg_running = true;
