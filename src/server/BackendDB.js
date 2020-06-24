@@ -819,7 +819,7 @@ const runFFmpegPNG = () => {
           ffmpeg.on("close", code => {
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'close', output: code});
             // Rename all the numbers from 1,2,3 to the actual frame numbers.
-            var files = glob.sync(path.join(argv.jpgpath, project, "*.png"));
+            var files = glob.sync(path.join(argv.jpgpath, settings.prefix, "*.png"));
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
             for (var i = 0; i < files.length; i++) {
               // filename plus the image path and current project is guarrenteed to be at least 10 characters long
