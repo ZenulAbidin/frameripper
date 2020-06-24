@@ -25,6 +25,8 @@ const logger = winston.createLogger({
 var JPGcomplete = false;
 var PNGcomplete = false;
 
+// Limitation: This backend is intended to be used only as one client at a time, so calls to isTranscodingJPG/PNGComplete will each return
+// the same value if only one transcoding operation is running.
 var ffmpeg = null;
 var ffmpeg_running = false;
 var default_null = '(null/undefined)';
@@ -706,16 +708,16 @@ const runFFmpegJPG = () => {
     getSettings(db, project).then(function(settings) {
       if (!argv.testServer) {
         // Wipe all the image files from the directory before transcoding
-        var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.jpg"));
+        var files = glob.sync(path.join(argv.jpgpath, project, "*.jpg"));
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
         for (const file of files) {
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'del', app_file: file});
           fs.unlinkSync(file);
         }
 
-        var video_arg = path.join(argv.videopath, currentProject)
+        var video_arg = path.join(argv.videopath, project)
         const args = ["-i", video_arg, "-nostdin", "-y", "-vf", "fps=1", settings.prefix+"%06d.jpg"]
-        var working_dir = path.join(argv.pngpath, project)
+        var working_dir = path.join(argv.jpgpath, project)
         if (!fs.existsSync(working_dir)){
             fs.mkdirSync(working_dir);
         }
@@ -767,7 +769,7 @@ const runFFmpegPNG = () => {
       getSettings(db, project).then(function(settings) {
         if (!argv.testServer) {
           // Wipe all the image files from the directory before transcoding
-          var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
+          var files = glob.sync(path.join(argv.jpgpath, project, "*.png"));
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
           for (const file of files) {
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'del', app_file: file});
