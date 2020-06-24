@@ -743,6 +743,11 @@ const runFFmpegJPG = () => {
 
         ffmpeg.on("close", code => {
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'close', output: code});
+            setNumFrames(db, project, files.length).then(value => {
+              logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_db', app_transcode: 'jpg', app_key: 'numframes', app_value: value,  app_response: {success: true}});
+            }).catch(function(err) {
+              logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_db', app_transcode: 'jpg', app_key: 'numframes', app_value: value,  app_response: {success: false, 'error': err}});
+            })
             JPGcomplete = true;
             ffmpeg_running = false;
         });
