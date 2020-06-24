@@ -739,17 +739,18 @@ const runFFmpegPNG = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const runFFmpegPNG = framesList => {', app_file: '/server/BackendDB.js'});
   PNGcomplete = false;
 
-  const framesList = getFramesList(db).then(function(framesList) {
-    return framesList;
-  }).catch(err => {
-    throw err;
-  })
   const currentProject = getCurrentProject(db).then(currentProject => {
     return currentProject;
   }).catch(err => {
     throw err;
   })
-  const settings = getSettings(db).then(settings => {
+  const framesList = getFramesList(db, currentProject).then(function(framesList) {
+    return framesList;
+  }).catch(err => {
+    throw err;
+  })
+
+  const settings = getSettings(db, currentProject).then(settings => {
     return settings;
   }).catch(err => {
     throw err;
