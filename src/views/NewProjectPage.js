@@ -95,6 +95,7 @@ class NewProjectPage extends React.Component {
       this.setState({
         prefixInputInvalid: true
       });
+      return;
     }
     for (var i = 0; i <  e.target.value.length; i++) {
       var c = e.target.value[i];
@@ -102,7 +103,7 @@ class NewProjectPage extends React.Component {
         this.setState({
           prefixInputInvalid: true
         });
-        break;
+        return;
       }
     }
     this.setState({
@@ -126,15 +127,7 @@ class NewProjectPage extends React.Component {
       this.setState({
         pathInputInvalid: true
       });
-    }
-    for (var i = 0; i <  e.target.value.length; i++) {
-      var c = e.target.value[i];
-      if (!c.match('[0-9a-zA-Z]') && c !== '_' && c !== '-' && c !== '.' ) {
-        this.setState({
-          pathInputInvalid: true
-        });
-        break;
-      }
+      return;
     }
     this.setState({
       path: e.target.value,
@@ -145,8 +138,7 @@ class NewProjectPage extends React.Component {
   pathHelpText() {
     return (
       <>
-        <span className="small invalid_text">Please ensure your file name contains only {'".", "-", "_"'} and{' '}
-          alphanumeric characters and is not empty.
+        <span className="small invalid_text">Please ensure your file name is not empty.
         </span>
       </>
     );

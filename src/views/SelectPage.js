@@ -40,7 +40,7 @@ class SelectPage extends React.Component {
       if (res.ok) {
         res.json().then(json => {
           this.setState({
-            framesList: json.framesList
+            framesList: json.framesList.join('\n')
           });
         })
       }
@@ -64,7 +64,7 @@ class SelectPage extends React.Component {
   }
   componentWillUnmount() {
     if (!this.state.canceled) {
-      var body = {'framesList': this.state.framesList};
+      var body = {'framesList': this.state.framesList.split('\n')};
       // send PUT request
       fetch(address+'/frameslist', {
           method: 'put',

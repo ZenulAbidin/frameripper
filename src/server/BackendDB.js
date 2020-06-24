@@ -413,6 +413,9 @@ const setProjects = (db, projects) => {
   return new Promise((resolve, reject) => {
     db.put('/projects', projects).then(value => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects || default_null, app_response: {success: true}});
+      if !projects.includes(currentProject) {
+        currentProject = null;
+      }
       resolve(null);
     }).catch(err => {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects || default_null, app_response: {success: false, 'error': err.stack || default_null}});

@@ -86,6 +86,7 @@ class SettingsPage extends React.Component {
       this.setState({
         prefixInputInvalid: true
       });
+      return;
     }
     for (var i = 0; i <  e.target.value.length; i++) {
       var c = e.target.value[i];
@@ -93,7 +94,7 @@ class SettingsPage extends React.Component {
         this.setState({
           prefixInputInvalid: true
         });
-        break;
+        return;
       }
     }
     this.setState({
