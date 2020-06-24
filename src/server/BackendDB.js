@@ -761,8 +761,9 @@ const runFFmpegPNG = () => {
   })
 */
 
-   getFramesList(db, currentProject).then(function(framesList) {
-     getSettings(db, currentProject).then(function(settings) {
+  getCurrentProject(db).then(project => {
+   getFramesList(db, project).then(function(framesList) {
+     getSettings(db, project).then(function(settings) {
        if (!argv.testServer) {
          // Wipe all the image files from the directory before transcoding
          var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
@@ -778,10 +779,10 @@ const runFFmpegPNG = () => {
            select_arg += `eq(n\\,${frame}-${settings.frameOffset})+`
          }
          select_arg = select_arg.substring(0,select_arg.length-1) + "'";
-         var video_arg = path.join(argv.videopath, currentProject)
+         var video_arg = path.join(argv.videopath, project)
          const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
-         ffmpeg = child_process.spawn({"cwd": path.join(argv.pngpath, currentProject)}, "ffmpeg", args, {
+         ffmpeg = child_process.spawn({"cwd": path.join(argv.pngpath, project)}, "ffmpeg", args, {
              cwd: argv.pngdir
          });
 
@@ -802,7 +803,7 @@ const runFFmpegPNG = () => {
          ffmpeg.on("close", code => {
            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'close', output: code});
            // Rename all the numbers from 1,2,3 to the actual frame numbers.
-           var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.png"));
+           var files = glob.sync(path.join(argv.jpgpath, project, "*.png"));
            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
            for (var i = 0; i < files.length; i++) {
              // filename plus the image path and current project is guarrenteed to be at least 10 characters long
@@ -825,7 +826,7 @@ const runFFmpegPNG = () => {
    }).catch(err => {
      throw err;
    });
-
+  });
 }
 
 var db = openDB();
