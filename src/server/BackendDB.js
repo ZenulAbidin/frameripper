@@ -768,9 +768,13 @@ const runFFmpegPNG = () => {
           const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
           console.log(path.join(argv.pngpath, project));
           console.log(args);
+          var working_dir = path.join(argv.pngpath, project)
+          if (!fs.existsSync(working_dir)){
+              fs.mkdirSync(working_dir);
+          }
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
           ffmpeg = child_process.spawn("ffmpeg", args, {
-              cwd: path.join(argv.pngpath, project)
+              cwd: working_dir
           });
 
           ffmpeg_running = true;
