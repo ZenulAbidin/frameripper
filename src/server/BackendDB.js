@@ -710,7 +710,6 @@ const runFFmpegJPG = () => {
         // Wipe all the image files from the directory before transcoding
         var files = glob.sync(path.join(argv.jpgpath, settings.prefix, "*.jpg"));
         //logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
-        console.log(files[0]);
         for (var file of files) {
           fs.unlink(file, (err) => {
             if (err) throw err;
@@ -778,10 +777,12 @@ const runFFmpegPNG = () => {
         if (!argv.testServer) {
           // Wipe all the image files from the directory before transcoding
           var files = glob.sync(path.join(argv.pngpath, settings.prefix, "*.png"));
-          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
+          //logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
           for (var file of files) {
-            //logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'del', app_file: file});
-            fs.unlink(file);
+            fs.unlink(file, (err) => {
+              if (err) throw err;
+              //logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'del', app_file: file});
+            });
           }
 
           /* "select='eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'"*/
@@ -823,7 +824,9 @@ const runFFmpegPNG = () => {
             for (var i = 0; i < files.length; i++) {
               // filename plus the image path and current project is guarrenteed to be at least 10 characters long
               var renamed_file = files[i].substr(0, files[i].length-10) + ('000000'+framesList[i]).slice(-6) + files[i].substr(files[i].length-4);
-              fs.renameSync(files[i], renamed_file)
+              fs.rename(files[i], renamed_file, (err) => {
+                if (err) throw err;
+              });
               logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: files[i], app_newfile: renamed_file});
             }
             PNGcomplete = true;
