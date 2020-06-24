@@ -491,6 +491,7 @@ const getSettings = (db, project) => {
     })
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: true, [`/project/${project}/prefix`]: prefix}});
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: true, [`/project/${project}/frameOffset`]: frameOffset}});
+    console.log({'prefix': prefix, 'frameOffset': frameOffset})
     resolve({'prefix': prefix, 'frameOffset': frameOffset});
   })
 }
