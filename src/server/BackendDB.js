@@ -716,7 +716,7 @@ const runFFmpegJPG = () => {
         }
 
         var video_arg = path.join(argv.videopath, project)
-        const args = ["-i", video_arg, "-nostdin", "-y", "-vf", "fps=1", settings.prefix+"%06d.jpg"]
+        const args = ["-i", video_arg, "-nostdin", "-y", settings.prefix+"%06d.jpg"]
         var working_dir = path.join(argv.jpgpath, project)
         if (!fs.existsSync(working_dir)){
             fs.mkdirSync(working_dir);
