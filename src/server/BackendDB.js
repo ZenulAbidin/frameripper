@@ -788,7 +788,7 @@ const runFFmpegPNG = () => {
           /* "select='eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'"*/
           var select_arg = "select='" //eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'";
           for (const frame of framesList) {
-            select_arg += `eq(n\\,${frame}${formatNumberSign(settings.frameOffset-1)})+`
+            select_arg += `eq(n\\,${frame-1}${formatNumberSign(settings.frameOffset-1)})+`
           }
           select_arg = select_arg.substring(0,select_arg.length-1) + "'";
           var video_arg = path.join(argv.videopath, project)
@@ -823,7 +823,7 @@ const runFFmpegPNG = () => {
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
             for (var i = 0; i < files.length; i++) {
               // filename plus the image path and current project is guarrenteed to be at least 10 characters long
-              var renamed_file = files[i].substr(0, files[i].length-10) + ('000000'+(framesList[i]+1)).slice(-6) + files[i].substr(files[i].length-4);
+              var renamed_file = files[i].substr(0, files[i].length-10) + ('000000'+framesList[i]).slice(-6) + files[i].substr(files[i].length-4);
               fs.rename(files[i], renamed_file, (err) => {
                 if (err) throw err;
               });
