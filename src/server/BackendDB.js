@@ -709,7 +709,8 @@ const runFFmpegJPG = () => {
       if (!argv.testServer) {
         // Wipe all the image files from the directory before transcoding
         var files = glob.sync(path.join(argv.jpgpath, settings.prefix, "*.jpg"));
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
+        //logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
+        console.log(files[0]);
         for (var file of files) {
           fs.unlinkSync(file, (err) => {
             if (err) throw err;
