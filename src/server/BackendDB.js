@@ -687,54 +687,52 @@ const runFFmpegJPG = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const runFFmpegJPG = framesList => {', app_file: '/server/BackendDB.js'});
   JPGcomplete = false;
 
-  const currentProject = getCurrentProject(db).then(currentProject => {
-    return currentProject;
+  getCurrentProject(db).then(currentProject => {
+    if (!argv.testServer) {
+      // Wipe all the image files from the directory before transcoding
+      var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.jpg"));
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
+      for (const file of files) {
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'del', app_file: file});
+        fs.unlinkSync(file);
+      }
+
+      var video_arg = path.join(argv.videopath, currentProject)
+      const args = ["-i", video_arg, "-nostdin", "-y", "-vf", "fps=1", settings.prefix+"%06d.jpg"]
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'spawn', options: args});
+      //var options = "-i argv.videopath/filename -nostdin -y -vf fps=1 prefix%06d.jpg" (jpgdir)
+      ffmpeg = child_process.spawn({"cwd": path.join(argv.jpgpath, currentProject)},  "ffmpeg", args, {
+        cwd: argv.jpgdir
+      });
+      ffmpeg_running = true;
+
+      ffmpeg.stdout.on("data", data => {
+          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stdout', output: data});
+      });
+
+      ffmpeg.stderr.on("data", data => {
+          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stderr', output: data});
+      });
+
+      ffmpeg.on('error', (error) => {
+          //error.message
+          logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'error', output: error});
+      });
+
+      ffmpeg.on("close", code => {
+          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'close', output: code});
+          JPGcomplete = true;
+          ffmpeg_running = false;
+      });
+    } else {
+      setTimeout(function() {
+        JPGcomplete = true;
+        ffmpeg_running = false;
+      }, 5000);
+    }
   }).catch(err => {
     throw err;
   })
-
-  if (!argv.testServer) {
-    // Wipe all the image files from the directory before transcoding
-    var files = glob.sync(path.join(argv.jpgpath, currentProject, "*.jpg"));
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
-    for (const file of files) {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'del', app_file: file});
-      fs.unlinkSync(file);
-    }
-
-    var video_arg = path.join(argv.videopath, currentProject)
-    const args = ["-i", video_arg, "-nostdin", "-y", "-vf", "fps=1", settings.prefix+"%06d.jpg"]
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'spawn', options: args});
-    //var options = "-i argv.videopath/filename -nostdin -y -vf fps=1 prefix%06d.jpg" (jpgdir)
-    ffmpeg = child_process.spawn({"cwd": path.join(argv.jpgpath, currentProject)},  "ffmpeg", args, {
-      cwd: argv.jpgdir
-    });
-    ffmpeg_running = true;
-
-    ffmpeg.stdout.on("data", data => {
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stdout', output: data});
-    });
-
-    ffmpeg.stderr.on("data", data => {
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stderr', output: data});
-    });
-
-    ffmpeg.on('error', (error) => {
-        //error.message
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'error', output: error});
-    });
-
-    ffmpeg.on("close", code => {
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'close', output: code});
-        JPGcomplete = true;
-        ffmpeg_running = false;
-    });
-  } else {
-    setTimeout(function() {
-      JPGcomplete = true;
-      ffmpeg_running = false;
-    }, 5000);
-  }
 }
 
 const runFFmpegPNG = () => {
@@ -742,6 +740,10 @@ const runFFmpegPNG = () => {
   PNGcomplete = false;
 
   const framesList = getFramesList(db).then(function(framesList) {
+    return new Promise((resolve, reject) => {
+      resolve(framesList);
+    });
+  }).then(funcion(framesList) {
     return framesList;
   }).catch(err => {
     throw err;
