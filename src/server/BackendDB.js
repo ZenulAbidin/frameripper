@@ -711,9 +711,9 @@ const runFFmpegJPG = () => {
         var files = glob.sync(path.join(argv.jpgpath, settings.prefix, "*.jpg"));
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'glob', app_fileList: files});
         for (var file of files) {
-          fs.unlinkSync(deleted_file, (err) => {
+          fs.unlinkSync(file, (err) => {
             if (err) throw err;
-            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'del', app_file: deleted_file});
+            //logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'jpg', app_operation: 'del', app_file: file});
           });
         }
 
