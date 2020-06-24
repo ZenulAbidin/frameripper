@@ -390,12 +390,24 @@ app.get('/istranscodingpngcomplete', function (req, res) {
 
 const isTranscodingJPGComplete = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const isTranscodingJPGComplete = () => {', app_file: '/server/BackendDB.js'});
-  return JPGcomplete === true;
+  return new Promise((resolve, reject) => {
+    if (ffmpeg) {
+      resolve(JPGcomplete === true);
+    } else {
+      reject('ffmpeg is not running')
+    }
+  })
 }
 
 const isTranscodingPNGComplete = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const isTranscodingPNGComplete = () => {', app_file: '/server/BackendDB.js'});
-  return PNGcomplete === true;
+  return new Promise((resolve, reject) => {
+    if (ffmpeg) {
+      resolve(PNGcomplete === true);
+    } else {
+      reject('ffmpeg is not running')
+    }
+  })
 }
 
 const openDB = () => {
@@ -703,10 +715,14 @@ const runFFmpegJPG = () => {
 
         var video_arg = path.join(argv.videopath, currentProject)
         const args = ["-i", video_arg, "-nostdin", "-y", "-vf", "fps=1", settings.prefix+"%06d.jpg"]
+        var working_dir = path.join(argv.pngpath, project)
+        if (!fs.existsSync(working_dir)){
+            fs.mkdirSync(working_dir);
+        }
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'spawn', options: args});
         //var options = "-i argv.videopath/filename -nostdin -y -vf fps=1 prefix%06d.jpg" (jpgdir)
-        ffmpeg = child_process.spawn({"cwd": path.join(argv.jpgpath, currentProject)},  "ffmpeg", args, {
-          cwd: argv.jpgdir
+        ffmpeg = child_process.spawn("ffmpeg", args, {
+          cwd: argv.working_dir
         });
         ffmpeg_running = true;
 
@@ -766,8 +782,6 @@ const runFFmpegPNG = () => {
           select_arg = select_arg.substring(0,select_arg.length-1) + "'";
           var video_arg = path.join(argv.videopath, project)
           const args = ["-i", video_arg, "-nostdin", "-y", "-vf", select_arg, "-vsync", "0", settings.prefix+"%06d.png"]
-          console.log(path.join(argv.pngpath, project));
-          console.log(args);
           var working_dir = path.join(argv.pngpath, project)
           if (!fs.existsSync(working_dir)){
               fs.mkdirSync(working_dir);
