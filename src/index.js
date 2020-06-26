@@ -12,6 +12,8 @@ import SelectPage from "views/SelectPage.js";
 import SettingsPage from "views/SettingsPage.js";
 import TranscodePNGPage from "views/TranscodePNGPage.js";
 
+const yargs = require('yargs');
+
 const argv = yargs
     .command('frameripper-client', 'Front-end to frameripper', {
         server_address: {
