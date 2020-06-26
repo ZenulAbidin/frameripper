@@ -90,7 +90,7 @@ class Index extends React.Component {
           <Jumbotron>
             <Container>
               <Row>
-                {this.buttonsList()}
+                {buttonsList()}
               </Row>
             </Container>
           </Jumbotron>
