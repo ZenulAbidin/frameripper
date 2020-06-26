@@ -16,6 +16,9 @@ class TranscodePNGPage extends React.Component {
       completed: false,
       canceled: false
     };
+
+    this.displayIncomplete = this.displayIncomplete.bind(this);
+    this.displayComplete = this.displayComplete.bind(this);
   }
 
   componentDidMount() {

@@ -21,6 +21,12 @@ class SettingsPage extends React.Component {
       prefixInputInvalid: false,
       canceled: false
     };
+
+    this.togglePrefixTooltipOpen = this.togglePrefixTooltipOpen.bind(this);
+    this.toggleOffsetTooltipOpen = this.toggleOffsetTooltipOpen.bind(this);
+    this.toggleSaveTooltipOpen = this.toggleSaveTooltipOpen.bind(this);
+    this.validatePrefixInput = this.validatePrefixInput.bind(this);
+    this.prefixHelpText = this.prefixHelpText.bind(this);
   }
 
   componentDidMount() {

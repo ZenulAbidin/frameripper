@@ -15,7 +15,6 @@ class NewProjectPage extends React.Component {
       pathTooltipOpen: false,
       prefixTooltipOpen: false,
       offsetTooltipOpen: false,
-      runFFmpegTooltipOpen: false,
       createTooltipOpen: false,
       path: "",
       prefix: "",
@@ -24,6 +23,15 @@ class NewProjectPage extends React.Component {
       pathInputInvalid: false,
       canceled: false
     };
+
+    this.togglePathTooltipOpen = this.togglePathTooltipOpen.bind(this);
+    this.togglePrefixTooltipOpen = this.togglePrefixTooltipOpen.bind(this);
+    this.toggleOffsetTooltipOpen = this.toggleOffsetTooltipOpen.bind(this);
+    this.toggleCreateTooltipOpen = this.toggleCreateTooltipOpen.bind(this);
+    this.validatePrefixInput = this.validatePrefixInput.bind(this);
+    this.prefixHelpText = this.prefixHelpText.bind(this);
+    this.validatePathInput = this.validatePathInput.bind(this);
+    this.pathHelpText = this.pathHelpText.bind(this);
   }
 
   togglePathTooltipOpen() {
@@ -39,11 +47,6 @@ class NewProjectPage extends React.Component {
   toggleOffsetTooltipOpen() {
     this.setState({
       offsetTooltipOpen: !this.state.offsetTooltipOpen
-    });
-  }
-  toggleRunFFmpegTooltipOpen() {
-    this.setState({
-     runFFmpegTooltipOpen: !this.state.runFFmpegTooltipOpen
     });
   }
   toggleCreateTooltipOpen() {
@@ -171,12 +174,6 @@ class NewProjectPage extends React.Component {
                 <Input min={-10} max={10} id="offsetInput" type="number" step="1" placeholder="-2" onchange={e => this.setState({frameOffset: e.target.value})}/>
               </Col>
             </FormGroup>
-            <FormGroup row>
-              <Label id="runFFmpegToolTip" for="ffmpegInput">Do not run ffmpeg</Label>
-              <Col sm={10}>
-                <Input id="ffmpegInput" type="checkbox"/>
-              </Col>
-            </FormGroup>
           </Form>
         </div>
         <div>
@@ -195,9 +192,6 @@ class NewProjectPage extends React.Component {
         </Tooltip>
         <Tooltip placement="left" isOpen={this.state.offsetTooltipOpen} target="offsetTooltip" toggle={this.toggleOffsetTooltipOpen}>
           The change in frame number to pass to ffmpeg. Some videos do not have the frames of the stream counting from 0.
-        </Tooltip>
-        <Tooltip placement="left" isOpen={this.state.runFFmpegTooltipOpen} target="runFFmpegTooltip" toggle={this.toggleRunFFmpegTooltipOpen}>
-          Do not run ffmpeg. Useful for recreating the database if it got corrupted.
         </Tooltip>
         <Tooltip placement="bottom" isOpen={this.state.createTooltipOpen} target="createTooltip" toggle={this.toggleCreateTooltip}>
           Go to the transcoding page

@@ -19,6 +19,10 @@ class SelectPage extends React.Component {
       inputFrameNumbers: "",
       frameNumbersInvalid: false
     };
+
+    this.toggleFrameNumbersTooltipOpen = this.toggleFrameNumbersTooltipOpen.bind(this);
+    this.frameNumbersHelpText = this.frameNumbersHelpText.bind(this);
+    this.validateFrameNumbersInput = this.validateFrameNumbersInput.bind(this);
   }
 
   componentDidMount() {
@@ -113,8 +117,7 @@ class SelectPage extends React.Component {
     var frames = [];
     for (var i = 0; i < nums.length; i++) {
       var n = parseInt(nums[i])
-      //TODO if n > numFrames || n <= 0
-      if (isNaN(n)) {
+      if (isNaN(n) || n > numFrames || n <= 0) {
         this.setState({
           frameNumbersInvalid: true
         });
