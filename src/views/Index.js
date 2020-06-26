@@ -16,11 +16,13 @@ class Index extends React.Component {
       deleteModalOpen: false,
       projects: []
     };
+
+    this.toggleNewTooltip = this.toggleNewTooltip.bind(this);
   }
 
   toggleNewTooltip() {
     this.setState({
-      newTooltipOpen: !newTooltipOpen
+      newTooltipOpen: !this.state.newTooltipOpen
     });
   }
   toggleDeleteTooltipOpen() {
