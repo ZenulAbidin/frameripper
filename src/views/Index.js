@@ -18,17 +18,17 @@ class Index extends React.Component {
     };
   }
 
-  toggleNewTooltip() {
+  function toggleNewTooltip() {
     this.setState({
       newTooltipOpen: !this.state.newTooltipOpen
     });
   }
-  toggleDeleteTooltipOpen() {
+  function toggleDeleteTooltipOpen() {
     this.setState({
       deleteTooltipOpen: !this.state.deleteTooltipOpen
     });
   }
-  toggleDeleteModalOpen() {
+  function toggleDeleteModalOpen() {
     this.setState({
       deleteModalOpen: !this.state.deleteModalOpen
     });
@@ -50,7 +50,7 @@ class Index extends React.Component {
     document.body.classList.toggle("index-page");
   }
 
-  deleteProject() {
+  function deleteProject() {
     this.toggleDeleteModalOpen()
     var body = {'project': this.state.selectedProject};
     // send PUT request
@@ -65,7 +65,7 @@ class Index extends React.Component {
     })
   }
 
-  buttonList(props) {
+  function buttonList() {
     /* Credits: https://stackoverflow.com/a/22877049/12452330 */
     var buttons = [];
     for (var i = 0; i < this.state.projects.length; i++) {
