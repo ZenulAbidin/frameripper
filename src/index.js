@@ -12,24 +12,11 @@ import SelectPage from "views/SelectPage.js";
 import SettingsPage from "views/SettingsPage.js";
 import TranscodePNGPage from "views/TranscodePNGPage.js";
 
-const yargs = require('yargs');
-
-const argv = yargs
-    .command('frameripper-client', 'Front-end to frameripper', {
-        server_address: {
-            description: 'URL and port of the frameripper API server, no trailing dash',
-            alias: 'a',
-            type: 'string',
-            demandOption: true
-        }
-    })
-    .help()
-    .alias('help', 'h')
-    .usage('Usage: $0 --argv.jpgpath JPGFOLDER --argv.pngpath PNGFOLDER')
-    .argv;
+var process = require('process');
 
 
-const address = argv.server_address;
+const address = process.env.REACT_APP_SERVER_ADDRESS;
+
 if (address === '' || !address.startsWith('http://') || address.startsWith('https://')) {
   console.error(`WARNING: missing or malformed address ${address}. Server queries will fail.
 Check that the SERVER_ADDRESS environment variable is set with the domain IP address and has http:// or https:// in front of it.`)
