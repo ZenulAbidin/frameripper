@@ -23,7 +23,7 @@
     "react-router-dom": "latest",
     "react-scripts": "latest",
     "reactstrap": "latest",
-    "dotenv": "latest",
+    "dotenv": "latest"
   },
   "devDependencies": {
     "typescript": "latest",
