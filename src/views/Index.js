@@ -65,7 +65,7 @@ class Index extends React.Component {
     })
   }
 
-  buttonList() {
+  buttonList(props) {
     /* Credits: https://stackoverflow.com/a/22877049/12452330 */
     var buttons = [];
     for (var i = 0; i < this.state.projects.length; i++) {
