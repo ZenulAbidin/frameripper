@@ -13,7 +13,6 @@ class SelectPage extends React.Component {
     super(props);
     this.state = {
       frameNumbersTooltipOpen: false,
-      extractTooltipOpen: false,
       framesList: null,
       numFrames: null,
       project: null,
@@ -92,11 +91,6 @@ class SelectPage extends React.Component {
       frameNumbersTooltipOpen: !this.state.frameNumbersTooltipOpen
     });
   }
-  toggleExtractTooltipOpen() {
-    this.setState({
-      extractTooltipOpen: !this.state.extractTooltipOpen
-    });
-  }
 
   frameNumbersHelpText() {
     return (
@@ -147,18 +141,19 @@ class SelectPage extends React.Component {
               (this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null)
             </FormGroup>
           </Form>
-          <Link to="/transcode-png">
-            <Button id="createTooltip" color="primary">Create</Button>
+          <Link to="/transcode-jpg">
+            <Button id="createTooltip" color="primary">Extract JPGs</Button>
           </Link>
           <Link to="/" onclick={this.setState({canceled: true})}>
-            <Button id="createTooltip" color="primary">Cancel</Button>
+            <Button id="createTooltip" color="primary">Back to menu</Button>
           </Link>
+          <Link to="/transcode-png">
+            <Button id="createTooltip" color="primary">Extract PNGs</Button>
+          </Link>
+
         </div>
         <Tooltip placement="left" isOpen={this.state.frameNumbersTooltipOpen} target="frameNumbersToolTip" toggle={this.toggleFrameNumbersTooltipOpen}>
           Frame numbers must be zero based, one on each line.
-        </Tooltip>
-        <Tooltip placement="bottom" isOpen={this.state.extractTooltipOpen} target="extractTooltip" toggle={this.toggleExtractTooltip}>
-          Begin extracting PNG images of the selected frames.
         </Tooltip>
       </>
     );

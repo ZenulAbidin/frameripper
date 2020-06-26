@@ -180,7 +180,7 @@ class NewProjectPage extends React.Component {
           </Form>
         </div>
         <div>
-          <Link to="/transcode-jpg">
+          <Link to="/select">
             <Button id="createTooltip" color="primary">Create</Button>
           </Link>
           <Link to="/">
@@ -200,7 +200,7 @@ class NewProjectPage extends React.Component {
           Do not run ffmpeg. Useful for recreating the database if it got corrupted.
         </Tooltip>
         <Tooltip placement="bottom" isOpen={this.state.createTooltipOpen} target="createTooltip" toggle={this.toggleCreateTooltip}>
-          Begin extracting all frames from the video.
+          Go to the transcoding page
         </Tooltip>
       </>
     );
