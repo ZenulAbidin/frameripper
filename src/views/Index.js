@@ -5,7 +5,7 @@ import {Button, Container, Row, Col, Tooltip, Jumbotron,
     Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 
 var process = require('process');
-const address = process.env.SERVER_ADDRESS;
+const address = "http://iamomegastorm.tk:3030";
 
 class Index extends React.Component {
   constructor(props) {

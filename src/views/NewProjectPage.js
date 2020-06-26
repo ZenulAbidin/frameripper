@@ -4,7 +4,7 @@ import {Form, FormGroup, Button, Col, Input, Label, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
 
 var process = require('process');
-
+const address = "http://iamomegastorm.tk:3030";
 
 
 class NewProjectPage extends React.Component {
@@ -157,21 +157,21 @@ class NewProjectPage extends React.Component {
             <FormGroup row>
               <Label id="pathToolTip" for="pathInput" sm={2}>File Name</Label>
               <Col sm={10}>
-                <Input type="text" id="pathInput" placeholder="video.mp4" onchange={e => this.validatePathInput(e)} className={(this.state.pathInputInvalid ? 'input_invalid' : null)} />
+                <Input type="text" id="pathInput" placeholder="video.mp4" onChange={e => this.validatePathInput(e)} className={(this.state.pathInputInvalid ? 'input_invalid' : null)} />
                 (this.state.pathInputInvalid ? this.pathHelpText() : null)
               </Col>
             </FormGroup>
             <FormGroup row>
               <Label id="prefixToolTip" for="prefixInput" sm={2}>Prefix</Label>
               <Col sm={10}>
-                <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onchange={e => this.validatePrefixInput(e)} className={(this.state.prefixInputInvalid ? 'input_invalid' : null)} />
+                <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onChange={e => this.validatePrefixInput(e)} className={(this.state.prefixInputInvalid ? 'input_invalid' : null)} />
                 (this.state.prefixInputInvalid ? this.prefixHelpText() : null)
               </Col>
             </FormGroup>
             <FormGroup row>
               <Label id="offsetToolTip" for="offsetInput">Frame offset</Label>
               <Col sm={10}>
-                <Input min={-10} max={10} id="offsetInput" type="number" step="1" placeholder="-2" onchange={e => this.setState({frameOffset: e.target.value})}/>
+                <Input min={-10} max={10} id="offsetInput" type="number" step="1" placeholder="-2" onChange={e => this.setState({frameOffset: e.target.value})}/>
               </Col>
             </FormGroup>
           </Form>

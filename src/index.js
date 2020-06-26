@@ -12,11 +12,10 @@ import SelectPage from "views/SelectPage.js";
 import SettingsPage from "views/SettingsPage.js";
 import TranscodePNGPage from "views/TranscodePNGPage.js";
 
-require('dotenv').config()
+var process = require('process');
 
 
-
-const address = process.env.REACT_APP_SERVER_ADDRESS;
+const address = "http://iamomegastorm.tk:3030";
 
 if (address === '' || !address.startsWith('http://') || address.startsWith('https://')) {
   console.error(`WARNING: missing or malformed address ${address}. Server queries will fail.
@@ -30,7 +29,7 @@ ReactDOM.render(
       <Route exact path="/" render={props => <Index {...props} />} />
       <Route exact
         path="/new"
-        render={props => <NewProjectPage address="http://iamomegastorm.tk:3030" {...props} />}
+        render={props => <NewProjectPage {...props} />}
       />
       <Route exact
         path="/transcode-jpg"
