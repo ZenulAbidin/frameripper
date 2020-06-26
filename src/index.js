@@ -12,7 +12,8 @@ import SelectPage from "views/SelectPage.js";
 import SettingsPage from "views/SettingsPage.js";
 import TranscodePNGPage from "views/TranscodePNGPage.js";
 
-var process = require('process');
+require('dotenv').config()
+
 
 
 const address = process.env.REACT_APP_SERVER_ADDRESS;
