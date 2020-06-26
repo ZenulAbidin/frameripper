@@ -48,7 +48,7 @@ function formatNumberSign(theNumber)
 var app = express();
 app.use(express.json())
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "iamomegastorm.tk:3011");
+  res.header("Access-Control-Allow-Origin", "http://iamomegastorm.tk:3011");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
