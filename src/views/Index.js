@@ -16,23 +16,23 @@ class Index extends React.Component {
       deleteModalOpen: false,
       projects: null
     };
-  };
+  }
 
   toggleNewTooltip() {
     this.setState({
       newTooltipOpen: !this.state.newTooltipOpen
     });
-  };
+  }
   toggleDeleteTooltipOpen() {
     this.setState({
       deleteTooltipOpen: !this.state.deleteTooltipOpen
     });
-  };
+  }
   toggleDeleteModalOpen() {
     this.setState({
       deleteModalOpen: !this.state.deleteModalOpen
     });
-  };
+  }
 
   componentDidMount() {
     document.body.classList.toggle("index-page");
@@ -45,10 +45,10 @@ class Index extends React.Component {
         })
       }
     })
-  };
+  }
   componentWillUnmount() {
     document.body.classList.toggle("index-page");
-  };
+  }
 
   deleteProject() {
     this.toggleDeleteModalOpen()
@@ -63,7 +63,7 @@ class Index extends React.Component {
         console.error(`PUT /deleteproject with body ${JSON.stringify(body)} at Index: ${res.status} ${res.statusText}`);
       }
     })
-  };
+  }
 
   buttonList() {
     /* Credits: https://stackoverflow.com/a/22877049/12452330 */
@@ -78,7 +78,7 @@ class Index extends React.Component {
         );
     }
     return buttons;
-  };
+  }
 
 
   render() {
@@ -90,7 +90,7 @@ class Index extends React.Component {
           <Jumbotron>
             <Container>
               <Row>
-                {this.buttonsList()}
+                {this.buttonList()}
               </Row>
             </Container>
           </Jumbotron>
@@ -121,7 +121,7 @@ class Index extends React.Component {
         </Modal>
       </>
     );
-  };
+  }
 }
 
 export default Index;
