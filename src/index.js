@@ -30,7 +30,7 @@ ReactDOM.render(
       <Route exact path="/" render={props => <Index {...props} />} />
       <Route exact
         path="/new"
-        render={props => <NewProjectPage {...props} />}
+        render={props => <NewProjectPage address="http://iamomegastorm.tk:3030" {...props} />}
       />
       <Route exact
         path="/transcode-jpg"

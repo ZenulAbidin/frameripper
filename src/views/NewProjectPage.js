@@ -5,13 +5,13 @@ import "../assets/css/styles.css";
 
 var process = require('process');
 
-const address = process.env.SERVER_ADDRESS;
 
 
 class NewProjectPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      address: props.address;
       pathTooltipOpen: false,
       prefixTooltipOpen: false,
       offsetTooltipOpen: false,
@@ -63,7 +63,7 @@ class NewProjectPage extends React.Component {
     if (!this.state.canceled) {
       var body = {'project': this.state.path};
       // send PUT request
-      fetch(address+'/currentproject', {
+      fetch(this.state.address+'/currentproject', {
           method: 'put',
           body:    JSON.stringify(body),
           headers: { 'Content-Type': 'application/json' },
@@ -74,7 +74,7 @@ class NewProjectPage extends React.Component {
       });
       body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
       // send PUT request
-      fetch(address+'/currentsettings', {
+      fetch(this.state.address+'/currentsettings', {
           method: 'put',
           body:    JSON.stringify(body),
           headers: { 'Content-Type': 'application/json' },
@@ -83,7 +83,7 @@ class NewProjectPage extends React.Component {
           console.error(`PUT /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
         }
       });
-      fetch(address+'/startjpgtranscode').then(res => {
+      fetch(this.state.address+'/startjpgtranscode').then(res => {
         if (!res.ok) {
           console.error(`GET /startjpgtranscode at NewProjectPage: ${res.status} ${res.statusText}`);
         }
