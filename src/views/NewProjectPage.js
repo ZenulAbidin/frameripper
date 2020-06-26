@@ -11,7 +11,7 @@ class NewProjectPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      address: props.address;
+      address: props.address,
       pathTooltipOpen: false,
       prefixTooltipOpen: false,
       offsetTooltipOpen: false,
