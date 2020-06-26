@@ -731,11 +731,11 @@ const runFFmpegJPG = () => {
         ffmpeg_running = true;
 
         ffmpeg.stdout.on("data", data => {
-            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stdout', output: data});
+            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stdout', output: data.toString()});
         });
 
         ffmpeg.stderr.on("data", data => {
-            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stderr', output: data});
+            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stderr', output: data.toString()});
         });
 
         ffmpeg.on('error', (error) => {
@@ -805,11 +805,11 @@ const runFFmpegPNG = () => {
           ffmpeg_running = true;
 
           ffmpeg.stdout.on("data", data => {
-            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stdout', output: data});
+            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stdout', output: data.toString()});
           });
 
           ffmpeg.stderr.on("data", data => {
-            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stderr', output: data});
+            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stderr', output: data.toString()});
           });
 
           ffmpeg.on('error', (error) => {
@@ -820,7 +820,7 @@ const runFFmpegPNG = () => {
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'close', output: code});
             // Rename all the numbers from 1,2,3 to the actual frame numbers.
             var files = glob.sync(path.join(argv.pngpath, settings.prefix, "*.png"));
-            logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
+            //logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'glob', app_fileList: files});
             for (var i = 0; i < files.length; i++) {
               // filename plus the image path and current project is guarrenteed to be at least 10 characters long
               var renamed_file = files[i].substr(0, files[i].length-10) + ('000000'+framesList[i]).slice(-6) + files[i].substr(files[i].length-4);
