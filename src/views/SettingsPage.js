@@ -147,7 +147,7 @@ class SettingsPage extends React.Component {
             </FormGroup>
           </Form>
           <Link to="/select">
-            <Button id="createTooltip" color="primary" onClick={this.sendOKRequest()}>Save</Button>
+            <Button id="createTooltip" color="primary" onClick={this.sendOKRequest}>Save</Button>
           </Link>
           <Link to="/">
             <Button id="createTooltip" color="primary">Cancel</Button>

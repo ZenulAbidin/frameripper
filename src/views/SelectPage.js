@@ -165,13 +165,13 @@ class SelectPage extends React.Component {
               (this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null)
             </FormGroup>
           </Form>
-          <Link to="/transcode-jpg" onclick={this.startJPGTranscode()}>
+          <Link to="/transcode-jpg" onclick={this.startJPGTranscode}>
             <Button id="createTooltip" color="primary">Extract JPGs</Button>
           </Link>
           <Link to="/">
             <Button id="createTooltip" color="primary">Back to menu</Button>
           </Link>
-          <Link to="/transcode-png" onclick={this.startPNGTranscode()}>
+          <Link to="/transcode-png" onclick={this.startPNGTranscode}>
             <Button id="createTooltip" color="primary">Extract PNGs</Button>
           </Link>
 
