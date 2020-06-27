@@ -3,7 +3,6 @@ import {Link} from "react-router-dom";
 import {Form, FormGroup, Button, Col, Input, Label, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
 
-var process = require('process');
 const address = "http://iamomegastorm.tk:3030";
 
 
@@ -11,7 +10,6 @@ class NewProjectPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      address: props.address,
       pathTooltipOpen: false,
       prefixTooltipOpen: false,
       offsetTooltipOpen: false,
@@ -69,7 +67,7 @@ class NewProjectPage extends React.Component {
     if (!this.state.canceled) {
       var body = {'project': this.state.path};
       // send PUT request
-      fetch(this.state.address+'/currentproject', {
+      fetch(address+'/currentproject', {
           method: 'put',
           body:    JSON.stringify(body),
           headers: { 'Content-Type': 'application/json' },
@@ -80,7 +78,7 @@ class NewProjectPage extends React.Component {
       });
       body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
       // send PUT request
-      fetch(this.state.address+'/currentsettings', {
+      fetch(address+'/currentsettings', {
           method: 'put',
           body:    JSON.stringify(body),
           headers: { 'Content-Type': 'application/json' },
@@ -89,7 +87,7 @@ class NewProjectPage extends React.Component {
           console.error(`PUT /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
         }
       });
-      fetch(this.state.address+'/startjpgtranscode').then(res => {
+      fetch(address+'/startjpgtranscode').then(res => {
         if (!res.ok) {
           console.error(`GET /startjpgtranscode at NewProjectPage: ${res.status} ${res.statusText}`);
         }
@@ -187,7 +185,7 @@ class NewProjectPage extends React.Component {
             <Button id="createTooltip" color="primary">Create</Button>
           </Link>
           <Link to="/">
-            <Button color="primary" onclick={this.setCanceled()}>Cancel</Button>
+            <Button color="primary" onClick={this.setCanceled()}>Cancel</Button>
           </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.pathTooltipOpen} target="pathTooltip" toggle={this.togglePathTooltipOpen}>
