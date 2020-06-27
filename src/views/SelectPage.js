@@ -164,7 +164,7 @@ class SelectPage extends React.Component {
             <FormGroup>
               <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
               <Input type="textarea" id="inputFrameNumbers" onchange={e => this.validateFrameNumbersInput(e)} className={(this.state.invalid ? 'input_invalid' : null)} />
-              (this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null)
+              {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
             </FormGroup>
           </Form>
           <Link to="/transcode-jpg" onclick={this.startJPGTranscode}>
