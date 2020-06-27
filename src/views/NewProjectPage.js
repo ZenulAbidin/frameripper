@@ -19,7 +19,6 @@ class NewProjectPage extends React.Component {
       offset: null,
       prefixInputInvalid: false,
       pathInputInvalid: false,
-      cancelled: false
     };
 
     this.togglePathTooltipOpen = this.togglePathTooltipOpen.bind(this);
@@ -30,7 +29,7 @@ class NewProjectPage extends React.Component {
     this.prefixHelpText = this.prefixHelpText.bind(this);
     this.validatePathInput = this.validatePathInput.bind(this);
     this.pathHelpText = this.pathHelpText.bind(this);
-    this.setCancelled = this.setCancelled.bind(this);
+    this.sendOKRequest = this.sendOKRequest.bind(this);
   }
 
   togglePathTooltipOpen() {
@@ -53,44 +52,38 @@ class NewProjectPage extends React.Component {
      createTooltipOpen: !this.state.createTooltipOpen
     });
   }
-  setCancelled() {
-    this.setState({
-     cancelled: true
-    });
-  }
-
 
   componentDidMount() {
     document.body.classList.toggle("newproject-page");
   }
   componentWillUnmount() {
-    if (!this.state.cancelled) {
-      var body = {'project': this.state.path};
-      // send PUT request
-      fetch(address+'/currentproject', {
-          method: 'put',
-          body:    JSON.stringify(body),
-          headers: { 'Content-Type': 'application/json' },
-      }).then(res => {
-      	if (!res.ok) {
-          console.error(`PUT /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
-        }
-      });
-      body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
-      // send PUT request
-      fetch(address+'/currentsettings', {
-          method: 'put',
-          body:    JSON.stringify(body),
-          headers: { 'Content-Type': 'application/json' },
-      }).then(res => {
-      	if (!res.ok) {
-          console.error(`PUT /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
-        }
-      });
-    }
     document.body.classList.toggle("newproject-page");
   }
 
+  sendOKRequest() {
+    var body = {'project': this.state.path};
+    // send PUT request
+    fetch(address+'/currentproject', {
+        method: 'put',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    }).then(res => {
+    	if (!res.ok) {
+        console.error(`PUT /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
+    });
+    body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
+    // send PUT request
+    fetch(address+'/currentsettings', {
+        method: 'put',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    }).then(res => {
+    	if (!res.ok) {
+        console.error(`PUT /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
+    });
+  }
 
   validatePrefixInput(e) {
     if (e.target.value.length === 0) {
@@ -177,10 +170,10 @@ class NewProjectPage extends React.Component {
         </div>
         <div>
           <Link to="/select">
-            <Button id="createTooltip" color="primary">Create</Button>
+            <Button id="createTooltip" color="primary" onClick={this.sendOKRequest()}>Create</Button>
           </Link>
           <Link to="/">
-            <Button color="primary" onClick={this.setCancelled()}>Cancel</Button>
+            <Button color="primary">Cancel</Button>
           </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.pathTooltipOpen} target="pathTooltip" toggle={this.togglePathTooltipOpen}>

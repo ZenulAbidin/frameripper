@@ -15,12 +15,10 @@ class TranscodeJPGPage extends React.Component {
     this.state = {
       project: null,
       completed: false,
-      cancelled: false
     };
 
     this.displayIncomplete = this.displayIncomplete.bind(this);
     this.displayComplete = this.displayComplete.bind(this);
-    this.setCancelled = this.setCancelled.bind(this);
   }
 
   componentDidMount() {
@@ -67,6 +65,15 @@ class TranscodeJPGPage extends React.Component {
     })
   }
 
+
+  abortTranscode() {
+    fetch(address+'/abortjpgtranscode').then(res => {
+      if (!res.ok) {
+        console.error(`GET /abortjpgtranscode at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
+    });
+  }
+
   displayIncomplete() {
     return (
       <>
@@ -78,7 +85,7 @@ class TranscodeJPGPage extends React.Component {
           <h3>Extracting JPG frames, please wait...</h3>
         </div>
         <Link to="/">
-          <Button color="primary" onclick={this.setCancelled()}>Cancel</Button>
+          <Button color="primary" onclick={this.abortTranscode()}>Cancel</Button>
         </Link>
       </>
     );
@@ -97,17 +104,6 @@ class TranscodeJPGPage extends React.Component {
         </Link>
       </>
     );
-  }
-
-  setCancelled() {
-    this.setState({
-     cancelled: true
-    });
-    fetch(address+'/abortjpgtranscode').then(res => {
-      if (!res.ok) {
-        console.error(`GET /abortjpgtranscode at NewProjectPage: ${res.status} ${res.statusText}`);
-      }
-    });
   }
 
   render() {

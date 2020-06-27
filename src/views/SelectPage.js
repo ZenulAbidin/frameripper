@@ -18,7 +18,6 @@ class SelectPage extends React.Component {
       project: null,
       inputFrameNumbers: "",
       frameNumbersInvalid: false,
-      cancelled: true
     };
 
     this.toggleFrameNumbersTooltipOpen = this.toggleFrameNumbersTooltipOpen.bind(this);
@@ -26,7 +25,7 @@ class SelectPage extends React.Component {
     this.validateFrameNumbersInput = this.validateFrameNumbersInput.bind(this);
     this.startJPGTranscode = this.startJPGTranscode.bind(this);
     this.startPNGTranscode = this.startPNGTranscode.bind(this);
-    this.setCancelled = this.setCancelled.bind(this);
+    this.sendOKRequest = this.sendOKRequest.bind(this);
   }
 
   componentDidMount() {
@@ -70,25 +69,26 @@ class SelectPage extends React.Component {
     });
   }
   componentWillUnmount() {
-    if (!this.state.cancelled) {
-      var body = {'framesList': this.state.framesList.split('\n')};
-      // send PUT request
-      fetch(address+'/frameslist', {
-          method: 'put',
-          body:    JSON.stringify(body),
-          headers: { 'Content-Type': 'application/json' },
-      }).then(res => {
-      	if (!res.ok) {
-          console.error(`PUT /frameslist with body ${JSON.stringify(body)} at SelectPage: ${res.status} ${res.statusText}`);
-        }
-      });
-      fetch(address+'/startpngtranscode').then(res => {
-        if (!res.ok) {
-          console.error(`GET /startpngtranscode at SelectPage: ${res.status} ${res.statusText}`);
-        }
-      });
-    }
     document.body.classList.toggle("select-page");
+  }
+
+  sendOKRequest() {
+    var body = {'framesList': this.state.framesList.split('\n')};
+    // send PUT request
+    fetch(address+'/frameslist', {
+        method: 'put',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    }).then(res => {
+    	if (!res.ok) {
+        console.error(`PUT /frameslist with body ${JSON.stringify(body)} at SelectPage: ${res.status} ${res.statusText}`);
+      }
+    });
+    fetch(address+'/startpngtranscode').then(res => {
+      if (!res.ok) {
+        console.error(`GET /startpngtranscode at SelectPage: ${res.status} ${res.statusText}`);
+      }
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -137,6 +137,7 @@ class SelectPage extends React.Component {
   }
 
   startJPGTranscode() {
+    this.sendOKRequest();
     fetch(address+'/startjpgtranscode').then(res => {
       if (!res.ok) {
         console.error(`GET /startjpgtranscode at NewProjectPage: ${res.status} ${res.statusText}`);
@@ -144,19 +145,13 @@ class SelectPage extends React.Component {
     });
   }
   startPNGTranscode() {
+    this.sendOKRequest();
     fetch(address+'/startpngtranscode').then(res => {
       if (!res.ok) {
         console.error(`GET /startpngtranscode at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
   }
-
-  setCancelled() {
-    this.setState({
-     cancelled: true
-    });
-  }
-
 
   render() {
     return (
@@ -173,7 +168,7 @@ class SelectPage extends React.Component {
           <Link to="/transcode-jpg" onclick={this.startJPGTranscode()}>
             <Button id="createTooltip" color="primary">Extract JPGs</Button>
           </Link>
-          <Link to="/" onclick={this.setCancelled()}>
+          <Link to="/">
             <Button id="createTooltip" color="primary">Back to menu</Button>
           </Link>
           <Link to="/transcode-png" onclick={this.startPNGTranscode()}>

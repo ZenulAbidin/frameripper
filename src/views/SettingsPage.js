@@ -19,7 +19,6 @@ class SettingsPage extends React.Component {
       frameOffset: null,
       project: null,
       prefixInputInvalid: false,
-      cancelled: false
     };
 
     this.togglePrefixTooltipOpen = this.togglePrefixTooltipOpen.bind(this);
@@ -27,7 +26,7 @@ class SettingsPage extends React.Component {
     this.toggleSaveTooltipOpen = this.toggleSaveTooltipOpen.bind(this);
     this.validatePrefixInput = this.validatePrefixInput.bind(this);
     this.prefixHelpText = this.prefixHelpText.bind(this);
-    this.setCancelled = this.setCancelled.bind(this);
+    this.sendOKRequest = this.sendOKRequest.bind(this);
   }
 
   componentDidMount() {
@@ -56,20 +55,21 @@ class SettingsPage extends React.Component {
     })
   }
   componentWillUnmount() {
-    if (!this.state.cancelled) {
-      var body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
-      // send PUT request
-      fetch(address+'/currentsettings', {
-          method: 'put',
-          body:    JSON.stringify(body),
-          headers: { 'Content-Type': 'application/json' },
-      }).then(res => {
-      	if (!res.ok) {
-          console.error(`PUT /currentsettings with body ${JSON.stringify(body)} at SettingsPage: ${res.status} ${res.statusText}`);
-        }
-      })
-    }
     document.body.classList.toggle("settings-page");
+  }
+
+  sendOKRequest() {
+    var body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
+    // send PUT request
+    fetch(address+'/currentsettings', {
+        method: 'put',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    }).then(res => {
+    	if (!res.ok) {
+        console.error(`PUT /currentsettings with body ${JSON.stringify(body)} at SettingsPage: ${res.status} ${res.statusText}`);
+      }
+    })
   }
 
   togglePrefixTooltipOpen() {
@@ -147,10 +147,10 @@ class SettingsPage extends React.Component {
             </FormGroup>
           </Form>
           <Link to="/select">
-            <Button id="createTooltip" color="primary">Save</Button>
+            <Button id="createTooltip" color="primary" onClick={this.sendOKRequest()}>Save</Button>
           </Link>
           <Link to="/">
-            <Button id="createTooltip" color="primary" onclick={this.setCancelled()}>Cancel</Button>
+            <Button id="createTooltip" color="primary">Cancel</Button>
           </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.prefixTooltipOpen} target="prefixTooltip" toggle={this.togglePrefixTooltipOpen}>
