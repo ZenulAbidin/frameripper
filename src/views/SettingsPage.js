@@ -136,7 +136,7 @@ class SettingsPage extends React.Component {
               <Label id="prefixTooltip" for="prefixInput" sm={2}>Prefix</Label>
               <Col sm={10}>
                 <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onchange={e => this.validatePrefixInput(e)} className={(this.state.prefixInputInvalid ? 'input_invalid' : null)} />
-                (this.state.prefixInputInvalid ? this.prefixHelpText() : null)
+                {this.state.prefixInputInvalid ? this.prefixHelpText() : null}
               </Col>
             </FormGroup>
             <FormGroup row>

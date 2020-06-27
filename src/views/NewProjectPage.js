@@ -150,14 +150,14 @@ class NewProjectPage extends React.Component {
               <Label id="pathTooltip" for="pathInput" sm={2}>File Name</Label>
               <Col sm={10}>
                 <Input type="text" id="pathInput" placeholder="video.mp4" onChange={e => this.validatePathInput(e)} className={(this.state.pathInputInvalid ? 'input_invalid' : null)} />
-                (this.state.pathInputInvalid ? this.pathHelpText() : null)
+                {this.state.pathInputInvalid ? this.pathHelpText() : null}
               </Col>
             </FormGroup>
             <FormGroup row>
               <Label id="prefixTooltip" for="prefixInput" sm={2}>Prefix</Label>
               <Col sm={10}>
                 <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onChange={e => this.validatePrefixInput(e)} className={(this.state.prefixInputInvalid ? 'input_invalid' : null)} />
-                (this.state.prefixInputInvalid ? this.prefixHelpText() : null)
+                {this.state.prefixInputInvalid ? this.prefixHelpText() : null}
               </Col>
             </FormGroup>
             <FormGroup row>
