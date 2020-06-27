@@ -60,14 +60,14 @@ class SettingsPage extends React.Component {
 
   sendOKRequest() {
     var body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
-    // send PUT request
+    // send POST request
     fetch(address+'/currentsettings', {
-        method: 'put',
+        method: 'post',
         body:    JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
     }).then(res => {
     	if (!res.ok) {
-        console.error(`PUT /currentsettings with body ${JSON.stringify(body)} at SettingsPage: ${res.status} ${res.statusText}`);
+        console.error(`POST /currentsettings with body ${JSON.stringify(body)} at SettingsPage: ${res.status} ${res.statusText}`);
       }
     })
   }

@@ -63,26 +63,26 @@ class NewProjectPage extends React.Component {
   sendOKRequest() {
     var body = {'currentProject': this.state.path};
     console.log(body);
-    // send PUT request
+    // send POST request
     fetch(address+'/currentproject', {
         method: 'post',
         body:    JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
     }).then(res => {
     	if (!res.ok) {
-        console.error(`PUT /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+        console.error(`POST /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
     body = {'settings': {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset}};
     console.log(body);
-    // send PUT request
+    // send POST request
     fetch(address+'/currentsettings', {
         method: 'post',
         body:    JSON.stringify(body),
         headers: {'Content-Type': 'application/json' },
     }).then(res => {
     	if (!res.ok) {
-        console.error(`PUT /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+        console.error(`POST /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
   }

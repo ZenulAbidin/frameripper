@@ -74,14 +74,14 @@ class SelectPage extends React.Component {
 
   sendOKRequest() {
     var body = {'framesList': this.state.framesList.split('\n')};
-    // send PUT request
+    // send POST request
     fetch(address+'/frameslist', {
-        method: 'put',
+        method: 'post',
         body:    JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
     }).then(res => {
     	if (!res.ok) {
-        console.error(`PUT /frameslist with body ${JSON.stringify(body)} at SelectPage: ${res.status} ${res.statusText}`);
+        console.error(`POST /frameslist with body ${JSON.stringify(body)} at SelectPage: ${res.status} ${res.statusText}`);
       }
     });
     fetch(address+'/startpngtranscode').then(res => {
