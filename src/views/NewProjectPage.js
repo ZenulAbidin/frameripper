@@ -61,32 +61,37 @@ class NewProjectPage extends React.Component {
   }
 
   sendOKRequest() {
-    var body = {'currentProject': this.state.path};
-    console.log(body);
     // send PUT request
-    fetch(address+'/currentproject', {
-        method: 'PUT',
-        mode: 'cors',
+    (async () => {
+      var body = {'currentProject': this.state.path};
+      var rawResponse = await fetch(address+'/currentproject', {
+        method: 'put',
         body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
-    }).then(res => {
-    	if (!res.ok) {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      });
+    	if (!rawResponse.ok) {
         console.error(`PUT /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
-    });
-    body = {'settings': {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset}};
-    console.log(body);
+    })();
+
     // send PUT request
-    fetch(address+'/currentsettings', {
-        method: 'PUT',
-        mode: 'cors',
-        body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
-    }).then(res => {
-    	if (!res.ok) {
+    (async () => {
+      var body = {'settings': {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset}};
+      var rawResponse = await fetch(address+'/currentsettings', {
+          method: 'put',
+          body:    JSON.stringify(body),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+      });
+      if (!rawResponse.ok) {
         console.error(`PUT /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
-    });
+    })();
   }
 
   validatePrefixInput(e) {
