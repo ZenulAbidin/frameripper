@@ -19,7 +19,7 @@ class NewProjectPage extends React.Component {
       offset: null,
       prefixInputInvalid: false,
       pathInputInvalid: false,
-      ok: false;
+      ok: false
     };
 
     this.togglePathTooltipOpen = this.togglePathTooltipOpen.bind(this);
