@@ -14,11 +14,12 @@ class TranscodePNGPage extends React.Component {
     this.state = {
       project: null,
       completed: false,
-      canceled: false
+      cancelled: false
     };
 
     this.displayIncomplete = this.displayIncomplete.bind(this);
     this.displayComplete = this.displayComplete.bind(this);
+    this.setCancelled = this.setCancelled.bind(this);
   }
 
   componentDidMount() {
@@ -76,7 +77,7 @@ class TranscodePNGPage extends React.Component {
           <h3>Extracting PNG frames, please wait...</h3>
         </div>
         <Link to="/">
-          <Button color="primary" onclick={this.setState({canceled: true})}>Cancel</Button>
+          <Button color="primary" onclick={this.setCancelled()}>Cancel</Button>
         </Link>
       </>
     );
@@ -95,6 +96,17 @@ class TranscodePNGPage extends React.Component {
         </Link>
       </>
     );
+  }
+
+  setCancelled() {
+    this.setState({
+     cancelled: true
+    });
+    fetch(address+'/abortpngtranscode').then(res => {
+      if (!res.ok) {
+        console.error(`GET /abortpngtranscode at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
+    });
   }
 
   render() {

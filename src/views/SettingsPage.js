@@ -19,7 +19,7 @@ class SettingsPage extends React.Component {
       frameOffset: null,
       project: null,
       prefixInputInvalid: false,
-      canceled: false
+      cancelled: false
     };
 
     this.togglePrefixTooltipOpen = this.togglePrefixTooltipOpen.bind(this);
@@ -27,6 +27,7 @@ class SettingsPage extends React.Component {
     this.toggleSaveTooltipOpen = this.toggleSaveTooltipOpen.bind(this);
     this.validatePrefixInput = this.validatePrefixInput.bind(this);
     this.prefixHelpText = this.prefixHelpText.bind(this);
+    this.setCancelled = this.setCancelled.bind(this);
   }
 
   componentDidMount() {
@@ -55,7 +56,7 @@ class SettingsPage extends React.Component {
     })
   }
   componentWillUnmount() {
-    if (!this.state.canceled) {
+    if (!this.state.cancelled) {
       var body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
       // send PUT request
       fetch(address+'/currentsettings', {
@@ -119,6 +120,12 @@ class SettingsPage extends React.Component {
     );
   }
 
+  setCancelled() {
+    this.setState({
+     cancelled: true
+    });
+  }
+
   render() {
     return (
       <>
@@ -143,7 +150,7 @@ class SettingsPage extends React.Component {
             <Button id="createTooltip" color="primary">Save</Button>
           </Link>
           <Link to="/">
-            <Button id="createTooltip" color="primary" onclick={this.setState({canceled: true})}>Cancel</Button>
+            <Button id="createTooltip" color="primary" onclick={this.setCancelled()}>Cancel</Button>
           </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.prefixTooltipOpen} target="prefixTooltip" toggle={this.togglePrefixTooltipOpen}>

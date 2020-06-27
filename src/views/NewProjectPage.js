@@ -19,7 +19,7 @@ class NewProjectPage extends React.Component {
       offset: null,
       prefixInputInvalid: false,
       pathInputInvalid: false,
-      canceled: false
+      cancelled: false
     };
 
     this.togglePathTooltipOpen = this.togglePathTooltipOpen.bind(this);
@@ -30,7 +30,7 @@ class NewProjectPage extends React.Component {
     this.prefixHelpText = this.prefixHelpText.bind(this);
     this.validatePathInput = this.validatePathInput.bind(this);
     this.pathHelpText = this.pathHelpText.bind(this);
-    this.setCanceled = this.setCanceled.bind(this);
+    this.setCancelled = this.setCancelled.bind(this);
   }
 
   togglePathTooltipOpen() {
@@ -53,9 +53,9 @@ class NewProjectPage extends React.Component {
      createTooltipOpen: !this.state.createTooltipOpen
     });
   }
-  setCanceled() {
+  setCancelled() {
     this.setState({
-     canceled: true
+     cancelled: true
     });
   }
 
@@ -64,7 +64,7 @@ class NewProjectPage extends React.Component {
     document.body.classList.toggle("newproject-page");
   }
   componentWillUnmount() {
-    if (!this.state.canceled) {
+    if (!this.state.cancelled) {
       var body = {'project': this.state.path};
       // send PUT request
       fetch(address+'/currentproject', {
@@ -85,11 +85,6 @@ class NewProjectPage extends React.Component {
       }).then(res => {
       	if (!res.ok) {
           console.error(`PUT /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
-        }
-      });
-      fetch(address+'/startjpgtranscode').then(res => {
-        if (!res.ok) {
-          console.error(`GET /startjpgtranscode at NewProjectPage: ${res.status} ${res.statusText}`);
         }
       });
     }
@@ -185,7 +180,7 @@ class NewProjectPage extends React.Component {
             <Button id="createTooltip" color="primary">Create</Button>
           </Link>
           <Link to="/">
-            <Button color="primary" onClick={this.setCanceled()}>Cancel</Button>
+            <Button color="primary" onClick={this.setCancelled()}>Cancel</Button>
           </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.pathTooltipOpen} target="pathTooltip" toggle={this.togglePathTooltipOpen}>

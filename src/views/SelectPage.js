@@ -17,12 +17,16 @@ class SelectPage extends React.Component {
       numFrames: null,
       project: null,
       inputFrameNumbers: "",
-      frameNumbersInvalid: false
+      frameNumbersInvalid: false,
+      cancelled: true
     };
 
     this.toggleFrameNumbersTooltipOpen = this.toggleFrameNumbersTooltipOpen.bind(this);
     this.frameNumbersHelpText = this.frameNumbersHelpText.bind(this);
     this.validateFrameNumbersInput = this.validateFrameNumbersInput.bind(this);
+    this.startJPGTranscode = this.startJPGTranscode.bind(this);
+    this.startPNGTranscode = this.startPNGTranscode.bind(this);
+    this.setCancelled = this.setCancelled.bind(this);
   }
 
   componentDidMount() {
@@ -66,7 +70,7 @@ class SelectPage extends React.Component {
     });
   }
   componentWillUnmount() {
-    if (!this.state.canceled) {
+    if (!this.state.cancelled) {
       var body = {'framesList': this.state.framesList.split('\n')};
       // send PUT request
       fetch(address+'/frameslist', {
@@ -132,6 +136,28 @@ class SelectPage extends React.Component {
     });
   }
 
+  startJPGTranscode() {
+    fetch(address+'/startjpgtranscode').then(res => {
+      if (!res.ok) {
+        console.error(`GET /startjpgtranscode at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
+    });
+  }
+  startPNGTranscode() {
+    fetch(address+'/startpngtranscode').then(res => {
+      if (!res.ok) {
+        console.error(`GET /startpngtranscode at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
+    });
+  }
+
+  setCancelled() {
+    this.setState({
+     cancelled: true
+    });
+  }
+
+
   render() {
     return (
       <>
@@ -144,13 +170,13 @@ class SelectPage extends React.Component {
               (this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null)
             </FormGroup>
           </Form>
-          <Link to="/transcode-jpg">
+          <Link to="/transcode-jpg" onclick={this.startJPGTranscode()}>
             <Button id="createTooltip" color="primary">Extract JPGs</Button>
           </Link>
-          <Link to="/" onclick={this.setState({canceled: true})}>
+          <Link to="/" onclick={this.setCancelled()}>
             <Button id="createTooltip" color="primary">Back to menu</Button>
           </Link>
-          <Link to="/transcode-png">
+          <Link to="/transcode-png" onclick={this.startPNGTranscode()}>
             <Button id="createTooltip" color="primary">Extract PNGs</Button>
           </Link>
 
