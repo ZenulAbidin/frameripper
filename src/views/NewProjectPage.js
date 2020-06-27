@@ -30,7 +30,7 @@ class NewProjectPage extends React.Component {
     this.prefixHelpText = this.prefixHelpText.bind(this);
     this.validatePathInput = this.validatePathInput.bind(this);
     this.pathHelpText = this.pathHelpText.bind(this);
-    this.sendOKRequest = this.sendOKRequest.bind(this);
+    this.setOK = this.setOK.bind(this);
   }
 
   togglePathTooltipOpen() {
