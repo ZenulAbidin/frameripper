@@ -65,7 +65,7 @@ class NewProjectPage extends React.Component {
     console.log(body);
     // send PUT request
     fetch(address+'/currentproject', {
-        method: 'put',
+        method: 'PUT',
         body:    JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
     }).then(res => {
@@ -77,7 +77,7 @@ class NewProjectPage extends React.Component {
     console.log(body);
     // send PUT request
     fetch(address+'/currentsettings', {
-        method: 'put',
+        method: 'PUT',
         body:    JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
     }).then(res => {
