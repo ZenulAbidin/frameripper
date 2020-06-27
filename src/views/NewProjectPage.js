@@ -66,6 +66,7 @@ class NewProjectPage extends React.Component {
     // send PUT request
     fetch(address+'/currentproject', {
         method: 'PUT',
+        mode: 'cors',
         body:    JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
     }).then(res => {
@@ -78,6 +79,7 @@ class NewProjectPage extends React.Component {
     // send PUT request
     fetch(address+'/currentsettings', {
         method: 'PUT',
+        mode: 'cors',
         body:    JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
     }).then(res => {
