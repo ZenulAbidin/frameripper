@@ -32,6 +32,7 @@ class NewProjectPage extends React.Component {
     this.prefixHelpText = this.prefixHelpText.bind(this);
     this.validatePathInput = this.validatePathInput.bind(this);
     this.pathHelpText = this.pathHelpText.bind(this);
+    this.setCanceled = this.setCanceled.bind(this);
   }
 
   togglePathTooltipOpen() {
@@ -52,6 +53,11 @@ class NewProjectPage extends React.Component {
   toggleCreateTooltipOpen() {
     this.setState({
      createTooltipOpen: !this.state.createTooltipOpen
+    });
+  }
+  setCanceled() {
+    this.setState({
+     canceled: true
     });
   }
 
@@ -181,7 +187,7 @@ class NewProjectPage extends React.Component {
             <Button id="createTooltip" color="primary">Create</Button>
           </Link>
           <Link to="/">
-            <Button color="primary" onclick={this.setState({canceled: true})}>Cancel</Button>
+            <Button color="primary" onclick={this.setCanceled()}>Cancel</Button>
           </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.pathTooltipOpen} target="pathTooltip" toggle={this.togglePathTooltipOpen}>
