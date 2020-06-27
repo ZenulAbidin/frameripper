@@ -73,7 +73,7 @@ class NewProjectPage extends React.Component {
         },
       });
     	if (!rawResponse.ok) {
-        console.error(`PUT /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+        console.error(`PUT /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${rawResponse.status} ${rawResponse.statusText}`);
       }
     })();
 
@@ -89,7 +89,7 @@ class NewProjectPage extends React.Component {
           },
       });
       if (!rawResponse.ok) {
-        console.error(`PUT /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+        console.error(`PUT /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${rawResponse.status} ${rawResponse.statusText}`);
       }
     })();
   }
