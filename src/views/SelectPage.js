@@ -13,8 +13,8 @@ class SelectPage extends React.Component {
     super(props);
     this.state = {
       frameNumbersTooltipOpen: false,
-      framesList: null,
-      numFrames: null,
+      framesList: [],
+      numFrames: 0,
       project: null,
       inputFrameNumbers: "",
       frameNumbersInvalid: false,
@@ -65,9 +65,6 @@ class SelectPage extends React.Component {
       }
       else {
         console.error(`GET /numframes at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
-        this.setState({
-          numFrames: 0
-        });
       }
     });
   }
