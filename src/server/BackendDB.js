@@ -125,24 +125,24 @@ app.get('/projects', function (req, res) {
   }
 })
 
-app.put('/projects', function (req, res) {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.put(\'/projects\', function (req, res) {', app_file: '/server/BackendDB.js'});
+app.post('/projects', function (req, res) {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.post(\'/projects\', function (req, res) {', app_file: '/server/BackendDB.js'});
   // Intentional, grabs undefined but not other falsy values which don't gum leveldb
   if (!argv.testClient) {
     if (req.body.projects == null) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "projects" doesn\'t exist'}});
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "projects" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "projects" doesn\'t exist'})
     } else {
       setProjects(db, req.body.projects).then(value => {
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 200});
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'post', app_status: 200});
         res.json({ok:true})
       }).catch(err => {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 400, app_response: {'error': err.stack || default_null}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
         res.status(400).json({'error': err.toString()})
       })
     }
   } else {
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'put', app_status: 200});
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'post', app_status: 200});
     res.json({ok:true})
   }
 })
@@ -164,24 +164,24 @@ app.get('/currentproject', function (req, res) {
   }
 })
 
-app.put('/currentproject', function (req, res) {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.put(\'/currentproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
+app.post('/currentproject', function (req, res) {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.post(\'/currentproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
     if (req.body.currentProject == null) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "currentProject" doesn\'t exist'}});
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "currentProject" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "currentProject" doesn\'t exist'})
     } else {
       setCurrentProject(db, req.body.currentProject).then(value => {
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 200});
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'post', app_status: 200});
         res.json({ok:true})
       }).catch(function(err) {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 400, app_response: {'error': err.stack || default_null}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
         res.status(400).json({'error': err.toString()})
       })
     }
   }
   else {
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'put', app_status: 200});
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'post', app_status: 200});
     res.json({ok:true})
   }
 })
@@ -208,37 +208,37 @@ app.get('/currentsettings', function (req, res) {
   }
 })
 
-app.put('/currentsettings', function (req, res) {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.put(\'/currentsettings\', function (req, res) {', app_file: '/server/BackendDB.js'});
+app.post('/currentsettings', function (req, res) {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.post(\'/currentsettings\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
     if (req.body.settings == null) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "settings" doesn\'t exist'}});
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "settings" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "settings" doesn\'t exist'})
     }
     else if (req.body.settings.prefix == null) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "settings.prefix" doesn\'t exist'}});
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "settings.prefix" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "settings.prefix" doesn\'t exist'})
     }
     else if (req.body.settings.frameOffset == null) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "settings.frameOffset" doesn\'t exist'}});
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "settings.frameOffset" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "settings.frameOffset" doesn\'t exist'})
     }
     else {
       var project = getCurrentProject(db).then(project => {
         setSettings(db, project, req.body.settings.prefix, req.body.settings.frameOffset).then(value => {
-          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 200});
+          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 200});
           res.json({ok:true})
         }).catch(function(err) {
-          logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err.stack || default_null}});
+          logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
           res.status(400).json({'error': err.toString()})
         })
       }).catch(function(err) {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 400, app_response: {'error': err.stack || default_null}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
         res.status(400).json({'error': err.toString()})
       })
     }
   } else {
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'put', app_status: 200});
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 200});
     res.json({ok:true})
   }
 })
@@ -265,28 +265,28 @@ app.get('/numframes', function (req, res) {
   }
 })
 
-app.put('/numframes', function (req, res) {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.put(\'/numframes\', function (req, res) {', app_file: '/server/BackendDB.js'});
+app.post('/numframes', function (req, res) {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.post(\'/numframes\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
     if (req.body.numFrames == null) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "numFrames" doesn\'t exist'}});
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "numFrames" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "numFrames" doesn\'t exist'})
     } else {
       var project = getCurrentProject(db).then(project => {
         setNumFrames(db, project, req.body.numFrames).then(value => {
-          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 200});
+          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'post', app_status: 200});
           res.json({ok:true})
         }).catch(function(err) {
-          logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err.stack || default_null}});
+          logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
           res.status(400).json({'error': err.toString()})
         })
       }).catch(function(err) {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 400, app_response: {'error': err.stack || default_null}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
         res.status(400).json({'error': err.toString()})
       })
     }
   } else {
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'put', app_status: 200});
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'post', app_status: 200});
     res.json({ok:true})
   }
 })
@@ -313,44 +313,44 @@ app.get('/frameslist', function (req, res) {
   }
 })
 
-app.put('/frameslist', function (req, res) {
+app.post('/frameslist', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.get(\'/frameslist\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
     if (req.body.framesList == null) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': 'Required key "framesList" doesn\'t exist'}});
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "framesList" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "framesList" doesn\'t exist'})
     } else {
       var project = getCurrentProject(db).then(project => {
         setFramesList(db, project, req.body.framesList).then(value => {
-          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 200});
+          logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'post', app_status: 200});
           res.json({ok:true})
         }).catch(function(err) {
-          logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err.stack || default_null}});
+          logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
           res.status(400).json({'error': err.toString()})
         })
       }).catch(function(err) {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 400, app_response: {'error': err.stack || default_null}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
         res.status(400).json({'error': err.toString()})
       })
     }
   } else {
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'put', app_status: 200});
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'post', app_status: 200});
     res.json({ok:true})
   }
 })
 
-app.put('/deleteproject', function (req, res) {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.put(\'/deleteproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
+app.post('/deleteproject', function (req, res) {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.post(\'/deleteproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
     deleteProject(db, req.body.project).then(value => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'put', app_status: 200});
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'post', app_status: 200});
       res.json({ok:true})
     }).catch(function(err) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'put', app_status: 400, app_response: {'error': err.stack || default_null}});
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
       res.status(400).json({'error': err.toString()})
     })
   } else {
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'put', app_status: 200});
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'post', app_status: 200});
     res.json({ok:true})
   }
 })
@@ -441,7 +441,7 @@ const getProjects = db => {
 const setProjects = (db, projects) => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setProjects = (db, projects) => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    db.put('/projects', projects).then(value => {
+    db.post('/projects', projects).then(value => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects || default_null, app_response: {success: true}});
       if (!projects.includes(currentProject)) {
         currentProject = null;
@@ -483,7 +483,7 @@ const setCurrentProject = (db, project) => {
     }).catch(err => {
       reject(err);
     });
-    db.put('/currentProject', project).then(value => {
+    db.post('/currentProject', project).then(value => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: true}});
       currentProject = project;
       resolve(null);
@@ -535,13 +535,13 @@ const setSettings = (db, project, prefix, frameOffset) => {
     logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
     logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
     if (!exists) reject('Project doesn\'t exist');
-    db.put('/project/'+project+'/prefix', prefix).then(value => {
+    db.post('/project/'+project+'/prefix', prefix).then(value => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix || default_null, app_response: {success: true}});
     }).catch(err => {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix || default_null, app_response: {success: false, 'error': err.stack || default_null}});
       reject(err);
     })
-    db.put('/project/'+project+'/frameOffset', frameOffset).then((value) => {
+    db.post('/project/'+project+'/frameOffset', frameOffset).then((value) => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset || default_null, app_response: {success: true}});
       resolve(null);
     }).catch(err => {
@@ -587,7 +587,7 @@ const setNumFrames = (db, project, numFrames) => {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
     }
-    db.put('/project/'+project+'/numFrames', numFrames).then(value => {
+    db.post('/project/'+project+'/numFrames', numFrames).then(value => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames || default_null, app_response: {success: true}});
       resolve(null);
     }).catch(err => {
@@ -631,7 +631,7 @@ const setFramesList = (db, project, framesList) => {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
       reject('Project doesn\'t exist');
     }
-    db.put('/project/'+project+'/framesList', framesList).then(value => {
+    db.post('/project/'+project+'/framesList', framesList).then(value => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList || default_null, app_response: {success: true}});
       resolve(null);
     }).catch(err => {
