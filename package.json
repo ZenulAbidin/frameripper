@@ -14,6 +14,7 @@
     "glob": "latest",
     "classnames": "latest",
     "moment": "latest",
+    "bootstrap": "latest",
     "nouislider": "latest",
     "perfect-scrollbar": "latest",
     "react": "latest",

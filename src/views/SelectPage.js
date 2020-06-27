@@ -51,7 +51,7 @@ class SelectPage extends React.Component {
         })
       }
       else {
-        console.error(`GET /frameslist at SelectPage: ${res.status} ${res.statusText}`);
+        console.error(`GET /frameslist at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
       }
     })
     document.body.classList.toggle("select-page");
