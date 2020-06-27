@@ -62,6 +62,7 @@ class NewProjectPage extends React.Component {
 
   sendOKRequest() {
     var body = {'project': this.state.path};
+    console.log(body);
     // send PUT request
     fetch(address+'/currentproject', {
         method: 'put',
@@ -73,6 +74,7 @@ class NewProjectPage extends React.Component {
       }
     });
     body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
+    console.log(body);
     // send PUT request
     fetch(address+'/currentsettings', {
         method: 'put',
