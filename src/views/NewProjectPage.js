@@ -73,7 +73,7 @@ class NewProjectPage extends React.Component {
         console.error(`PUT /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
-    body = {'settings' {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset}};
+    body = {'settings': {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset}};
     console.log(body);
     // send PUT request
     fetch(address+'/currentsettings', {
