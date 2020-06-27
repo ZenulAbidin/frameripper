@@ -19,6 +19,7 @@ class NewProjectPage extends React.Component {
       offset: null,
       prefixInputInvalid: false,
       pathInputInvalid: false,
+      projects: null
     };
 
     this.togglePathTooltipOpen = this.togglePathTooltipOpen.bind(this);
@@ -55,14 +56,37 @@ class NewProjectPage extends React.Component {
 
   componentDidMount() {
     document.body.classList.toggle("newproject-page");
+    fetch(address+'/projects').then(res => {
+      if (res.ok) {
+        res.json().then(json => {
+          this.setState({
+            projects: json.projects
+          });
+        })
+      }
+      else {
+        console.error(`GET /projects at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
+    })
   }
   componentWillUnmount() {
     document.body.classList.toggle("newproject-page");
   }
 
   sendOKRequest() {
+    
+    var body = {'projects': this.state.projects.concat(this.state.path)};
+    // send POST request
+    fetch(address+'/projects', {
+        method: 'post',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    }).then(res => {
+    	if (!res.ok) {
+        console.error(`POST /projects with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
+    });
     var body = {'currentProject': this.state.path};
-    console.log(body);
     // send POST request
     fetch(address+'/currentproject', {
         method: 'post',
@@ -74,7 +98,6 @@ class NewProjectPage extends React.Component {
       }
     });
     body = {'settings': {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset}};
-    console.log(body);
     // send POST request
     fetch(address+'/currentsettings', {
         method: 'post',
