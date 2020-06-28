@@ -21,6 +21,36 @@ class TranscodePNGPage extends React.Component {
     this.queryComplete = this.queryComplete.bind(this);
   }
 
+  componentDidMount() {
+    document.body.classList.toggle("transcodepng-page");
+    fetch(address+'/currentproject').then(res => {
+      if (res.ok) {
+        res.json().then(json => {
+          this.setState({
+            project: json.project
+          });
+        })
+      }
+      else {
+        console.error(`GET /currentproject at TranscodePNGPage: ${res.status} ${res.statusText}`);
+      }
+    })
+    this.setstate({
+      interval: setInterval(this.queryComplete, 500)
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.state.cancelled) {
+      fetch(address+'/abortpngtranscode').then(res => {
+        if (!res.ok) {
+          console.error(`GET /abortpngtranscode at TranscodePNGPage: ${res.status} ${res.statusText}`);
+        }
+      });
+    }
+    document.body.classList.toggle("transcodepng-page");
+  }
+
   queryComplete() {
     fetch(address+'/istranscodingpngcomplete').then(res => {
     	if (res.ok) {
@@ -37,36 +67,6 @@ class TranscodePNGPage extends React.Component {
         console.error(`GET /istranscodingpngcomplete at TranscodePNGPage: ${res.status} ${res.statusText}`);
       }
     });
-  }
-
-  componentDidMount() {
-    document.body.classList.toggle("transcodepng-page");
-    fetch(address+'/currentproject').then(res => {
-      if (res.ok) {
-        res.json().then(json => {
-          this.setState({
-            project: json.project
-          });
-        })
-      }
-      else {
-        console.error(`GET /currentproject at TranscodePNGPage: ${res.status} ${res.statusText}`);
-      }
-    })
-    this.setstate({
-      interval: setInterval(queryComplete, 500)
-    });
-  }
-
-  componentWillUnmount() {
-    if (this.state.cancelled) {
-      fetch(address+'/abortpngtranscode').then(res => {
-        if (!res.ok) {
-          console.error(`GET /abortpngtranscode at TranscodePNGPage: ${res.status} ${res.statusText}`);
-        }
-      });
-    }
-    document.body.classList.toggle("transcodepng-page");
   }
 
   abortTranscode() {
