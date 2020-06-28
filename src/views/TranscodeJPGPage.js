@@ -109,7 +109,7 @@ class TranscodeJPGPage extends React.Component {
   render() {
     return (
       <>
-        {this.state.completed ? this.displayIncomplete() : this.displayComplete}
+        {this.state.completed ? this.displayIncomplete() : this.displayComplete()}
       </>
     );
   }
