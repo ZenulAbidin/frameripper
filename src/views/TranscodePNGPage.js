@@ -96,7 +96,7 @@ class TranscodePNGPage extends React.Component {
       <>
         <h1>Transcoding {this.state.project} PNGs</h1>
         <div>
-          <Checkmark size='xxLarge' />
+          <Checkmark size=xxLarge />
           <h3>All PNG frames extracted</h3>
         </div>
         <Link to="/select">

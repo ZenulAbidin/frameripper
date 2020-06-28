@@ -15,6 +15,7 @@ class TranscodeJPGPage extends React.Component {
 
     this.displayIncomplete = this.displayIncomplete.bind(this);
     this.displayComplete = this.displayComplete.bind(this);
+    this.queryComplete = this.queryComplete.bind(this);
   }
 
   componentDidMount() {
@@ -31,23 +32,26 @@ class TranscodeJPGPage extends React.Component {
         console.error(`GET /currentproject at TranscodeJPGPage: ${res.status} ${res.statusText}`);
       }
     })
-    setInterval(() => {
-      fetch(address+'/istranscodingjpgcomplete').then(res => {
-      	if (res.ok) {
-          res.json().then(json => {
-            if (json.complete === true) {
-              this.setState({
-                completed: true
-              });
-            }
-          })
-        }
-        else {
-          console.error(`GET /istranscodingjpgcomplete at TranscodeJPGPage: ${res.status} ${res.statusText}`);
-        }
-      })
-    }, 500);
+    this.interval = setInterval(this.queryComplete, 500);
   }
+
+  queryComplete() {
+    fetch(address+'/istranscodingjpgcomplete').then(res => {
+    	if (res.ok) {
+        res.json().then(json => {
+          if (json.complete === true) {
+            this.setState({
+              completed: true
+            });
+          }
+        })
+      }
+      else {
+        console.error(`GET /istranscodingjpgcomplete at TranscodeJPGPage: ${res.status} ${res.statusText}`);
+      }
+    })
+  }
+
   componentWillUnmount() {
     if (this.state.cancelled) {
       fetch(address+'/abortjpgtranscode').then(res => {
@@ -56,6 +60,7 @@ class TranscodeJPGPage extends React.Component {
         }
       });
     }
+    clearInterval(this.interval);
     document.body.classList.toggle("transcodejpg-page");
   }
 
@@ -89,7 +94,7 @@ class TranscodeJPGPage extends React.Component {
       <>
         <h1>Transcoding {this.state.project} JPGs</h1>
         <div>
-          <Checkmark size='xxLarge' />
+          <Checkmark size=xxLarge />
           <h3>All JPG frames extracted</h3>
         </div>
         <Link to="/select">
