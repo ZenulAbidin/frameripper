@@ -35,9 +35,7 @@ class TranscodePNGPage extends React.Component {
         console.error(`GET /currentproject at TranscodePNGPage: ${res.status} ${res.statusText}`);
       }
     })
-    this.setState({
-      interval: setInterval(this.queryComplete, 500)
-    });
+    this.interval = setInterval(this.queryComplete, 500);
   }
 
   componentWillUnmount() {
@@ -48,6 +46,7 @@ class TranscodePNGPage extends React.Component {
         }
       });
     }
+    clearInterval(this.interval);
     document.body.classList.toggle("transcodepng-page");
   }
 
@@ -59,7 +58,7 @@ class TranscodePNGPage extends React.Component {
             this.setState({
               completed: true,
             });
-            clearInterval(this.state.interval);
+            clearInterval(this.interval);
           }
         })
       }
