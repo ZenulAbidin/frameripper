@@ -109,7 +109,7 @@ class TranscodePNGPage extends React.Component {
   render() {
     return (
       <>
-        {this.state.completed ? this.displayIncomplete() : this.displayComplete()}
+        {this.state.completed ? this.displayComplete() : this.displayIncomplete()}
       </>
     );
   }
