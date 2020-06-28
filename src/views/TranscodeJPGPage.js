@@ -35,6 +35,22 @@ class TranscodeJPGPage extends React.Component {
         console.error(`GET /currentproject at TranscodeJPGPage: ${res.status} ${res.statusText}`);
       }
     })
+    setInterval() => (
+      fetch(address+'/istranscodingjpgcomplete').then(res => {
+      	if (res.ok) {
+          res.json().then(json => {
+            if (json.complete === true) {
+              this.setState({
+                completed: true
+              });
+            }
+          })
+        }
+        else {
+          console.error(`GET /istranscodingjpgcomplete at TranscodeJPGPage: ${res.status} ${res.statusText}`);
+        }
+      })
+    }, 100);
   }
   componentWillUnmount() {
     if (this.state.cancelled) {
@@ -46,25 +62,6 @@ class TranscodeJPGPage extends React.Component {
     }
     document.body.classList.toggle("transcodejpg-page");
   }
-
-  componentDidUpdate(prevProps, prevState) {
-    // retrieve state from backend
-    fetch(address+'/istranscodingjpgcomplete').then(res => {
-    	if (res.ok) {
-        res.json().then(json => {
-          if (json.complete === true) {
-            this.setState({
-              completed: true
-            });
-          }
-        })
-      }
-      else {
-        console.error(`GET /istranscodingjpgcomplete at TranscodeJPGPage: ${res.status} ${res.statusText}`);
-      }
-    })
-  }
-
 
   abortTranscode() {
     fetch(address+'/abortjpgtranscode').then(res => {
