@@ -21,6 +21,24 @@ class TranscodePNGPage extends React.Component {
     this.queryComplete = this.queryComplete.bind(this);
   }
 
+  queryComplete() {
+    fetch(address+'/istranscodingpngcomplete').then(res => {
+    	if (res.ok) {
+        res.json().then(json => {
+          if (json.complete === true) {
+            this.setState({
+              completed: true,
+            });
+            clearInterval(this.state.interval);
+          }
+        })
+      }
+      else {
+        console.error(`GET /istranscodingpngcomplete at TranscodePNGPage: ${res.status} ${res.statusText}`);
+      }
+    });
+  }
+
   componentDidMount() {
     document.body.classList.toggle("transcodepng-page");
     fetch(address+'/currentproject').then(res => {
@@ -37,24 +55,6 @@ class TranscodePNGPage extends React.Component {
     })
     this.setstate({
       interval: setInterval(queryComplete, 500)
-    });
-  }
-
-  queryComplete() {
-    fetch(address+'/istranscodingpngcomplete').then(res => {
-    	if (res.ok) {
-        res.json().then(json => {
-          if (json.complete === true) {
-            this.setState({
-              completed: true,
-            });
-            clearInterval(this.state.interval);
-          }
-        })
-      }
-      else {
-        console.error(`GET /istranscodingpngcomplete at TranscodePNGPage: ${res.status} ${res.statusText}`);
-      }
     });
   }
 
