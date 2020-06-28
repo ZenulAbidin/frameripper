@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 import {Spinner, Button, Col} from "reactstrap";
 
 const fetch = require('node-fetch');
-var process = require('process');
 
 const address = "http://iamomegastorm.tk:3030";
 
@@ -14,10 +13,12 @@ class TranscodePNGPage extends React.Component {
     this.state = {
       project: null,
       completed: false,
+      interval: null,
     };
 
     this.displayIncomplete = this.displayIncomplete.bind(this);
     this.displayComplete = this.displayComplete.bind(this);
+    this.queryComplete = this.queryComplete.bind(this);
   }
 
   componentDidMount() {
@@ -34,22 +35,27 @@ class TranscodePNGPage extends React.Component {
         console.error(`GET /currentproject at TranscodePNGPage: ${res.status} ${res.statusText}`);
       }
     })
-    setInterval(() => {
-      fetch(address+'/istranscodingpngcomplete').then(res => {
-      	if (res.ok) {
-          res.json().then(json => {
-            if (json.complete === true) {
-              this.setState({
-                completed: true
-              });
-            }
-          })
-        }
-        else {
-          console.error(`GET /istranscodingpngcomplete at TranscodePNGPage: ${res.status} ${res.statusText}`);
-        }
-      })
-    }, 100);
+  }
+
+  queryComplete() {
+    this.setstate({
+      interval: setInterval(() => {
+        fetch(address+'/istranscodingpngcomplete').then(res => {
+        	if (res.ok) {
+            res.json().then(json => {
+              if (json.complete === true) {
+                this.setState({
+                  completed: true,
+                });
+                clearInterval(this.state.interval);
+              }
+            })
+          }
+          else {
+            console.error(`GET /istranscodingpngcomplete at TranscodePNGPage: ${res.status} ${res.statusText}`);
+          }
+        })
+      }, 100);
   }
   componentWillUnmount() {
     if (this.state.cancelled) {

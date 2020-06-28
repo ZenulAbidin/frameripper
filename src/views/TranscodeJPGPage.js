@@ -3,9 +3,7 @@ import {Checkmark} from 'react-checkmark';
 import {Link} from "react-router-dom";
 import {Spinner, Button, Col} from "reactstrap";
 
-
 const fetch = require('node-fetch');
-var process = require('process');
 
 const address = "http://iamomegastorm.tk:3030";
 

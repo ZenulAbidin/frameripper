@@ -3,8 +3,6 @@ import {Link} from "react-router-dom";
 import {Form, FormGroup, Button, Col, Input, Label, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
 
-var process = require('process');
-
 const address = "http://iamomegastorm.tk:3030";
 
 class SettingsPage extends React.Component {

@@ -86,7 +86,7 @@ class NewProjectPage extends React.Component {
         console.error(`POST /projects with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
-    var body = {'currentProject': this.state.path};
+    body = {'currentProject': this.state.path};
     // send POST request
     fetch(address+'/currentproject', {
         method: 'post',
