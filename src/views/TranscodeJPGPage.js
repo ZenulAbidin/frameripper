@@ -7,7 +7,7 @@ import {Spinner, Button, Col} from "reactstrap";
 const fetch = require('node-fetch');
 var process = require('process');
 
-const address = process.env.SERVER_ADDRESS;
+const address = "http://iamomegastorm.tk:3030";
 
 class TranscodeJPGPage extends React.Component {
   constructor(props) {
