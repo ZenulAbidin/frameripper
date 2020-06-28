@@ -34,7 +34,7 @@ class TranscodePNGPage extends React.Component {
         console.error(`GET /currentproject at TranscodePNGPage: ${res.status} ${res.statusText}`);
       }
     })
-    setInterval() => (
+    setInterval() => {
       fetch(address+'/istranscodingpngcomplete').then(res => {
       	if (res.ok) {
           res.json().then(json => {
