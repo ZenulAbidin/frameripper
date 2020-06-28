@@ -94,7 +94,7 @@ class TranscodeJPGPage extends React.Component {
       <>
         <h1>Transcoding {this.state.project} JPGs</h1>
         <div>
-          <Checkmark size=xxLarge />
+          <Checkmark size='xxLarge' />
           <h3>All JPG frames extracted</h3>
         </div>
         <Link to="/select">
