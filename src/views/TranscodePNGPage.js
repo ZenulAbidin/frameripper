@@ -36,7 +36,7 @@ class TranscodePNGPage extends React.Component {
       }
     })
     this.setstate({
-      interval: setInterval(queryComplete, 500);
+      interval: setInterval(queryComplete, 500)
     });
   }
 
