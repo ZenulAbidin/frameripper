@@ -48,7 +48,7 @@ class TranscodeJPGPage extends React.Component {
           console.error(`GET /istranscodingjpgcomplete at TranscodeJPGPage: ${res.status} ${res.statusText}`);
         }
       })
-    }, 100);
+    }, 500);
   }
   componentWillUnmount() {
     if (this.state.cancelled) {

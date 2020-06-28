@@ -55,7 +55,7 @@ class TranscodePNGPage extends React.Component {
             console.error(`GET /istranscodingpngcomplete at TranscodePNGPage: ${res.status} ${res.statusText}`);
           }
         })
-      }, 100);
+      }, 500);
   }
   componentWillUnmount() {
     if (this.state.cancelled) {
