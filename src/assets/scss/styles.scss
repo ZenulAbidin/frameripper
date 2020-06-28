@@ -1,0 +1,15 @@
+
+.input_invalid {
+	border-color: red !important;
+}
+.invalid_text {
+	color: red;
+	background: white;
+	padding: 0 5px;
+	display: block;
+	margin: -10px 15px 0 15px;
+	width: fit-content;
+}
+
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
