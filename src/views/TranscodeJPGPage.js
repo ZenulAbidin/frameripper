@@ -43,6 +43,7 @@ class TranscodeJPGPage extends React.Component {
             this.setState({
               completed: true
             });
+            clearInterval(this.interval);
           }
         })
       }
