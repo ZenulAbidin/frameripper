@@ -107,7 +107,7 @@ class Index extends React.Component {
   }
 
   setCurrentProject() {
-    body = {'currentProject': this.state.currentProject};
+    var body = {'currentProject': this.state.currentProject};
     // send POST request
     fetch(address+'/currentproject', {
         method: 'post',
