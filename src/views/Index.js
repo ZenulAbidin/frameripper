@@ -87,7 +87,7 @@ class Index extends React.Component {
     return (
       this.state.projects.map(project => (
       <Col sm="4" key={project}>
-            <SelectedComponent><Button color=info>{project}</Button></SelectedComponent>
+            <SelectedComponent><Button color="info">{project}</Button></SelectedComponent>
       </Col>))
     )
   }
