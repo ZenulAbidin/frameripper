@@ -168,7 +168,7 @@ class NewProjectPage extends React.Component {
   render() {
     return (
       <>
-        <div style={marginLeft: '10px'}>
+        <div style={{marginLeft: '10px'}}>
           <h1>New Project</h1>
           <div>
             <Form>
