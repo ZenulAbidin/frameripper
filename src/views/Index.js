@@ -89,9 +89,9 @@ class Index extends React.Component {
     )
   }
 
-  setStateCurrentProject(e) {
+  setStateCurrentProject(project) {
     this.setState({
-      currentProject: this.state.projects.includes(e.target.value) ? e.target.value : null
+      currentProject: this.state.projects.includes(project) ? project : null
     });
   }
 
