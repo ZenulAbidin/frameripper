@@ -79,7 +79,7 @@ class Index extends React.Component {
         // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
         buttons.push(
           <Col sm="4">
-            <SelectedComponent Component=<Button key={i} onClick={this.handleOnClick}>{this.state.projects[i]}</Button> />
+            <SelectedComponent Component=<Button key={i}>{this.state.projects[i]}</Button> />
           </Col>
         );
     }
