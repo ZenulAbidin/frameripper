@@ -33,18 +33,27 @@ const cont = {
   position: "relative"
 };
 
-const SelectedComponent = ({
-  Component
-}) => {
-  const [isSelected, setIsSelected] = useState(false);
+class SelectedComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isSelected: false,
+    };
+    this.handleOnClick = this.handleOnClick.bind(this);
+  )
 
-  const handleOnClick = e => {
-    setIsSelected(!isSelected);
+  handleOnClick(e) {
+    this.setState({
+      isSelected: !this.state.isSelected
+    });
   };
 
-  useEffect(() => {
-    setIsSelected(isSelected);
-  }, [isSelected]);
+  componentDidMount() {
+    document.body.classList.toggle("selectedcomponents");
+  }
+  componentWillUnmount() {
+    document.body.classList.toggle("selectedcomponents");
+  }
 
 /*
   return (
@@ -59,15 +68,17 @@ const SelectedComponent = ({
     </div>
   );
 */
-  return (
-    <div
-      className={!isSelected ? "not-selected" : ""}
-    >
-      <Checkmark selected={isSelected ? true : false} />
-      {this.props.children}
-      <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
-    </div>
-  );
+  render() {
+    return (
+      <div
+        className={!isSelected ? "not-selected" : ""}
+      >
+        <Checkmark selected={isSelected ? true : false} />
+        {this.props.children}
+        <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
+      </div>
+    );
+  }
 };
 
 export default SelectedComponent;
