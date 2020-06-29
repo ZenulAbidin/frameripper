@@ -72,18 +72,6 @@ class Index extends React.Component {
   }
 
   buttonList() {
-    /* Credits: https://stackoverflow.com/a/22877049/12452330 */
-    var buttons = [];
-    for (var i = 0; i < this.state.projects.length; i++) {
-        // note: we add a key prop here to allow react to uniquely identify each
-        // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-        buttons.push(
-          <Col sm="4">
-            <SelectedComponent Component=<Button key={i}>{this.state.projects[i]}</Button> />
-          </Col>
-        );
-    }
-    //return buttons;
     return (
       this.state.projects.map(project => (
       <Col sm="4" key={project}>
