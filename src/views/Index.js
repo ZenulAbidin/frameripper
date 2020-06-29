@@ -125,7 +125,7 @@ class Index extends React.Component {
         <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={this.toggleNewTooltip}>
           Creates a new project.
         </Tooltip>
-        <Tooltip placement="bottom" isOpen={this.state.openTooltipOpen} target="nopenTooltip" toggle={this.toggleOpenTooltip}>
+        <Tooltip placement="bottom" isOpen={this.state.openTooltipOpen} target="openTooltip" toggle={this.toggleOpenTooltip}>
           Opens the selected project.
         </Tooltip>
         <Tooltip placement="bottom" isOpen={this.state.deleteTooltipOpen} target="deleteTooltip" toggle={this.toggleDeleteTooltipOpen}>
