@@ -40,7 +40,7 @@ class SelectedComponent extends React.Component {
       isSelected: false,
     };
     this.handleOnClick = this.handleOnClick.bind(this);
-  )
+  }
 
   handleOnClick(e) {
     this.setState({
