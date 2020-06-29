@@ -84,12 +84,13 @@ class Index extends React.Component {
     return (
       this.state.projects.map(project => (
       <Col sm="4" key={project}>
-            <Button color="info" active={this.state.currentProject === project}>{project}</Button>
+            <Button color="info" active={this.state.currentProject === project} onClick={() => this.setStateCurrentProject(project)}>{project}</Button>
       </Col>))
     )
   }
 
   setStateCurrentProject(project) {
+    console.log(this.state.currentProject);
     this.setState({
       currentProject: this.state.projects.includes(project) ? project : null
     });
