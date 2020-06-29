@@ -55,26 +55,13 @@ class SelectedComponent extends React.Component {
     document.body.classList.toggle("selectedcomponents");
   }
 
-/*
-  return (
-    <div
-      className={!isSelected ? "not-selected" : ""}
-    >
-      <Checkmark selected={isSelected ? true : false} />
-      <Component
-        onClick={handleOnClick}
-      />
-      <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
-    </div>
-  );
-*/
   render() {
     return (
       <div
         className={!this.state.isSelected ? "not-selected" : ""}
       >
         <Checkmark selected={this.state.isSelected ? true : false} />
-        {this.props.children}
+        {this.props.children onClick={handleOnClick}}
       </div>
     );
   }
