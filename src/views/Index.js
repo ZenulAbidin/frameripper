@@ -84,7 +84,7 @@ class Index extends React.Component {
     return (
       this.state.projects.map(project => (
       <Col sm="4" key={project}>
-            <Button color="info" active={this.state.currentProject === project} onClick={this.setStateCurrentProject(project)}>{project}</Button>
+            <Button color="info" active={this.state.currentProject === project}>{project}</Button>
       </Col>))
     )
   }
