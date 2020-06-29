@@ -71,9 +71,9 @@ class SelectedComponent extends React.Component {
   render() {
     return (
       <div
-        className={!isSelected ? "not-selected" : ""}
+        className={!this.state.isSelected ? "not-selected" : ""}
       >
-        <Checkmark selected={isSelected ? true : false} />
+        <Checkmark selected={this.state.isSelected ? true : false} />
         {this.props.children}
         <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
       </div>
