@@ -61,7 +61,7 @@ class SelectedComponent extends React.Component {
         className={!this.state.isSelected ? "not-selected" : ""}
       >
         <Checkmark selected={this.state.isSelected ? true : false} />
-        {this.props.children onClick={handleOnClick}}
+        {this.props.children}
       </div>
     );
   }
