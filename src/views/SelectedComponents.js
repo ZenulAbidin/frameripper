@@ -64,6 +64,7 @@ const SelectedComponent = ({
       className={!isSelected ? "not-selected" : ""}
     >
       <Checkmark selected={isSelected ? true : false} />
+      {this.props.children}
       <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
     </div>
   );
