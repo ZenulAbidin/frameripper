@@ -12,6 +12,7 @@ class Index extends React.Component {
     super(props);
     this.state = {
       newTooltipOpen: false,
+      openTooltipOpen: false,
       deleteTooltipOpen: false,
       deleteModalOpen: false,
       projects: [],
@@ -19,6 +20,7 @@ class Index extends React.Component {
     };
 
     this.toggleNewTooltip = this.toggleNewTooltip.bind(this);
+    this.toggleOpenTooltip = this.toggleOpenTooltip.bind(this);
     this.toggleDeleteTooltipOpen = this.toggleDeleteTooltipOpen.bind(this);
     this.toggleDeleteModalOpen = this.toggleDeleteModalOpen.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
@@ -29,6 +31,11 @@ class Index extends React.Component {
   toggleNewTooltip() {
     this.setState({
       newTooltipOpen: !this.state.newTooltipOpen
+    });
+  }
+  toggleOpenTooltip() {
+    this.setState({
+      openTooltipOpen: !this.state.openTooltipOpen
     });
   }
   toggleDeleteTooltipOpen() {
@@ -86,6 +93,7 @@ class Index extends React.Component {
     this.setState({
       currentProject: e.target.value
     });
+    console.log(e.target.value);
   }
 
 
@@ -107,12 +115,18 @@ class Index extends React.Component {
           <Link to="/new">
             <Button id="newTooltip" color="primary">New</Button>
           </Link>
+          <Link to="/select">
+            <Button id="openTooltip" color="primary">Open</Button>
+          </Link>
           <Link to="/">
-            <Button id="deleteTooltip" color="danger">Delete</Button>
+            <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen}>Delete</Button>
           </Link>
         </div>
         <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={this.toggleNewTooltip}>
           Creates a new project.
+        </Tooltip>
+        <Tooltip placement="bottom" isOpen={this.state.openTooltipOpen} target="nopenTooltip" toggle={this.toggleOpenTooltip}>
+          Opens the selected project.
         </Tooltip>
         <Tooltip placement="bottom" isOpen={this.state.deleteTooltipOpen} target="deleteTooltip" toggle={this.toggleDeleteTooltipOpen}>
           Deletes the selected project.
