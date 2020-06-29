@@ -59,9 +59,8 @@ class SelectedComponent extends React.Component {
     const childrenWithProps = Children.map(this.props.children, child => {
       // Checking isValidElement is the safe way and avoids a TS error too.
       if (isValidElement(child)) {
-        return cloneElement(child, { doSomething })
+        return cloneElement(child, { onClick=this.handleOnClick })
       }
-      child.onClick = handleOnClick;
       return child;
     });
 
