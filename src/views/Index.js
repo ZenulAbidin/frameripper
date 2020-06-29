@@ -136,8 +136,8 @@ class Index extends React.Component {
             You are about to delete project {this.state.currentProject}. This cannot be undone!
           </ModalBody>
           <ModalFooter>
-            <Button color="danger" onClick={this.toggleDeleteModalOpen}>Delete</Button>
-            <Button color="primary" onClick={this.deleteProject}>Cancel</Button>
+            <Button color="danger" onClick={this.deleteProject}>Delete</Button>
+            <Button color="primary" onClick={this.toggleDeleteModalOpen}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </>
