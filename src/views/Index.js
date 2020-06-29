@@ -84,7 +84,12 @@ class Index extends React.Component {
         );
     }
     //return buttons;
-    return <></>
+    return (
+      this.state.projects.map(project => (
+      <Col sm="4">
+            <SelectedComponent Component=<Button key=project>{project}</Button> />
+      </Col>))
+    )
   }
 
 
