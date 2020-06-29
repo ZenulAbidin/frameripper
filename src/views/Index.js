@@ -90,7 +90,6 @@ class Index extends React.Component {
   }
 
   setStateCurrentProject(project) {
-    console.log(this.state.currentProject);
     this.setState({
       currentProject: this.state.projects.includes(project) ? project : null
     });
@@ -119,7 +118,7 @@ class Index extends React.Component {
             <Button id="openTooltip" color="primary" disabled={this.state.currentProject === null}>Open</Button>
           </Link>
           <Link to="/">
-            <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen}>Delete</Button>
+            <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
           </Link>
         </div>
         <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={this.toggleNewTooltip}>
@@ -134,7 +133,7 @@ class Index extends React.Component {
         <Modal isOpen={this.state.deleteModalOpen} toggle={this.toggleDeleteModalOpen}>
           <ModalHeader toggle={this.toggleDeleteModalOpen}>Delete project</ModalHeader>
           <ModalBody>
-            You are about to delete project {this.state.selectedProject}. This cannot be undone!
+            You are about to delete project {this.state.currentProject}. This cannot be undone!
           </ModalBody>
           <ModalFooter>
             <Button color="danger" onClick={this.toggleDeleteModalOpen}>Delete</Button>
