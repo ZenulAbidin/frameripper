@@ -71,12 +71,12 @@ class Index extends React.Component {
     var body = {'project': this.state.selectedProject};
     // send PUT request
     fetch(address+'/deleteproject', {
-        method: 'put',
+        method: 'post',
         body:    JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
     }).then(res => {
     	if (!res.ok) {
-        console.error(`PUT /deleteproject with body ${JSON.stringify(body)} at Index: ${res.status} ${res.statusText}`);
+        console.error(`POST /deleteproject with body ${JSON.stringify(body)} at Index: ${res.status} ${res.statusText}`);
       }
       else {
         fetch(address+'/projects').then(res => {
