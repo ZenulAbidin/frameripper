@@ -46,6 +46,7 @@ const SelectedComponent = ({
     setIsSelected(isSelected);
   }, [isSelected]);
 
+/*
   return (
     <div
       className={!isSelected ? "not-selected" : ""}
@@ -54,6 +55,15 @@ const SelectedComponent = ({
       <Component
         onClick={handleOnClick}
       />
+      <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
+    </div>
+  );
+*/
+  return (
+    <div
+      className={!isSelected ? "not-selected" : ""}
+    >
+      <Checkmark selected={isSelected ? true : false} />
       <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
     </div>
   );
