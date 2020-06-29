@@ -77,16 +77,17 @@ class Index extends React.Component {
     	if (!res.ok) {
         console.error(`PUT /deleteproject with body ${JSON.stringify(body)} at Index: ${res.status} ${res.statusText}`);
       }
+      fetch(address+'/projects').then(res => {
+      	if (res.ok) {
+          res.json().then(json => {
+            this.setState({
+              projects: json.projects
+            });
+          })
+        }
+      })
     })
-    fetch(address+'/projects').then(res => {
-    	if (res.ok) {
-        res.json().then(json => {
-          this.setState({
-            projects: json.projects
-          });
-        })
-      }
-    })
+
   }
 
   buttonList() {
