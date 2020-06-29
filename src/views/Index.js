@@ -84,7 +84,7 @@ class Index extends React.Component {
 
   setStateCurrentProject(e) {
     this.setState({
-      currentProject: e.target.value;
+      currentProject: e.target.value
     });
   }
 
