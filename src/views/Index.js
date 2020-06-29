@@ -46,7 +46,7 @@ class Index extends React.Component {
     	if (res.ok) {
         res.json().then(json => {
           this.setState({
-            projects: theProjects
+            projects: json.projects
           });
         })
       }
