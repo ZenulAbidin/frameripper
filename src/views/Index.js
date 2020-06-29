@@ -45,12 +45,6 @@ class Index extends React.Component {
     fetch(address+'/projects').then(res => {
     	if (res.ok) {
         res.json().then(json => {
-          const theProjects = json.projects.map(l => Object.assign({}, l));
-          for (var i = 0; i < theProjects.length; i++) {
-            theProjects[i].name = json.projects[i];
-            console.log(`theProjects[i].name ${theProjects[i].name}`)
-            console.log(`json.projects[i] ${json.projects[i]}`)
-          }
           this.setState({
             projects: theProjects
           });
@@ -89,7 +83,8 @@ class Index extends React.Component {
           </Col>
         );
     }
-    return buttons;
+    //return buttons;
+    return <></>
   }
 
 
