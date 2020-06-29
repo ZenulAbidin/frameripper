@@ -14,7 +14,7 @@ class Index extends React.Component {
       newTooltipOpen: false,
       deleteTooltipOpen: false,
       deleteModalOpen: false,
-      projects: []
+      projects: [],
       currentProject: null
     };
 
