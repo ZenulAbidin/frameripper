@@ -1,5 +1,5 @@
 /* Credits: https://codesandbox.io/s/o7o241q09 */
-import React, { Children, isValidElement, cloneElement } from 'react';
+import React, { useState, useEffect } from "react";
 
 const Checkmark = ({ selected }) => (
   <div
@@ -56,20 +56,13 @@ class SelectedComponent extends React.Component {
   }
 
   render() {
-    const childrenWithProps = Children.map(this.props.children, child => {
-      // Checking isValidElement is the safe way and avoids a TS error too.
-      if (isValidElement(child)) {
-        return cloneElement(child, { onClick: this.handleOnClick })
-      }
-      return child;
-    });
-
     return (
       <div
         className={!this.state.isSelected ? "not-selected" : ""}
       >
         <Checkmark selected={this.state.isSelected ? true : false} />
-        {childrenWithProps}
+        {this.props.children}
+      <style>{`.not-selected:hover{outline:2px solid #06befa}`}</style>
       </div>
     );
   }

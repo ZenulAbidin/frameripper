@@ -15,6 +15,7 @@ class Index extends React.Component {
       deleteTooltipOpen: false,
       deleteModalOpen: false,
       projects: []
+      currentProject: null
     };
 
     this.toggleNewTooltip = this.toggleNewTooltip.bind(this);
@@ -22,6 +23,7 @@ class Index extends React.Component {
     this.toggleDeleteModalOpen = this.toggleDeleteModalOpen.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
     this.buttonList = this.buttonList.bind(this);
+    this.setStateCurrentProject = this.setStateCurrentProject.bind(this);
   }
 
   toggleNewTooltip() {
@@ -75,9 +77,15 @@ class Index extends React.Component {
     return (
       this.state.projects.map(project => (
       <Col sm="4" key={project}>
-            <SelectedComponent><Button color="info">{project}</Button></SelectedComponent>
+            <Button color="info" active={this.state.currentProject === project}>{project}</Button>
       </Col>))
     )
+  }
+
+  setStateCurrentProject(e) {
+    this.setState({
+      currentProject: e.target.value;
+    });
   }
 
 
