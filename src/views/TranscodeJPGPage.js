@@ -108,7 +108,9 @@ class TranscodeJPGPage extends React.Component {
   render() {
     return (
       <>
-        {this.state.completed ? this.displayComplete() : this.displayIncomplete()}
+        <div style={{marginLeft: '10px', marginTop: '10px'}}>
+          {this.state.completed ? this.displayComplete() : this.displayIncomplete()}
+        </div>
       </>
     );
   }

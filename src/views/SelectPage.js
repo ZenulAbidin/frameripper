@@ -156,25 +156,28 @@ class SelectPage extends React.Component {
   render() {
     return (
       <>
-        <h1>Select frames for {this.state.project}</h1>
-        <div>
-          <Form>
-            <FormGroup>
-              <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
-              <Input type="textarea" id="inputFrameNumbers" onchange={e => this.validateFrameNumbersInput(e)} className={(this.state.invalid ? 'input_invalid' : null)} />
-              {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
-            </FormGroup>
-          </Form>
-          <Link to="/transcode-jpg" onclick={this.startJPGTranscode}>
-            <Button id="createTooltip" color="primary">Extract JPGs</Button>
-          </Link>
-          <Link to="/">
-            <Button id="createTooltip" color="primary">Back to menu</Button>
-          </Link>
-          <Link to="/transcode-png" onclick={this.startPNGTranscode}>
-            <Button id="createTooltip" color="primary">Extract PNGs</Button>
-          </Link>
-
+        <div style={{marginLeft: '10px', marginTop: '10px'}}>
+          <h1>Select frames for {this.state.project}</h1>
+          <div>
+            <Form>
+              <FormGroup>
+                <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
+                <Input type="textarea" id="inputFrameNumbers" onchange={e => this.validateFrameNumbersInput(e)} className={(this.state.invalid ? 'input_invalid' : null)} />
+                {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
+              </FormGroup>
+            </Form>
+          </div>
+          <div>
+            <Link to="/transcode-jpg" onclick={this.startJPGTranscode}>
+              <Button id="createTooltip" color="primary">Extract JPGs</Button>
+            </Link>
+            <Link to="/">
+              <Button id="createTooltip" color="primary">Back to menu</Button>
+            </Link>
+            <Link to="/transcode-png" onclick={this.startPNGTranscode}>
+              <Button id="createTooltip" color="primary">Extract PNGs</Button>
+            </Link>
+          </div>
         </div>
         <Tooltip placement="left" isOpen={this.state.frameNumbersTooltipOpen} target="frameNumbersToolTip" toggle={this.toggleFrameNumbersTooltipOpen}>
           Frame numbers must be zero based, one on each line.

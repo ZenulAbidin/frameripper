@@ -1,10 +1,8 @@
 import React from "react";
-import SelectedComponent from "./SelectedComponents.js";
 import {Link} from "react-router-dom";
 import {Button, Container, Row, Col, Tooltip, Jumbotron,
     Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 
-var process = require('process');
 const address = "http://iamomegastorm.tk:3030";
 
 class Index extends React.Component {
@@ -125,27 +123,29 @@ class Index extends React.Component {
   render() {
     return (
       <>
-        <h1>Projects</h1>
-        <h3>Select a project to open</h3>
-        <div>
-          <Jumbotron>
-            <Container>
-              <Row>
-                {this.buttonList()}
-              </Row>
-            </Container>
-          </Jumbotron>
-        </div>
-        <div>
-          <Link to="/new">
-            <Button id="newTooltip" color="primary">New</Button>
-          </Link>
-          <Link to="/select">
-            <Button id="openTooltip" color="primary" disabled={this.state.currentProject === null}>Open</Button>
-          </Link>
-          <Link to="/">
-            <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
-          </Link>
+        <div style={{marginLeft: '10px', marginTop: '10px'}}>
+          <h1>Projects</h1>
+          <h3>Select a project to open</h3>
+          <div>
+            <Jumbotron>
+              <Container>
+                <Row>
+                  {this.buttonList()}
+                </Row>
+              </Container>
+            </Jumbotron>
+          </div>
+          <div>
+            <Link to="/new">
+              <Button id="newTooltip" color="primary">New</Button>
+            </Link>
+            <Link to="/select">
+              <Button id="openTooltip" color="primary" disabled={this.state.currentProject === null}>Open</Button>
+            </Link>
+            <Link to="/">
+              <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
+            </Link>
+          </div>
         </div>
         <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={this.toggleNewTooltip}>
           Creates a new project.
