@@ -26,6 +26,7 @@ class Index extends React.Component {
     this.deleteProject = this.deleteProject.bind(this);
     this.buttonList = this.buttonList.bind(this);
     this.setStateCurrentProject = this.setStateCurrentProject.bind(this);
+    this.setCurrentProject = this.setCurrentProject.bind(this);
   }
 
   toggleNewTooltip() {
@@ -105,6 +106,19 @@ class Index extends React.Component {
     });
   }
 
+  setCurrentProject() {
+    body = {'currentProject': this.state.currentProject};
+    // send POST request
+    fetch(address+'/currentproject', {
+        method: 'post',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    }).then(res => {
+    	if (!res.ok) {
+        console.error(`POST /currentproject with body ${JSON.stringify(body)} at Index: ${res.status} ${res.statusText}`);
+      }
+    });
+  }
 
   render() {
     return (
