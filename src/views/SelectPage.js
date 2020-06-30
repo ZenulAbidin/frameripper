@@ -26,6 +26,12 @@ class SelectPage extends React.Component {
     this.sendOKRequest = this.sendOKRequest.bind(this);
   }
 
+  toggleMenuTooltipOpen() {
+    this.setState({
+      menuTooltipOpen: !this.state.menuTooltipOpen
+    });
+  }
+
   componentDidMount() {
     document.body.classList.toggle("select-page");
     fetch(address+'/currentproject').then(res => {
@@ -172,16 +178,22 @@ class SelectPage extends React.Component {
             <Link to="/transcode-jpg" onclick={this.startJPGTranscode}>
               <Button id="createTooltip" color="primary">Extract JPGs</Button>
             </Link>
-            <Link to="/">
-              <Button id="createTooltip" color="primary">Back to menu</Button>
+            <Link to="/settings">
+              <Button id="settingsTooltip" color="primary">Settings</Button>
             </Link>
             <Link to="/transcode-png" onclick={this.startPNGTranscode}>
               <Button id="createTooltip" color="primary">Extract PNGs</Button>
+            </Link>
+           <Link to="/">
+              <Button id="menuTooltip" color="primary">Back to menu</Button>
             </Link>
           </div>
         </div>
         <Tooltip placement="left" isOpen={this.state.frameNumbersTooltipOpen} target="frameNumbersToolTip" toggle={this.toggleFrameNumbersTooltipOpen}>
           Frame numbers must be zero based, one on each line.
+        </Tooltip>
+        <Tooltip placement="left" isOpen={this.state.menuTooltipOpen} target="menuTooltip" toggle={this.toggleMenuTooltipOpen}>
+          Cancel changes and return to main menu.
         </Tooltip>
       </>
     );
