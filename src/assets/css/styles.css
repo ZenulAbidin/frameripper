@@ -30,7 +30,7 @@
 
 .container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 .container__child {
   margin-bottom: 1rem
