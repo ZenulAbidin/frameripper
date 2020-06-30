@@ -66,20 +66,20 @@ class SelectPage extends React.Component {
         console.error(`GET /frameslist at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
       }
     })
-    document.body.classList.toggle("select-page");
     fetch(address+'/numframes').then(res => {
       if (res.ok) {
         res.json().then(json => {
           this.setState({
             numFrames: json.numFrames
           });
-          console.log(json.numFrames);
+          console.log(this.state.numFrames);
         })
       }
       else {
         console.error(`GET /numframes at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
       }
     });
+    document.body.classList.toggle("select-page");
   }
   componentWillUnmount() {
     document.body.classList.toggle("select-page");
