@@ -171,19 +171,19 @@ class SelectPage extends React.Component {
           <Form>
             <FormGroup style={{marginRight: '1rem'}}>
               <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
-              <Input type="textarea" id="inputFrameNumbers" onchange={e => this.validateFrameNumbersInput(e)} className={(this.state.invalid ? 'input_invalid' : null)} />
+              <Input type="textarea" id="inputFrameNumbers" onChange={e => this.validateFrameNumbersInput(e)} className={(this.state.invalid ? 'input_invalid' : null)} />
               {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
             </FormGroup>
           </Form>
           <div className='container'>
             <div className='centered-horz' style={{width: '50vw'}}>
-              <Link to="/transcode-jpg" onclick={this.startJPGTranscode} className='container__child'>
+              <Link to="/transcode-jpg" onClick={this.startJPGTranscode} className='container__child'>
                 <Button id="createTooltip" color="primary">Extract JPGs</Button>
               </Link>
               <Link to="/settings" className='container__child'>
                 <Button id="settingsTooltip" color="primary">Settings</Button>
               </Link>
-              <Link to="/transcode-png" onclick={this.startPNGTranscode} className='container__child'>
+              <Link to="/transcode-png" onClick={this.startPNGTranscode} className='container__child'>
                 <Button id="createTooltip" color="primary">Extract PNGs</Button>
               </Link>
              <Link to="/" className='container__child'>
