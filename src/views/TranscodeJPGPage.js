@@ -109,10 +109,8 @@ class TranscodeJPGPage extends React.Component {
   render() {
     return (
       <>
-        <div style={{marginLeft: '10px', marginTop: '10px'}}>
-          <h1 style={{textAlign: 'center'}}>Frameripper by Zenul_Abidin</h1>
-          {this.state.completed ? this.displayComplete() : this.displayIncomplete()}
-        </div>
+        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
+        {this.state.completed ? this.displayComplete() : this.displayIncomplete()}
       </>
     );
   }
