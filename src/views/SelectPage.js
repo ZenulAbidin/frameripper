@@ -158,7 +158,7 @@ class SelectPage extends React.Component {
       <>
         <div style={{marginLeft: '10px', marginTop: '10px'}}>
           <h1 style={{textAlign: 'center'}}>Frameripper by Zenul_Abidin</h1>
-          <h3>Select frames for {this.state.project}</h3>
+          <h3 style={{textAlign: 'center'}}>Select frames for {this.state.project}</h3>
           <div>
             <Form>
               <FormGroup>

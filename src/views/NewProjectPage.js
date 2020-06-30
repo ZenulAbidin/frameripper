@@ -170,7 +170,7 @@ class NewProjectPage extends React.Component {
       <>
         <div style={{marginLeft: '10px', marginTop: '10px'}}>
           <h1 style={{textAlign: 'center'}}>Frameripper by Zenul_Abidin</h1>
-          <h3>New Project</h3>
+          <h3 style={{textAlign: 'center'}}>New Project</h3>
           <div>
             <Form>
               <FormGroup row>
