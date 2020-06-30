@@ -169,7 +169,7 @@ class SelectPage extends React.Component {
         <h3 style={{textAlign: 'center'}}>Select frames for {this.state.project}</h3>
         <div style={{marginLeft: '1rem'}}>
           <Form>
-            <FormGroup>
+            <FormGroup style={{marginRight: '1rem'}}>
               <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
               <Input type="textarea" id="inputFrameNumbers" onchange={e => this.validateFrameNumbersInput(e)} className={(this.state.invalid ? 'input_invalid' : null)} />
               {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
