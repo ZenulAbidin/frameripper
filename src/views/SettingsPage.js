@@ -33,7 +33,7 @@ class SettingsPage extends React.Component {
       if (res.ok) {
         res.json().then(json => {
           this.setState({
-            project: json.project
+            project: json.currentProject
           });
         })
       }
