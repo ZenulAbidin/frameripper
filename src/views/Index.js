@@ -124,7 +124,7 @@ class Index extends React.Component {
     return (
       <>
         <div style={{marginLeft: '10px', marginTop: '10px'}}>
-          <h1>Projects</h1>
+          <h1 style={{textAlign: 'center'}}>Frameripper by Zenul_Abidin</h1>
           <h3>Select a project to open</h3>
           <div>
             <Jumbotron>
