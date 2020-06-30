@@ -176,7 +176,7 @@ class SelectPage extends React.Component {
             </FormGroup>
           </Form>
           <div className='container'>
-            <div className='centered-horz'>
+            <div className='centered-horz' style={{width: '50vw'}}>
               <Link to="/transcode-jpg" onclick={this.startJPGTranscode} className='container__child'>
                 <Button id="createTooltip" color="primary">Extract JPGs</Button>
               </Link>
