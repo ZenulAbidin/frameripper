@@ -117,7 +117,7 @@ class SelectPage extends React.Component {
     return (
       <>
         <FormFeedback>Please ensure your input has only a single number{' '}
-          on each line and all of the numbers are between 0 and {this.state.numFrames-1} (Blank lines are ignored,{' '}
+          on each line and all of the numbers are between 1 and {this.state.numFrames} (Blank lines are ignored,{' '}
           scientific numbers will be truncated).</FormFeedback>
       </>
     );
