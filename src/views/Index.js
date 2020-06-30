@@ -125,7 +125,7 @@ class Index extends React.Component {
       <>
         <div style={{marginLeft: '10px', marginTop: '10px'}}>
           <h1 style={{textAlign: 'center'}}>Frameripper by Zenul_Abidin</h1>
-          <h3>Select a project to open</h3>
+          <h3> style={{textAlign: 'center'}}Select a project to open</h3>
           <div>
             <Jumbotron>
               <Container>
@@ -135,17 +135,19 @@ class Index extends React.Component {
               </Container>
             </Jumbotron>
           </div>
+          <div style={{display: 'inline-block'}}>
+            <div style={{textAlign: 'center'}}>
+              <Link to="/new">
+                <Button id="newTooltip" color="primary">New</Button>
+              </Link>
+              <Link to="/select">
+                <Button id="openTooltip" color="primary" disabled={this.state.currentProject === null}>Open</Button>
+              </Link>
+              <Link to="/">
+                <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
+              </Link>
+            </div>
           <div>
-            <Link to="/new">
-              <Button id="newTooltip" color="primary">New</Button>
-            </Link>
-            <Link to="/select">
-              <Button id="openTooltip" color="primary" disabled={this.state.currentProject === null}>Open</Button>
-            </Link>
-            <Link to="/">
-              <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
-            </Link>
-          </div>
         </div>
         <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={this.toggleNewTooltip}>
           Creates a new project.
