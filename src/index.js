@@ -1,7 +1,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.css';
 import "assets/css/styles.css";
@@ -13,8 +13,6 @@ import TranscodeJPGPage from "views/TranscodeJPGPage.js";
 import SelectPage from "views/SelectPage.js";
 import SettingsPage from "views/SettingsPage.js";
 import TranscodePNGPage from "views/TranscodePNGPage.js";
-
-var process = require('process');
 
 
 const address = "http://iamomegastorm.tk:3030";
