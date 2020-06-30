@@ -167,7 +167,7 @@ class SelectPage extends React.Component {
       <>
         <h1 className='title'>Frameripper by Zenul_Abidin</h1>
         <h3 style={{textAlign: 'center'}}>Select frames for {this.state.project}</h3>
-        <div>
+        <div {{marginLeft: '1rem'}}>
           <Form>
             <FormGroup>
               <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
