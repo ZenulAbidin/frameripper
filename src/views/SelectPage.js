@@ -176,7 +176,7 @@ class SelectPage extends React.Component {
           <Form>
             <FormGroup style={{marginRight: '1rem'}}>
               <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
-              <Input type="textarea" id="inputFrameNumbers" onChange={e => this.validateFrameNumbersInput(e)} (this.state.frameNumbersInvalid ? invalid : null) />
+              <Input type="textarea" id="inputFrameNumbers" onChange={e => this.validateFrameNumbersInput(e)} {this.state.frameNumbersInvalid ? invalid : null} />
               {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
             </FormGroup>
           </Form>
