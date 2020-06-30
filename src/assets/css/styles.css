@@ -30,6 +30,7 @@
 
 .container {
   display: flex;
+  justify-content: space-between;
 }
 
 .height_50 {
