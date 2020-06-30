@@ -21,12 +21,15 @@
 }
 
 .centered-horz {
-  width: 30vw;
+  width: 33vw;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: center;
-  margin-left: 30vw;
+}
+
+.container {
+  display: flex;
 }
 
 .height_50 {
