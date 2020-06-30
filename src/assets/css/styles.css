@@ -32,6 +32,9 @@
   display: flex;
   justify-content: space-between;
 }
+.container__child {
+  margin-bottom: 1rem
+}
 
 .height_50 {
   height: 50vh;

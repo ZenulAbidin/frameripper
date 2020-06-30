@@ -96,7 +96,7 @@ class Index extends React.Component {
     return (
       this.state.projects.map(project => (
       <Col sm="4" key={project}>
-            <Button color="info" active={this.state.currentProject === project} onClick={() => this.setStateCurrentProject(project)}>{project}</Button>
+            <Button color="info" className='container__child' active={this.state.currentProject === project} onClick={() => this.setStateCurrentProject(project)}>{project}</Button>
       </Col>))
     )
   }
@@ -137,13 +137,13 @@ class Index extends React.Component {
         </div>
         <div className='container'>
           <div className='centered-horz'>
-            <Link to="/new">
+            <Link to="/new" className='container__child'>
               <Button id="newTooltip" color="primary">New</Button>
             </Link>
-            <Link to="/select">
+            <Link to="/select" className='container__child'>
               <Button id="openTooltip" color="primary" disabled={this.state.currentProject === null}>Open</Button>
             </Link>
-            <Link to="/">
+            <Link to="/" className='container__child'>
               <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
             </Link>
           </div>
