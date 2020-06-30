@@ -1,7 +1,7 @@
 import React from "react";
 import "../assets/css/styles.css";
 import {Link} from "react-router-dom";
-import {Form, FormGroup, FormFeedBack, Button, Input, Label, Tooltip} from "reactstrap";
+import {Form, FormGroup, FormFeedback, Button, Input, Label, Tooltip} from "reactstrap";
 
 const address = "http://iamomegastorm.tk:3030";
 
