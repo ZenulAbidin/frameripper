@@ -72,7 +72,6 @@ class SelectPage extends React.Component {
           this.setState({
             numFrames: json.numFrames
           });
-          console.log(this.state.numFrames);
         })
       }
       else {
@@ -131,6 +130,7 @@ class SelectPage extends React.Component {
       });
     }
     if (this.state.numFrames !== 0) {
+      console.log('I was here')
       var nums = e.target.value.split('\n');
       var frames = [];
       for (var i = 0; i < nums.length; i++) {
