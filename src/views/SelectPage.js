@@ -45,9 +45,8 @@ class SelectPage extends React.Component {
     fetch(address+'/currentproject').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          console.log(json.project);
           this.setState({
-            project: json.project
+            project: json.currentProject
           });
         })
       }
