@@ -16,6 +16,6 @@
   height: 100vh; /* Magic here */
   display: flex;
   flex-flow: column wrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
