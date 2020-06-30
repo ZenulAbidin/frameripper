@@ -73,6 +73,7 @@ class SelectPage extends React.Component {
           this.setState({
             numFrames: json.numFrames
           });
+          console.log(json.numFrames);
         })
       }
       else {
