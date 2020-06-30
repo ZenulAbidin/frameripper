@@ -124,6 +124,8 @@ class SelectPage extends React.Component {
   }
 
   validateFrameNumbersInput(e) {
+    console.log(e.target.value)
+    console.log('CAN YOU HEAR ME???')
     if (e.target.value.length === 0) {
       this.setState({
         frameNumbersInvalid: true
