@@ -19,3 +19,16 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.centered-horz {
+  height: 100vh; /* Magic here */
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.height_25 {
+  height: 50vh;
+}
+

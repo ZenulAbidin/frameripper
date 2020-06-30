@@ -33,7 +33,7 @@ class TranscodeJPGPage extends React.Component {
         console.error(`GET /currentproject at TranscodeJPGPage: ${res.status} ${res.statusText}`);
       }
     })
-    this.interval = setInterval(this.queryComplete, 500);
+    this.interval = setInterval(this.queryComplete, 1000);
   }
 
   queryComplete() {
@@ -84,7 +84,7 @@ class TranscodeJPGPage extends React.Component {
           </div>
             <h3>Extracting JPG frames, please wait...</h3>
           <Link to="/">
-            <Button color="primary" onclick={this.abortTranscode}>Cancel</Button>
+            <Button color="primary" onClick={this.abortTranscode}>Cancel</Button>
           </Link>
         </div>
       </>

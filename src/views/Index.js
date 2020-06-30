@@ -136,7 +136,7 @@ class Index extends React.Component {
               </Container>
             </Jumbotron>
           </div>
-          <div className='centered'>
+          <div className='centered-horz'>
             <Link to="/new">
               <Button id="newTooltip" color="primary">New</Button>
             </Link>
