@@ -143,6 +143,7 @@ class SelectPage extends React.Component {
           break;
         } else {
           frames.push(n);
+          invalid = false;
         }
       }
     }
