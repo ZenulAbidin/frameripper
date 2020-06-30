@@ -108,12 +108,17 @@ class SelectPage extends React.Component {
   
 
   frameNumbersHelpText() {
-    return (
-      <>
+/*
         <span className="small invalid_text">Please ensure your input has only a single number{' '}
           on each line and all of the numbers are between 0 and {this.state.numFrames-1} (Blank lines are ignored,{' '}
           scientific numbers will be truncated).
         </span>
+*/
+    return (
+      <>
+        <FormFeedback>Please ensure your input has only a single number{' '}
+          on each line and all of the numbers are between 0 and {this.state.numFrames-1} (Blank lines are ignored,{' '}
+          scientific numbers will be truncated).</FormFeedback>
       </>
     );
   }
@@ -171,7 +176,7 @@ class SelectPage extends React.Component {
           <Form>
             <FormGroup style={{marginRight: '1rem'}}>
               <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
-              <Input type="textarea" id="inputFrameNumbers" onChange={e => this.validateFrameNumbersInput(e)} className={(this.state.invalid ? 'input_invalid' : null)} />
+              <Input type="textarea" id="inputFrameNumbers" onChange={e => this.validateFrameNumbersInput(e)} (this.state.frameNumbersInvalid ? invalid : null) />
               {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
             </FormGroup>
           </Form>
