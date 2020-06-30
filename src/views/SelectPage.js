@@ -16,6 +16,7 @@ class SelectPage extends React.Component {
       project: null,
       inputFrameNumbers: "",
       frameNumbersInvalid: false,
+      menuTooltipOpen: false,
     };
 
     this.toggleFrameNumbersTooltipOpen = this.toggleFrameNumbersTooltipOpen.bind(this);

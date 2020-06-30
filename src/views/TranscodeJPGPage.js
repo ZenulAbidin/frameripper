@@ -80,7 +80,7 @@ class TranscodeJPGPage extends React.Component {
         <div className='centered height_50'>
           <h1>Transcoding {this.state.project} JPGs</h1>
           <div style={{ alignSelf: "center", width: '6rem', height: '6rem' }}>
-            <Spinner type="grow" color="info" />
+            <Spinner style={{ width: '96px', height: '96px' }} type="grow" color="info" />
           </div>
             <h3>Extracting JPG frames, please wait...</h3>
           <Link to="/">
