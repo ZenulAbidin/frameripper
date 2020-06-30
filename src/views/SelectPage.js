@@ -129,8 +129,8 @@ class SelectPage extends React.Component {
         frameNumbersInvalid: true
       });
     }
+    invalid = false;
     if (this.state.numFrames !== 0) {
-      console.log('I was here')
       var nums = e.target.value.split('\n');
       var frames = [];
       for (var i = 0; i < nums.length; i++) {
@@ -139,16 +139,19 @@ class SelectPage extends React.Component {
           this.setState({
             frameNumbersInvalid: true
           });
+          invalid = true;
           break;
         } else {
           frames.push(n);
         }
       }
     }
-    this.setState({
-      framesList: frames,
-      frameNumbersInvalid: false
-    });
+    if (!invalid) {
+      this.setState({
+        framesList: frames,
+        frameNumbersInvalid: false
+      });
+    }
   }
 
   startJPGTranscode() {
