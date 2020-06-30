@@ -11,3 +11,10 @@
 	margin: -10px 15px 0 15px;
 	width: fit-content;
 }
+
+.centered {
+  height: 100vh; /* Magic here */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

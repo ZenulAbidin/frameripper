@@ -1,7 +1,8 @@
 import React from "react";
 import {Checkmark} from 'react-checkmark';
 import {Link} from "react-router-dom";
-import {Spinner, Button, Col} from "reactstrap";
+import {Spinner, Button} from "reactstrap";
+import "../assets/css/styles.css";
 
 const address = "http://iamomegastorm.tk:3030";
 
@@ -76,17 +77,15 @@ class TranscodeJPGPage extends React.Component {
   displayIncomplete() {
     return (
       <>
-        <div style={{display: 'inline-block'}}>
-          <div style={{textAlign: 'center'}}>
-            <h1>Transcoding {this.state.project} JPGs</h1>
-            <div style={{ alignSelf: "center", width: '6rem', height: '6rem' }}>
-              <Spinner type="grow" color="info" />
-            </div>
-              <h3>Extracting JPG frames, please wait...</h3>
-            <Link to="/">
-              <Button color="primary" onclick={this.abortTranscode}>Cancel</Button>
-            </Link>
+        <div className='centered'>
+          <h1>Transcoding {this.state.project} JPGs</h1>
+          <div style={{ alignSelf: "center", width: '6rem', height: '6rem' }}>
+            <Spinner type="grow" color="info" />
           </div>
+            <h3>Extracting JPG frames, please wait...</h3>
+          <Link to="/">
+            <Button color="primary" onclick={this.abortTranscode}>Cancel</Button>
+          </Link>
         </div>
       </>
     );
@@ -95,15 +94,13 @@ class TranscodeJPGPage extends React.Component {
   displayComplete() {
     return (
       <>
-        <div style={{display: 'inline-block'}}>
-          <div style={{textAlign: 'center'}}>
-            <h1 style={{textAlign: 'center'}}>Transcoding {this.state.project} JPGs</h1>
-            <Checkmark size='xxLarge' />
-            <h3>All JPG frames extracted</h3>
-            <Link to="/select">
-              <Button color="primary">OK</Button>
-            </Link>
-          </div>
+        <div className='centered'>
+          <h1 style={{textAlign: 'center'}}>Transcoding {this.state.project} JPGs</h1>
+          <Checkmark size='xxLarge' />
+          <h3>All JPG frames extracted</h3>
+          <Link to="/select">
+            <Button color="primary">OK</Button>
+          </Link>
         </div>
       </>
     );

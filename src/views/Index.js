@@ -135,18 +135,16 @@ class Index extends React.Component {
               </Container>
             </Jumbotron>
           </div>
-          <div style={{display: 'inline-block'}}>
-            <div style={{textAlign: 'center'}}>
-              <Link to="/new">
-                <Button id="newTooltip" color="primary">New</Button>
-              </Link>
-              <Link to="/select">
-                <Button id="openTooltip" color="primary" disabled={this.state.currentProject === null}>Open</Button>
-              </Link>
-              <Link to="/">
-                <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
-              </Link>
-            </div>
+          <div className='centered'>
+            <Link to="/new">
+              <Button id="newTooltip" color="primary">New</Button>
+            </Link>
+            <Link to="/select">
+              <Button id="openTooltip" color="primary" disabled={this.state.currentProject === null}>Open</Button>
+            </Link>
+            <Link to="/">
+              <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
+            </Link>
           </div>
         </div>
         <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={this.toggleNewTooltip}>

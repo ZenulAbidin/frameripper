@@ -1,7 +1,8 @@
 import React from "react";
 import {Checkmark} from 'react-checkmark';
 import {Link} from "react-router-dom";
-import {Spinner, Button, Col} from "reactstrap";
+import {Spinner, Button} from "reactstrap";
+import "../assets/css/styles.css";
 
 const address = "http://iamomegastorm.tk:3030";
 
