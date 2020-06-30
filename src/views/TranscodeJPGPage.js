@@ -77,7 +77,7 @@ class TranscodeJPGPage extends React.Component {
   displayIncomplete() {
     return (
       <>
-        <div className='centered'>
+        <div className='centered height_50'>
           <h1>Transcoding {this.state.project} JPGs</h1>
           <div style={{ alignSelf: "center", width: '6rem', height: '6rem' }}>
             <Spinner type="grow" color="info" />
@@ -94,7 +94,7 @@ class TranscodeJPGPage extends React.Component {
   displayComplete() {
     return (
       <>
-        <div className='centered'>
+        <div className='centered height_50'>
           <h1 style={{textAlign: 'center'}}>Transcoding {this.state.project} JPGs</h1>
           <Checkmark size='xxLarge' />
           <h3>All JPG frames extracted</h3>
