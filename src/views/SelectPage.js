@@ -145,10 +145,11 @@ class SelectPage extends React.Component {
           frames.push(n);
         }
       }
+    } else {
     }
     this.setState({
       framesList: frames,
-      frameNumbersInvalid: false
+      frameNumbersInvalid: true
     });
   }
 
