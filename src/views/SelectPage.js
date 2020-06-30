@@ -129,7 +129,7 @@ class SelectPage extends React.Component {
         frameNumbersInvalid: true
       });
     }
-    invalid = false;
+    var invalid = false;
     if (this.state.numFrames !== 0) {
       var nums = e.target.value.split('\n');
       var frames = [];
