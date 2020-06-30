@@ -20,6 +20,7 @@ class SelectPage extends React.Component {
     };
 
     this.toggleFrameNumbersTooltipOpen = this.toggleFrameNumbersTooltipOpen.bind(this);
+    this.toggleMenuTooltipOpen = this.toggleMenuTooltipOpen.bind(this);
     this.frameNumbersHelpText = this.frameNumbersHelpText.bind(this);
     this.validateFrameNumbersInput = this.validateFrameNumbersInput.bind(this);
     this.startJPGTranscode = this.startJPGTranscode.bind(this);
@@ -30,6 +31,12 @@ class SelectPage extends React.Component {
   toggleMenuTooltipOpen() {
     this.setState({
       menuTooltipOpen: !this.state.menuTooltipOpen
+    });
+  }
+
+  toggleFrameNumbersTooltipOpen() {
+    this.setState({
+      frameNumbersTooltipOpen: !this.state.frameNumbersTooltipOpen
     });
   }
 
@@ -99,11 +106,6 @@ class SelectPage extends React.Component {
   componentDidUpdate(prevProps, prevState) {
   }
   
-  toggleFrameNumbersTooltipOpen() {
-    this.setState({
-      frameNumbersTooltipOpen: !this.state.frameNumbersTooltipOpen
-    });
-  }
 
   frameNumbersHelpText() {
     return (
@@ -173,20 +175,22 @@ class SelectPage extends React.Component {
               {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
             </FormGroup>
           </Form>
-        </div>
-        <div>
-          <Link to="/transcode-jpg" onclick={this.startJPGTranscode}>
-            <Button id="createTooltip" color="primary">Extract JPGs</Button>
-          </Link>
-          <Link to="/settings">
-            <Button id="settingsTooltip" color="primary">Settings</Button>
-          </Link>
-          <Link to="/transcode-png" onclick={this.startPNGTranscode}>
-            <Button id="createTooltip" color="primary">Extract PNGs</Button>
-          </Link>
-         <Link to="/">
-            <Button id="menuTooltip" color="primary">Back to menu</Button>
-          </Link>
+          <div className='container'>
+            <div className='centered-horz'>
+              <Link to="/transcode-jpg" onclick={this.startJPGTranscode} className='container__child'>
+                <Button id="createTooltip" color="primary">Extract JPGs</Button>
+              </Link>
+              <Link to="/settings" className='container__child'>
+                <Button id="settingsTooltip" color="primary">Settings</Button>
+              </Link>
+              <Link to="/transcode-png" onclick={this.startPNGTranscode} className='container__child'>
+                <Button id="createTooltip" color="primary">Extract PNGs</Button>
+              </Link>
+             <Link to="/" className='container__child'>
+                <Button id="menuTooltip" color="primary">Back to menu</Button>
+              </Link>
+            </div>
+          </div>
         </div>
         <Tooltip placement="left" isOpen={this.state.frameNumbersTooltipOpen} target="frameNumbersToolTip" toggle={this.toggleFrameNumbersTooltipOpen}>
           Frame numbers must be zero based, one on each line.

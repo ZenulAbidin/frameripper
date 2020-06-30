@@ -129,7 +129,7 @@ class SettingsPage extends React.Component {
       <>
         <h1 className='title'>Frameripper by Zenul_Abidin</h1>
         <h3 style={{textAlign: 'center'}}>Settings for {this.state.project}</h3>
-        <div>
+        <div style={{marginLeft: '1rem'}}>
           <Form>
             <FormGroup row>
               <Label id="prefixTooltip" for="prefixInput" sm={2}>Prefix</Label>
@@ -145,12 +145,16 @@ class SettingsPage extends React.Component {
               </Col>
             </FormGroup>
           </Form>
-          <Link to="/select">
-            <Button id="createTooltip" color="primary" onClick={this.sendOKRequest}>Save</Button>
-          </Link>
-          <Link to="/">
-            <Button id="createTooltip" color="primary">Cancel</Button>
-          </Link>
+          <div className='container'>
+            <div className='centered-horz'>
+              <Link to="/select" className='container__child'>
+                <Button id="createTooltip" color="primary" onClick={this.sendOKRequest}>Save</Button>
+              </Link>
+              <Link to="/" className='container__child'>
+                <Button id="createTooltip" color="primary">Cancel</Button>
+              </Link>
+            </div>
+          </div>
         </div>
         <Tooltip placement="left" isOpen={this.state.prefixTooltipOpen} target="prefixTooltip" toggle={this.togglePrefixTooltipOpen}>
           The text to put at the beginning of each file name. The rest of the filename is the frame number counting from 0.

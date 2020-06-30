@@ -170,7 +170,7 @@ class NewProjectPage extends React.Component {
       <>
         <h1 className='title'>Frameripper by Zenul_Abidin</h1>
         <h3 style={{textAlign: 'center'}}>New Project</h3>
-        <div>
+        <div style={{marginLeft: '1rem'}}>
           <Form>
             <FormGroup row>
               <Label id="pathTooltip" for="pathInput" sm={2}>File Name</Label>
@@ -193,14 +193,16 @@ class NewProjectPage extends React.Component {
               </Col>
             </FormGroup>
           </Form>
-        </div>
-        <div>
-          <Link to="/select">
-            <Button id="createTooltip" color="primary" onClick={this.sendOKRequest}>Create</Button>
-          </Link>
-          <Link to="/">
-            <Button color="primary">Cancel</Button>
-          </Link>
+          <div className='container'>
+            <div className='centered-horz'>
+              <Link to="/select" className='container__child'>
+                <Button id="createTooltip" color="primary" onClick={this.sendOKRequest}>Create</Button>
+              </Link>
+              <Link to="/" className='container__child'>
+                <Button color="primary">Cancel</Button>
+              </Link>
+            </div>
+          </div>
         </div>
         <Tooltip placement="left" isOpen={this.state.pathTooltipOpen} target="pathTooltip" toggle={this.togglePathTooltipOpen}>
           Full path to the video.
