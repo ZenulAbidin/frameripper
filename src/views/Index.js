@@ -2,6 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {Button, Container, Row, Col, Tooltip, Jumbotron,
     Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
+import "../assets/css/styles.css";
 
 const address = "http://iamomegastorm.tk:3030";
 
