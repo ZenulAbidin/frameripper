@@ -168,41 +168,39 @@ class NewProjectPage extends React.Component {
   render() {
     return (
       <>
-        <div style={{marginLeft: '10px', marginTop: '10px'}}>
-          <h1 style={{textAlign: 'center'}}>Frameripper by Zenul_Abidin</h1>
-          <h3 style={{textAlign: 'center'}}>New Project</h3>
-          <div>
-            <Form>
-              <FormGroup row>
-                <Label id="pathTooltip" for="pathInput" sm={2}>File Name</Label>
-                <Col sm={6}>
-                  <Input type="text" id="pathInput" placeholder="video.mp4" onChange={e => this.validatePathInput(e)} className={(this.state.pathInputInvalid ? 'input_invalid' : null)} />
-                  {this.state.pathInputInvalid ? this.pathHelpText() : null}
-                </Col>
-              </FormGroup>
-              <FormGroup row>
-                <Label id="prefixTooltip" for="prefixInput" sm={2}>Prefix</Label>
-                <Col sm={6}>
-                  <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onChange={e => this.validatePrefixInput(e)} className={(this.state.prefixInputInvalid ? 'input_invalid' : null)} />
-                  {this.state.prefixInputInvalid ? this.prefixHelpText() : null}
-                </Col>
-              </FormGroup>
-              <FormGroup row>
-                <Label id="offsetTooltip" for="offsetInput" sm={2}>Frame offset</Label>
-                <Col sm={2} md={1}>
-                  <Input min={-10} max={10} id="offsetInput" type="number" step="1" placeholder="-2" onChange={e => this.setState({frameOffset: e.target.value})}/>
-                </Col>
-              </FormGroup>
-            </Form>
-          </div>
-          <div>
-            <Link to="/select">
-              <Button id="createTooltip" color="primary" onClick={this.sendOKRequest}>Create</Button>
-            </Link>
-            <Link to="/">
-              <Button color="primary">Cancel</Button>
-            </Link>
-          </div>
+        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
+        <h3 style={{textAlign: 'center'}}>New Project</h3>
+        <div>
+          <Form>
+            <FormGroup row>
+              <Label id="pathTooltip" for="pathInput" sm={2}>File Name</Label>
+              <Col sm={6}>
+                <Input type="text" id="pathInput" placeholder="video.mp4" onChange={e => this.validatePathInput(e)} className={(this.state.pathInputInvalid ? 'input_invalid' : null)} />
+                {this.state.pathInputInvalid ? this.pathHelpText() : null}
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label id="prefixTooltip" for="prefixInput" sm={2}>Prefix</Label>
+              <Col sm={6}>
+                <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onChange={e => this.validatePrefixInput(e)} className={(this.state.prefixInputInvalid ? 'input_invalid' : null)} />
+                {this.state.prefixInputInvalid ? this.prefixHelpText() : null}
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label id="offsetTooltip" for="offsetInput" sm={2}>Frame offset</Label>
+              <Col sm={2} md={1}>
+                <Input min={-10} max={10} id="offsetInput" type="number" step="1" placeholder="-2" onChange={e => this.setState({frameOffset: e.target.value})}/>
+              </Col>
+            </FormGroup>
+          </Form>
+        </div>
+        <div>
+          <Link to="/select">
+            <Button id="createTooltip" color="primary" onClick={this.sendOKRequest}>Create</Button>
+          </Link>
+          <Link to="/">
+            <Button color="primary">Cancel</Button>
+          </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.pathTooltipOpen} target="pathTooltip" toggle={this.togglePathTooltipOpen}>
           Full path to the video.

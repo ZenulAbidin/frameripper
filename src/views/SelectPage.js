@@ -163,32 +163,30 @@ class SelectPage extends React.Component {
   render() {
     return (
       <>
-        <div style={{marginLeft: '10px', marginTop: '10px'}}>
-          <h1 style={{textAlign: 'center'}}>Frameripper by Zenul_Abidin</h1>
-          <h3 style={{textAlign: 'center'}}>Select frames for {this.state.project}</h3>
-          <div>
-            <Form>
-              <FormGroup>
-                <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
-                <Input type="textarea" id="inputFrameNumbers" onchange={e => this.validateFrameNumbersInput(e)} className={(this.state.invalid ? 'input_invalid' : null)} />
-                {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
-              </FormGroup>
-            </Form>
-          </div>
-          <div>
-            <Link to="/transcode-jpg" onclick={this.startJPGTranscode}>
-              <Button id="createTooltip" color="primary">Extract JPGs</Button>
-            </Link>
-            <Link to="/settings">
-              <Button id="settingsTooltip" color="primary">Settings</Button>
-            </Link>
-            <Link to="/transcode-png" onclick={this.startPNGTranscode}>
-              <Button id="createTooltip" color="primary">Extract PNGs</Button>
-            </Link>
-           <Link to="/">
-              <Button id="menuTooltip" color="primary">Back to menu</Button>
-            </Link>
-          </div>
+        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
+        <h3 style={{textAlign: 'center'}}>Select frames for {this.state.project}</h3>
+        <div>
+          <Form>
+            <FormGroup>
+              <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
+              <Input type="textarea" id="inputFrameNumbers" onchange={e => this.validateFrameNumbersInput(e)} className={(this.state.invalid ? 'input_invalid' : null)} />
+              {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
+            </FormGroup>
+          </Form>
+        </div>
+        <div>
+          <Link to="/transcode-jpg" onclick={this.startJPGTranscode}>
+            <Button id="createTooltip" color="primary">Extract JPGs</Button>
+          </Link>
+          <Link to="/settings">
+            <Button id="settingsTooltip" color="primary">Settings</Button>
+          </Link>
+          <Link to="/transcode-png" onclick={this.startPNGTranscode}>
+            <Button id="createTooltip" color="primary">Extract PNGs</Button>
+          </Link>
+         <Link to="/">
+            <Button id="menuTooltip" color="primary">Back to menu</Button>
+          </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.frameNumbersTooltipOpen} target="frameNumbersToolTip" toggle={this.toggleFrameNumbersTooltipOpen}>
           Frame numbers must be zero based, one on each line.

@@ -127,32 +127,30 @@ class SettingsPage extends React.Component {
   render() {
     return (
       <>
-        <div style={{marginLeft: '10px', marginTop: '10px'}}>
-        <h1 style={{textAlign: 'center'}}>Frameripper by Zenul_Abidin</h1>
+        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
         <h3 style={{textAlign: 'center'}}>Settings for {this.state.project}</h3>
-          <div>
-            <Form>
-              <FormGroup row>
-                <Label id="prefixTooltip" for="prefixInput" sm={2}>Prefix</Label>
-                <Col sm={10}>
-                  <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onchange={e => this.validatePrefixInput(e)} className={(this.state.prefixInputInvalid ? 'input_invalid' : null)} />
-                  {this.state.prefixInputInvalid ? this.prefixHelpText() : null}
-                </Col>
-              </FormGroup>
-              <FormGroup row>
-                <Label id="offsetTooltip" for="offsetInput">Frame offset</Label>
-                <Col sm={10}>
-                  <Input min={-10} max={10} type="number" step="1" placeholder="-2" onchange={e => this.setState({frameOffset: e.target.value})} />
-                </Col>
-              </FormGroup>
-            </Form>
-            <Link to="/select">
-              <Button id="createTooltip" color="primary" onClick={this.sendOKRequest}>Save</Button>
-            </Link>
-            <Link to="/">
-              <Button id="createTooltip" color="primary">Cancel</Button>
-            </Link>
-          </div>
+        <div>
+          <Form>
+            <FormGroup row>
+              <Label id="prefixTooltip" for="prefixInput" sm={2}>Prefix</Label>
+              <Col sm={6}>
+                <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onChange={e => this.validatePrefixInput(e)} className={(this.state.prefixInputInvalid ? 'input_invalid' : null)} />
+                {this.state.prefixInputInvalid ? this.prefixHelpText() : null}
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label id="offsetTooltip" for="offsetInput" sm={2}>Frame offset</Label>
+              <Col sm={2} md={1}>
+                <Input min={-10} max={10} id="offsetInput" type="number" step="1" placeholder="-2" onChange={e => this.setState({frameOffset: e.target.value})}/>
+              </Col>
+            </FormGroup>
+          </Form>
+          <Link to="/select">
+            <Button id="createTooltip" color="primary" onClick={this.sendOKRequest}>Save</Button>
+          </Link>
+          <Link to="/">
+            <Button id="createTooltip" color="primary">Cancel</Button>
+          </Link>
         </div>
         <Tooltip placement="left" isOpen={this.state.prefixTooltipOpen} target="prefixTooltip" toggle={this.togglePrefixTooltipOpen}>
           The text to put at the beginning of each file name. The rest of the filename is the frame number counting from 0.

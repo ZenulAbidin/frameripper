@@ -124,29 +124,27 @@ class Index extends React.Component {
   render() {
     return (
       <>
-        <div style={{marginLeft: '10px', marginTop: '10px'}}>
-          <h1 style={{textAlign: 'center'}}>Frameripper by Zenul_Abidin</h1>
-          <h3 style={{textAlign: 'center'}}>Select a project to open</h3>
-          <div>
-            <Jumbotron>
-              <Container>
-                <Row>
-                  {this.buttonList()}
-                </Row>
-              </Container>
-            </Jumbotron>
-          </div>
-          <div className='centered-horz'>
-            <Link to="/new">
-              <Button id="newTooltip" color="primary">New</Button>
-            </Link>
-            <Link to="/select">
-              <Button id="openTooltip" color="primary" disabled={this.state.currentProject === null}>Open</Button>
-            </Link>
-            <Link to="/">
-              <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
-            </Link>
-          </div>
+        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
+        <h3 style={{textAlign: 'center'}}>Select a project to open</h3>
+        <div>
+          <Jumbotron>
+            <Container>
+              <Row>
+                {this.buttonList()}
+              </Row>
+            </Container>
+          </Jumbotron>
+        </div>
+        <div className='centered-horz'>
+          <Link to="/new">
+            <Button id="newTooltip" color="primary">New</Button>
+          </Link>
+          <Link to="/select">
+            <Button id="openTooltip" color="primary" disabled={this.state.currentProject === null}>Open</Button>
+          </Link>
+          <Link to="/">
+            <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
+          </Link>
         </div>
         <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={this.toggleNewTooltip}>
           Creates a new project.
