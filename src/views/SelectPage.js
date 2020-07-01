@@ -80,6 +80,7 @@ class SelectPage extends React.Component {
     this.setState({
       ogFramesList: this.state.framesList.join('\n')
     });
+    console.log(this.state.ogFramesList);
 
     document.body.classList.toggle("select-page");
   }
