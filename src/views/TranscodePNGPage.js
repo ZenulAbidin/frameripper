@@ -85,7 +85,7 @@ class TranscodePNGPage extends React.Component {
           </div>
             <h3>Extracting PNG frames, please wait...</h3>
           <Link to="/">
-            <Button color="primary" onclick={this.abortTranscode}>Cancel</Button>
+            <Button color="primary" onClick={this.abortTranscode}>Cancel</Button>
           </Link>
         </div>
       </>
