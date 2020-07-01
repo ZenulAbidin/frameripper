@@ -181,8 +181,9 @@ class SelectPage extends React.Component {
         <div style={{marginLeft: '1rem'}}>
           <Form>
             <FormGroup style={{marginRight: '1rem'}}>
-              <Label for="inputFrameNumbers" id="frameNumbersToolTip" value={this.state.framesList.join('\n')}>Frame numbers</Label>
-              <Input type="textarea" id="inputFrameNumbers" onChange={e => this.validateFrameNumbersInput(e)} invalid={this.state.frameNumbersInvalid ? true : false } />
+              <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
+              <Input type="textarea" id="inputFrameNumbers" onChange={e => this.validateFrameNumbersInput(e)} invalid={this.state.frameNumbersInvalid ? true : false } 
+                  value={this.state.framesList.join('\n')}/>
               {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
             </FormGroup>
           </Form>
