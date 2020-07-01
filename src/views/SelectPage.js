@@ -57,7 +57,7 @@ class SelectPage extends React.Component {
       if (res.ok) {
         res.json().then(json => {
           this.setState({
-            framesList: json.framesList
+            framesList: json.framesList,
             ogFramesList: json.framesList.join('\n')
           });
         })
