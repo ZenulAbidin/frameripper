@@ -141,7 +141,7 @@ class Index extends React.Component {
               <Button id="newTooltip" color="primary">New</Button>
             </Link>
             <Link to="/select" className='container__child'>
-              <Button id="openTooltip" color="primary" disabled={this.state.currentProject === null}>Open</Button>
+              <Button id="openTooltip" color="primary" disabled={this.state.currentProject === null} onClick={this.setCurrentProject}>Open</Button>
             </Link>
             <Link to="/" className='container__child'>
               <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>

@@ -16,7 +16,7 @@ class NewProjectPage extends React.Component {
       createTooltipOpen: false,
       path: "",
       prefix: "",
-      offset: null,
+      offset: -2,
       prefixInputInvalid: false,
       pathInputInvalid: false,
       projects: null

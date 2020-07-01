@@ -14,7 +14,7 @@ class SettingsPage extends React.Component {
       offsetTooltipOpen: false,
       saveTooltipOpen: false,
       prefix: "",
-      frameOffset: null,
+      frameOffset: -2,
       project: null,
       prefixInputInvalid: false,
     };
