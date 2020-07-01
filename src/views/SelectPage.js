@@ -17,6 +17,7 @@ class SelectPage extends React.Component {
       inputFrameNumbers: "",
       frameNumbersInvalid: false,
       menuTooltipOpen: false,
+      ogFramesList: "",
     };
 
     this.toggleFrameNumbersTooltipOpen = this.toggleFrameNumbersTooltipOpen.bind(this);
@@ -25,7 +26,6 @@ class SelectPage extends React.Component {
     this.validateFrameNumbersInput = this.validateFrameNumbersInput.bind(this);
     this.startJPGTranscode = this.startJPGTranscode.bind(this);
     this.startPNGTranscode = this.startPNGTranscode.bind(this);
-    this.inputRef = React.createRef();
   }
 
   toggleMenuTooltipOpen() {
@@ -77,7 +77,10 @@ class SelectPage extends React.Component {
         console.error(`GET /numframes at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
       }
     });
-    this.inputRef.current.value=this.state.framesList.join('\n')
+    this.setState({
+      ogFramesList: this.state.framesList.join('\n')
+    });
+
     document.body.classList.toggle("select-page");
   }
   componentWillUnmount() {
@@ -105,6 +108,9 @@ class SelectPage extends React.Component {
   }
 
   validateFrameNumbersInput(e) {
+    this.setState({
+      ogFramesList: e.target.value
+    });
     if (e.target.value.length === 0) {
       this.setState({
         frameNumbersInvalid: true
@@ -185,7 +191,7 @@ class SelectPage extends React.Component {
             <FormGroup style={{marginRight: '1rem'}}>
               <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
               <Input type="textarea" id="inputFrameNumbers" onChange={e => this.validateFrameNumbersInput(e)} invalid={this.state.frameNumbersInvalid ? true : false } 
-                  ref={this.inputRef}/>
+                  value={ogFramesList}/>
               {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
             </FormGroup>
           </Form>
