@@ -148,10 +148,10 @@ class SettingsPage extends React.Component {
           <div className='container'>
             <div className='centered-horz'>
               <Link to="/select" className='container__child'>
-                <Button id="createTooltip" color="primary" onClick={this.sendOKRequest}>Save</Button>
+                <Button id="saveTooltip" color="primary" onClick={this.sendOKRequest}>Save</Button>
               </Link>
               <Link to="/" className='container__child'>
-                <Button id="createTooltip" color="primary">Cancel</Button>
+                <Button color="primary">Cancel</Button>
               </Link>
             </div>
           </div>
