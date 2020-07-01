@@ -1,6 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {Form, FormGroup, Button, Col, Input, Label, Tooltip} from "reactstrap";
+import {Form, FormGroup, FormFeedback, Button, Col, Input, Label, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
 
 const address = "http://iamomegastorm.tk:3030";
@@ -135,9 +135,9 @@ class NewProjectPage extends React.Component {
   prefixHelpText() {
     return (
       <>
-        <span className="small invalid_text">Please ensure your prefix contains only {'".", "-", "_"'} and{' '}
+        <FormFeedback>Please ensure your prefix contains only {'".", "-", "_"'} and{' '}
           alphanumeric characters and is not empty.
-        </span>
+        </FormFeedback>
       </>
     );
   }
@@ -158,8 +158,8 @@ class NewProjectPage extends React.Component {
   pathHelpText() {
     return (
       <>
-        <span className="small invalid_text">Please ensure your file name is not empty.
-        </span>
+        <FormFeedback>Please ensure your file name is not empty.
+        </FormFeedback>
       </>
     );
   }
@@ -175,14 +175,14 @@ class NewProjectPage extends React.Component {
             <FormGroup row>
               <Label id="pathTooltip" for="pathInput" sm={2}>File Name</Label>
               <Col sm={6}>
-                <Input type="text" id="pathInput" placeholder="video.mp4" onChange={e => this.validatePathInput(e)} className={(this.state.pathInputInvalid ? 'input_invalid' : null)} />
+                <Input type="text" id="pathInput" placeholder="video.mp4" onChange={e => this.validatePathInput(e)} invalid={this.state.pathInputInvalid ? true : false} />
                 {this.state.pathInputInvalid ? this.pathHelpText() : null}
               </Col>
             </FormGroup>
             <FormGroup row>
               <Label id="prefixTooltip" for="prefixInput" sm={2}>Prefix</Label>
               <Col sm={6}>
-                <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onChange={e => this.validatePrefixInput(e)} className={(this.state.prefixInputInvalid ? 'input_invalid' : null)} />
+                <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onChange={e => this.validatePrefixInput(e)} invalid={this.state.prefixInputInvalid ? true : false} />
                 {this.state.prefixInputInvalid ? this.prefixHelpText() : null}
               </Col>
             </FormGroup>
