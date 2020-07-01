@@ -82,7 +82,7 @@ class TranscodePNGPage extends React.Component {
           <h1 style={{textAlign: 'center'}}>Transcoding {this.state.project} PNGs</h1>
           <div>
             <div style={{ alignSelf: "center", width: '6rem', height: '6rem' }}>
-              <Spinner type="grow" color="info" />
+              <Spinner style={{ width: '96px', height: '96px' }} type="grow" color="info" />
             </div>
             <h3>Extracting PNG frames, please wait...</h3>
           </div>
