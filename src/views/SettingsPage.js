@@ -148,7 +148,7 @@ class SettingsPage extends React.Component {
           <div className='container'>
             <div className='centered-horz'>
               <Link to="/select" className='container__child'>
-                <Button id="saveTooltip" color="primary" onClick={this.sendOKRequest}>Save</Button>
+                <Button id="saveTooltip" color="primary" disabled={this.state.prefixInputInvalid} onClick={this.sendOKRequest}>Save</Button>
               </Link>
               <Link to="/" className='container__child'>
                 <Button color="primary">Cancel</Button>

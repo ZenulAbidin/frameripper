@@ -196,7 +196,7 @@ class NewProjectPage extends React.Component {
           <div className='container'>
             <div className='centered-horz'>
               <Link to="/select" className='container__child'>
-                <Button id="createTooltip" color="primary" onClick={this.sendOKRequest}>Create</Button>
+                <Button id="createTooltip" color="primary" disabled={this.state.prefixInputInvalid || this.state.pathInputInvalid} onClick={this.sendOKRequest}>Create</Button>
               </Link>
               <Link to="/" className='container__child'>
                 <Button color="primary">Cancel</Button>
