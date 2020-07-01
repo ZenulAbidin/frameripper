@@ -25,7 +25,6 @@ class SelectPage extends React.Component {
     this.validateFrameNumbersInput = this.validateFrameNumbersInput.bind(this);
     this.startJPGTranscode = this.startJPGTranscode.bind(this);
     this.startPNGTranscode = this.startPNGTranscode.bind(this);
-    this.sendOKRequest = this.sendOKRequest.bind(this);
   }
 
   toggleMenuTooltipOpen() {
@@ -84,25 +83,6 @@ class SelectPage extends React.Component {
     document.body.classList.toggle("select-page");
   }
 
-  sendOKRequest() {
-    var body = {'framesList': this.state.framesList.split('\n')};
-    // send POST request
-    fetch(address+'/frameslist', {
-        method: 'post',
-        body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
-    }).then(res => {
-    	if (!res.ok) {
-        console.error(`POST /frameslist with body ${JSON.stringify(body)} at SelectPage: ${res.status} ${res.statusText}`);
-      }
-    });
-    fetch(address+'/startpngtranscode').then(res => {
-      if (!res.ok) {
-        console.error(`GET /startpngtranscode at SelectPage: ${res.status} ${res.statusText}`);
-      }
-    });
-  }
-
   componentDidUpdate(prevProps, prevState) {
   }
   
@@ -156,18 +136,40 @@ class SelectPage extends React.Component {
   }
 
   startJPGTranscode() {
-    this.sendOKRequest();
-    fetch(address+'/startjpgtranscode').then(res => {
-      if (!res.ok) {
-        console.error(`GET /startjpgtranscode at NewProjectPage: ${res.status} ${res.statusText}`);
+    var body = {'framesList': this.state.framesList.split('\n')};
+    // send POST request
+    fetch(address+'/frameslist', {
+        method: 'post',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    }).then(res => {
+    	if (!res.ok) {
+        console.error(`POST /frameslist with body ${JSON.stringify(body)} at SelectPage: ${res.status} ${res.statusText}`);
+      } else {
+        fetch(address+'/startjpgtranscode').then(res => {
+          if (!res.ok) {
+            console.error(`GET /startjpgtranscode at SelectPage: ${res.status} ${res.statusText}`);
+          }
+        });
       }
     });
   }
   startPNGTranscode() {
-    this.sendOKRequest();
-    fetch(address+'/startpngtranscode').then(res => {
-      if (!res.ok) {
-        console.error(`GET /startpngtranscode at NewProjectPage: ${res.status} ${res.statusText}`);
+    var body = {'framesList': this.state.framesList.split('\n')};
+    // send POST request
+    fetch(address+'/frameslist', {
+        method: 'post',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    }).then(res => {
+    	if (!res.ok) {
+        console.error(`POST /frameslist with body ${JSON.stringify(body)} at SelectPage: ${res.status} ${res.statusText}`);
+      } else {
+        fetch(address+'/startpngtranscode').then(res => {
+          if (!res.ok) {
+            console.error(`GET /startpngtranscode at SelectPage: ${res.status} ${res.statusText}`);
+          }
+        });
       }
     });
   }
@@ -188,13 +190,13 @@ class SelectPage extends React.Component {
           <div className='container'>
             <div className='centered-horz' style={{width: '50vw'}}>
               <Link to="/transcode-jpg" onClick={this.startJPGTranscode} className='container__child'>
-                <Button id="createTooltip" color="primary">Extract JPGs</Button>
+                <Button id="createTooltip" color="primary" disabled={this.state.frameNumbersInvalid}>Extract JPGs</Button>
               </Link>
               <Link to="/settings" className='container__child'>
-                <Button id="settingsTooltip" color="primary">Settings</Button>
+                <Button id="settingsTooltip" color="primary" disabled={this.state.frameNumbersInvalid}>Settings</Button>
               </Link>
               <Link to="/transcode-png" onClick={this.startPNGTranscode} className='container__child'>
-                <Button id="createTooltip" color="primary">Extract PNGs</Button>
+                <Button id="createTooltip" color="primary" disabled={this.state.frameNumbersInvalid}>Extract PNGs</Button>
               </Link>
              <Link to="/" className='container__child'>
                 <Button id="menuTooltip" color="primary">Back to menu</Button>
