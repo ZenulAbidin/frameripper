@@ -11,17 +11,23 @@ class SelectPage extends React.Component {
     super(props);
     this.state = {
       frameNumbersTooltipOpen: false,
+      menuTooltipOpen: false,
+      jpgTooltipOpen: false,
+      pngTooltipOpen: false,
+      settingsTooltipOpen: false,
       framesList: [],
       numFrames: 0,
       project: null,
       inputFrameNumbers: "",
       frameNumbersInvalid: false,
-      menuTooltipOpen: false,
       ogFramesList: "",
     };
 
     this.toggleFrameNumbersTooltipOpen = this.toggleFrameNumbersTooltipOpen.bind(this);
     this.toggleMenuTooltipOpen = this.toggleMenuTooltipOpen.bind(this);
+    this.toggleJPGTooltipOpen = this.toggleJPGTooltipOpen.bind(this);
+    this.togglePNGTooltipOpen = this.togglePNGTooltipOpen.bind(this);
+    this.toggleSettingsTooltipOpen = this.toggleSettingsTooltipOpen.bind(this);
     this.frameNumbersHelpText = this.frameNumbersHelpText.bind(this);
     this.validateFrameNumbersInput = this.validateFrameNumbersInput.bind(this);
     this.startJPGTranscode = this.startJPGTranscode.bind(this);
@@ -31,6 +37,24 @@ class SelectPage extends React.Component {
   toggleMenuTooltipOpen() {
     this.setState({
       menuTooltipOpen: !this.state.menuTooltipOpen
+    });
+  }
+
+  toggleJPGTooltipOpen() {
+    this.setState({
+      jpgTooltipOpen: !this.state.jpgTooltipOpen
+    });
+  }
+
+  togglePNGTooltipOpen() {
+    this.setState({
+      pngTooltipOpen: !this.state.pngTooltipOpen
+    });
+  }
+
+  toggleSettingsTooltipOpen() {
+    this.setState({
+      settingsTooltipOpen: !this.state.settingsTooltipOpen
     });
   }
 
@@ -78,8 +102,6 @@ class SelectPage extends React.Component {
         console.error(`GET /numframes at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
       }
     });
-    console.log(this.state.ogFramesList);
-
     document.body.classList.toggle("select-page");
   }
   componentWillUnmount() {
@@ -197,13 +219,13 @@ class SelectPage extends React.Component {
           <div className='container'>
             <div className='centered-horz' style={{width: '50vw'}}>
               <Link to="/transcode-jpg" onClick={this.startJPGTranscode} className='container__child'>
-                <Button id="createTooltip" color="primary" disabled={this.state.frameNumbersInvalid}>Extract JPGs</Button>
+                <Button id="jpgTooltip" color="primary" disabled={this.state.frameNumbersInvalid}>Extract JPGs</Button>
               </Link>
               <Link to="/settings" className='container__child'>
                 <Button id="settingsTooltip" color="primary" disabled={this.state.frameNumbersInvalid}>Settings</Button>
               </Link>
               <Link to="/transcode-png" onClick={this.startPNGTranscode} className='container__child'>
-                <Button id="createTooltip" color="primary" disabled={this.state.frameNumbersInvalid}>Extract PNGs</Button>
+                <Button id="pngTooltip" color="primary" disabled={this.state.frameNumbersInvalid}>Extract PNGs</Button>
               </Link>
              <Link to="/" className='container__child'>
                 <Button id="menuTooltip" color="primary">Back to menu</Button>
@@ -213,6 +235,15 @@ class SelectPage extends React.Component {
         </div>
         <Tooltip placement="left" isOpen={this.state.frameNumbersTooltipOpen} target="frameNumbersToolTip" toggle={this.toggleFrameNumbersTooltipOpen}>
           Frame numbers must be zero based, one on each line.
+        </Tooltip>
+        <Tooltip placement="left" isOpen={this.state.jpgTooltipOpen} target="jpgTooltip" toggle={this.toggleJPGTooltipOpen}>
+          Begin extracting JPG frames.
+        </Tooltip>
+        <Tooltip placement="left" isOpen={this.state.settingsTooltipOpen} target="settingsTooltip" toggle={this.toggleSettingsTooltipOpen}>
+          Change the settings for this project.
+        </Tooltip>
+        <Tooltip placement="left" isOpen={this.state.pngTooltipOpen} target="pngTooltip" toggle={this.togglePNGTooltipOpen}>
+          Begin extracting PNG frames.
         </Tooltip>
         <Tooltip placement="left" isOpen={this.state.menuTooltipOpen} target="menuTooltip" toggle={this.toggleMenuTooltipOpen}>
           Cancel changes and return to main menu.
