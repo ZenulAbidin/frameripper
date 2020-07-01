@@ -236,16 +236,16 @@ class SelectPage extends React.Component {
         <Tooltip placement="left" isOpen={this.state.frameNumbersTooltipOpen} target="frameNumbersToolTip" toggle={this.toggleFrameNumbersTooltipOpen}>
           Frame numbers must be zero based, one on each line.
         </Tooltip>
-        <Tooltip placement="left" isOpen={this.state.jpgTooltipOpen} target="jpgTooltip" toggle={this.toggleJPGTooltipOpen}>
+        <Tooltip placement="bottom" isOpen={this.state.jpgTooltipOpen} target="jpgTooltip" toggle={this.toggleJPGTooltipOpen}>
           Begin extracting JPG frames.
         </Tooltip>
-        <Tooltip placement="left" isOpen={this.state.settingsTooltipOpen} target="settingsTooltip" toggle={this.toggleSettingsTooltipOpen}>
+        <Tooltip placement="bottom" isOpen={this.state.settingsTooltipOpen} target="settingsTooltip" toggle={this.toggleSettingsTooltipOpen}>
           Change the settings for this project.
         </Tooltip>
-        <Tooltip placement="left" isOpen={this.state.pngTooltipOpen} target="pngTooltip" toggle={this.togglePNGTooltipOpen}>
+        <Tooltip placement="bottom" isOpen={this.state.pngTooltipOpen} target="pngTooltip" toggle={this.togglePNGTooltipOpen}>
           Begin extracting PNG frames.
         </Tooltip>
-        <Tooltip placement="left" isOpen={this.state.menuTooltipOpen} target="menuTooltip" toggle={this.toggleMenuTooltipOpen}>
+        <Tooltip placement="bottom" isOpen={this.state.menuTooltipOpen} target="menuTooltip" toggle={this.toggleMenuTooltipOpen}>
           Cancel changes and return to main menu.
         </Tooltip>
       </>
