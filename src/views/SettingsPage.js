@@ -162,7 +162,7 @@ class SettingsPage extends React.Component {
         <Tooltip placement="left" isOpen={this.state.offsetTooltipOpen} target="offsetTooltip" toggle={this.toggleOffsetTooltipOpen}>
           The change in frame number to pass to ffmpeg. Some videos do not have the frames of the stream counting from 0.
         </Tooltip>
-        <Tooltip placement="bottom" isOpen={this.state.saveTooltipOpen} target="saveTooltip" toggle={this.toggleSaveTooltip}>
+        <Tooltip placement="bottom" isOpen={this.state.saveTooltipOpen} target="saveTooltip" toggle={this.toggleSaveTooltipOpen}>
           Save the settings.
         </Tooltip>
       </>
