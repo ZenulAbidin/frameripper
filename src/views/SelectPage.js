@@ -77,7 +77,7 @@ class SelectPage extends React.Component {
         console.error(`GET /numframes at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
       }
     });
-    var e = document.getElementByID('inputFrameNumbers');
+    var e = document.getElementById('inputFrameNumbers');
     e.value = this.state.framesList.join('\n');
     document.body.classList.toggle("select-page");
   }
