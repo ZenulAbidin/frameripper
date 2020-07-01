@@ -58,6 +58,7 @@ class SelectPage extends React.Component {
         res.json().then(json => {
           this.setState({
             framesList: json.framesList
+            ogFramesList: json.framesList.join('\n')
           });
         })
       }
@@ -76,9 +77,6 @@ class SelectPage extends React.Component {
       else {
         console.error(`GET /numframes at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
       }
-    });
-    this.setState({
-      ogFramesList: this.state.framesList.join('\n')
     });
     console.log(this.state.ogFramesList);
 
