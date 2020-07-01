@@ -213,8 +213,8 @@ class NewProjectPage extends React.Component {
         <Tooltip placement="left" isOpen={this.state.offsetTooltipOpen} target="offsetTooltip" toggle={this.toggleOffsetTooltipOpen}>
           The change in frame number to pass to ffmpeg. Some videos do not have the frames of the stream counting from 0.
         </Tooltip>
-        <Tooltip placement="bottom" isOpen={this.state.createTooltipOpen} target="createTooltip" toggle={this.toggleCreateTooltip}>
-          Go to the transcoding page
+        <Tooltip placement="bottom" isOpen={this.state.createTooltipOpen} target="createTooltip" toggle={this.toggleCreateTooltipOpen}>
+          Create the project and go to the select frames page.
         </Tooltip>
       </>
     );
