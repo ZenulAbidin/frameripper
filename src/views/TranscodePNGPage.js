@@ -78,16 +78,18 @@ class TranscodePNGPage extends React.Component {
   displayIncomplete() {
     return (
       <>
-        <h1 style={{textAlign: 'center'}}>Transcoding {this.state.project} PNGs</h1>
-        <div>
-          <div style={{ alignSelf: "center", width: '6rem', height: '6rem' }}>
-            <Spinner type="grow" color="info" />
+        <div className='centered height_50'>
+          <h1 style={{textAlign: 'center'}}>Transcoding {this.state.project} PNGs</h1>
+          <div>
+            <div style={{ alignSelf: "center", width: '6rem', height: '6rem' }}>
+              <Spinner type="grow" color="info" />
+            </div>
+            <h3>Extracting PNG frames, please wait...</h3>
           </div>
-          <h3>Extracting PNG frames, please wait...</h3>
+          <Link to="/">
+            <Button color="primary" onclick={this.abortTranscode}>Cancel</Button>
+          </Link>
         </div>
-        <Link to="/">
-          <Button color="primary" onclick={this.abortTranscode}>Cancel</Button>
-        </Link>
       </>
     );
   }
@@ -95,14 +97,16 @@ class TranscodePNGPage extends React.Component {
   displayComplete() {
     return (
       <>
-        <h1 style={{textAlign: 'center'}}>Transcoding {this.state.project} PNGs</h1>
-        <div>
-          <Checkmark size='xxLarge' />
-          <h3>All PNG frames extracted</h3>
+        <div className='centered height_50'>
+          <h1 style={{textAlign: 'center'}}>Transcoding {this.state.project} PNGs</h1>
+          <div>
+            <Checkmark size='xxLarge' />
+            <h3>All PNG frames extracted</h3>
+          </div>
+          <Link to="/select">
+            <Button color="primary">OK</Button>
+          </Link>
         </div>
-        <Link to="/select">
-          <Button color="primary">OK</Button>
-        </Link>
       </>
     );
   }
