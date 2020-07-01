@@ -164,7 +164,7 @@ class SelectPage extends React.Component {
   }
 
   startJPGTranscode() {
-    var body = {'framesList': this.state.framesList.split('\n')};
+    var body = {'framesList': this.state.framesList};
     // send POST request
     fetch(address+'/frameslist', {
         method: 'post',
@@ -183,7 +183,7 @@ class SelectPage extends React.Component {
     });
   }
   startPNGTranscode() {
-    var body = {'framesList': this.state.framesList.split('\n')};
+    var body = {'framesList': this.state.framesList};
     // send POST request
     fetch(address+'/frameslist', {
         method: 'post',
