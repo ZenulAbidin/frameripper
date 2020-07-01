@@ -40,7 +40,6 @@ class SelectPage extends React.Component {
   }
 
   componentDidMount() {
-    document.body.classList.toggle("select-page");
     fetch(address+'/currentproject').then(res => {
       if (res.ok) {
         res.json().then(json => {
@@ -77,6 +76,8 @@ class SelectPage extends React.Component {
         console.error(`GET /numframes at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
       }
     });
+    this.inputRef.value={this.state.framesList.join('\n')}
+    document.body.classList.toggle("select-page");
   }
   componentWillUnmount() {
     document.body.classList.toggle("select-page");
@@ -183,7 +184,7 @@ class SelectPage extends React.Component {
             <FormGroup style={{marginRight: '1rem'}}>
               <Label for="inputFrameNumbers" id="frameNumbersToolTip">Frame numbers</Label>
               <Input type="textarea" id="inputFrameNumbers" onChange={e => this.validateFrameNumbersInput(e)} invalid={this.state.frameNumbersInvalid ? true : false } 
-                  value={this.state.framesList.join('\n')}/>
+                  ref=this.inputRef/>
               {this.state.frameNumbersInvalid ? this.frameNumbersHelpText() : null}
             </FormGroup>
           </Form>
