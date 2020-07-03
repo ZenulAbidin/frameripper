@@ -163,7 +163,7 @@ class Index extends React.Component {
           <Form>
             <FormGroup style={{marginRight: '1rem'}}>
               <Label for="serverAddress" id="serverAddressTooltip">API server Address</Label>
-              <Input type="textarea" id="serverAddress" onChange={e => this.setServerAddress(e)}
+              <Input type="email" id="serverAddress" onChange={e => this.setServerAddress(e)}
                   value={this.state.serverAddress}/>
               <Link to="/">
                  <Button id="saveTooltip" color="primary" onClick={this.toggleSaveModalOpen}>Save address</Button>
