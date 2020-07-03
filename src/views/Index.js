@@ -158,19 +158,19 @@ class Index extends React.Component {
               <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
             </Link>
           </div>
-          <div>
-            <Form>
-              <FormGroup style={{marginRight: '1rem'}}>
-                <Label for="serverAddress" id="serverAddressTooltip">API server Address</Label>
-                <Input type="textarea" id="serverAddress" onChange={e => this.setServerAddress(e)}
-                    value={this.state.serverAddress}/>
-                <Link to="/">
-                   <Button id="saveTooltip" color="primary" onClick={this.toggleSaveModalOpen}>Save address</Button>
-                 </Link>
-              </FormGroup>
-            </Form>
-            </div>
         </div>
+        <div>
+          <Form>
+            <FormGroup style={{marginRight: '1rem'}}>
+              <Label for="serverAddress" id="serverAddressTooltip">API server Address</Label>
+              <Input type="textarea" id="serverAddress" onChange={e => this.setServerAddress(e)}
+                  value={this.state.serverAddress}/>
+              <Link to="/">
+                 <Button id="saveTooltip" color="primary" onClick={this.toggleSaveModalOpen}>Save address</Button>
+               </Link>
+            </FormGroup>
+          </Form>
+          </div>
         <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={this.toggleNewTooltip}>
           Creates a new project.
         </Tooltip>
