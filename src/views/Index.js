@@ -31,6 +31,7 @@ class Index extends React.Component {
     this.setCurrentProject = this.setCurrentProject.bind(this);
     this.setServerAddress = this.setServerAddress.bind(this);
     this.commitServerAddress = this.commitServerAddress.bind(this);
+    this.content = this.content.bind(this);
   }
 
   toggleNewTooltip() {
@@ -159,12 +160,11 @@ class Index extends React.Component {
     });
   }
 
+  content() {
   render() {
     return (
       <>
-        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
         <h3 style={{textAlign: 'center'}}>Select a project to open</h3>
-        { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
         <div>
           <Jumbotron>
             <Container>
@@ -185,18 +185,6 @@ class Index extends React.Component {
             <Link to="/" className='container__child'>
               <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
             </Link>
-          </div>
-        </div>
-        <div className='container'>
-          <div className='centered-horz'>
-            <Form>
-              <FormGroup row style={{marginRight: '1rem'}}>
-                <Label for="serverAddress" id="saveTooltip">API server address</Label>
-                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)}
-                    value={this.state.serverAddress}/>
-                 <Button id="saveTooltip" color="primary" onClick={this.commitServerAddress}>Save address</Button>
-              </FormGroup>
-            </Form>
           </div>
         </div>
         <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={this.toggleNewTooltip}>
@@ -221,6 +209,28 @@ class Index extends React.Component {
             <Button color="primary" onClick={this.toggleDeleteModalOpen}>Cancel</Button>
           </ModalFooter>
         </Modal>
+      </>
+    )
+  }
+
+  render() {
+    return (
+      <>
+        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
+        { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
+        { address === "" ? null : this.content()) }
+        <div className='container'>
+          <div className='centered-horz'>
+            <Form>
+              <FormGroup row style={{marginRight: '1rem'}}>
+                <Label for="serverAddress" id="saveTooltip">API server address</Label>
+                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)}
+                    value={this.state.serverAddress}/>
+                 <Button id="saveTooltip" color="primary" onClick={this.commitServerAddress}>Save address</Button>
+              </FormGroup>
+            </Form>
+          </div>
+        </div>
       </>
     );
   }
