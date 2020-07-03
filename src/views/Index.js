@@ -84,6 +84,7 @@ class Index extends React.Component {
 
   commitServerAddress() {
     localStorage.setItem('serverAddress', this.state.serverAddress);
+    window.location.reload(false);
   }
 
   deleteProject() {
@@ -173,12 +174,10 @@ class Index extends React.Component {
           <div className='centered-horz'>
             <Form>
               <FormGroup row style={{marginRight: '1rem'}}>
-                <Label for="serverAddress" id="saveTooltip">API server Address</Label>
+                <Label for="serverAddress" id="saveTooltip">API server address</Label>
                 <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)}
                     value={this.state.serverAddress}/>
-                <Link to="/">
-                   <Button id="saveTooltip" color="primary" onClick={this.commitServerAddress}>Save address</Button>
-                 </Link>
+                 <Button id="saveTooltip" color="primary" onClick={this.commitServerAddress}>Save address</Button>
               </FormGroup>
             </Form>
           </div>
