@@ -4,7 +4,7 @@ import {Button, Container, Row, Col, Tooltip, Jumbotron,
     Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import "../assets/css/styles.css";
 
-const address = "http://iamomegastorm.tk:3030";
+var address = "";
 
 class Index extends React.Component {
   constructor(props) {
@@ -14,6 +14,7 @@ class Index extends React.Component {
       openTooltipOpen: false,
       deleteTooltipOpen: false,
       deleteModalOpen: false,
+      saveTooltipOpen: false,
       projects: [],
       currentProject: null
     };
@@ -48,9 +49,15 @@ class Index extends React.Component {
       deleteModalOpen: !this.state.deleteModalOpen
     });
   }
+  togglSaveTooltipOpen() {
+    this.setState({
+      saveTooltipOpen: !this.state.saveTooltipOpen
+    });
+  }
 
   componentDidMount() {
     document.body.classList.toggle("index-page");
+    address = localStorage.getItem('serverAddress') || ''
     fetch(address+'/projects').then(res => {
     	if (res.ok) {
         res.json().then(json => {
@@ -63,6 +70,10 @@ class Index extends React.Component {
   }
   componentWillUnmount() {
     document.body.classList.toggle("index-page");
+  }
+
+  setServerAddress(e) {
+    localStorage.setItem('serverAddress', e.target.value);
   }
 
   deleteProject() {
@@ -147,6 +158,18 @@ class Index extends React.Component {
               <Button id="deleteTooltip" color="danger" onClick={this.toggleDeleteModalOpen} disabled={this.state.currentProject === null}>Delete</Button>
             </Link>
           </div>
+          <div>
+            <Form>
+              <FormGroup style={{marginRight: '1rem'}}>
+                <Label for="serverAddress" id="serverAddressTooltip">API server Address</Label>
+                <Input type="textarea" id="serverAddress" onChange={e => this.setServerAddress(e)}
+                    value={this.state.serverAddress}/>
+                <Link to="/">
+                   <Button id="saveTooltip" color="primary" onClick={this.toggleSaveModalOpen}>Save address</Button>
+                 </Link>
+              </FormGroup>
+            </Form>
+            </div>
         </div>
         <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={this.toggleNewTooltip}>
           Creates a new project.
@@ -156,6 +179,9 @@ class Index extends React.Component {
         </Tooltip>
         <Tooltip placement="bottom" isOpen={this.state.deleteTooltipOpen} target="deleteTooltip" toggle={this.toggleDeleteTooltipOpen}>
           Deletes the selected project.
+        </Tooltip>
+        <Tooltip placement="bottom" isOpen={this.state.saveTooltipOpen} target="saveTooltip" toggle={this.toggleSaveTooltipOpen}>
+          Sets the address of the API server to send queries to. It can be an IP address or a domain name and a path. port number can also be specified. Prepend {'http://'} or {'https://'} to it and don&apos;t end it with a slash.
         </Tooltip>
         <Modal isOpen={this.state.deleteModalOpen} toggle={this.toggleDeleteModalOpen}>
           <ModalHeader toggle={this.toggleDeleteModalOpen}>Delete project</ModalHeader>

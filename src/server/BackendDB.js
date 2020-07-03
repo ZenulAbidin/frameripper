@@ -26,7 +26,7 @@ var JPGcomplete = false;
 var PNGcomplete = false;
 
 // Limitation: This backend is intended to be used only as one client at a time, so calls to isTranscodingJPG/PNGComplete will each return
-// the same value if only one transcoding operation is running.
+// the same value if only one transcoding operation is running. (and currentProject will be in a bad state.)
 var ffmpeg = null;
 var ffmpeg_running = false;
 var default_null = '(null/undefined)';
