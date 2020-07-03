@@ -159,18 +159,20 @@ class Index extends React.Component {
             </Link>
           </div>
         </div>
-        <div>
-          <Form>
-            <FormGroup style={{marginRight: '1rem'}}>
-              <Label for="serverAddress" id="serverAddressTooltip">API server Address</Label>
-              <Input type="email" id="serverAddress" onChange={e => this.setServerAddress(e)}
-                  value={this.state.serverAddress}/>
-              <Link to="/">
-                 <Button id="saveTooltip" color="primary" onClick={this.toggleSaveModalOpen}>Save address</Button>
-               </Link>
-            </FormGroup>
-          </Form>
+        <div className='container'>
+          <div className='centered-horz'>
+            <Form>
+              <FormGroup row style={{marginRight: '1rem'}}>
+                <Label for="serverAddress" id="serverAddressTooltip">API server Address</Label>
+                <Input type="email" id="serverAddress" onChange={e => this.setServerAddress(e)}
+                    value={this.state.serverAddress}/>
+                <Link to="/">
+                   <Button id="saveTooltip" color="primary" onClick={this.toggleSaveModalOpen}>Save address</Button>
+                 </Link>
+              </FormGroup>
+            </Form>
           </div>
+        </div>
         <Tooltip placement="bottom" isOpen={this.state.newTooltipOpen} target="newTooltip" toggle={this.toggleNewTooltip}>
           Creates a new project.
         </Tooltip>
