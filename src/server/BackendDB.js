@@ -165,6 +165,7 @@ app.get('/currentproject', function (req, res) {
 })
 
 app.post('/currentproject', function (req, res) {
+  console.log(req)
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.post(\'/currentproject\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
     if (req.body.currentProject == null) {
