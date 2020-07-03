@@ -29,6 +29,8 @@ class Index extends React.Component {
     this.buttonList = this.buttonList.bind(this);
     this.setStateCurrentProject = this.setStateCurrentProject.bind(this);
     this.setCurrentProject = this.setCurrentProject.bind(this);
+    this.setServerAddress = this.setServerAddress.bind(this);
+    this.commitServerAddress = this.commitServerAddress.bind(this);
   }
 
   toggleNewTooltip() {
