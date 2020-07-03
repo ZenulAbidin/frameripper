@@ -23,6 +23,7 @@ class Index extends React.Component {
     this.toggleOpenTooltip = this.toggleOpenTooltip.bind(this);
     this.toggleDeleteTooltipOpen = this.toggleDeleteTooltipOpen.bind(this);
     this.toggleDeleteModalOpen = this.toggleDeleteModalOpen.bind(this);
+    this.toggleSaveTooltipOpen = this.toggleSavesTooltipOpen.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
     this.buttonList = this.buttonList.bind(this);
     this.setStateCurrentProject = this.setStateCurrentProject.bind(this);
