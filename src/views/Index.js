@@ -87,6 +87,22 @@ class Index extends React.Component {
     window.location.reload(false);
   }
 
+  displayServerAddress() {
+    return (
+      <>
+        <h5 style={{textAlign: 'center'}}>Using API server &quot;{address}&quot;</h5>
+      </>
+    )
+  }
+
+  displayNoAddressHint() {
+    return (
+      <>
+        <h5 style={{textAlign: 'center'}}>Please enter an API server address.</h5>
+      </>
+    )
+  }
+
   deleteProject() {
     this.toggleDeleteModalOpen()
     var body = {'project': this.state.selectedProject};
@@ -148,6 +164,7 @@ class Index extends React.Component {
       <>
         <h1 className='title'>Frameripper by Zenul_Abidin</h1>
         <h3 style={{textAlign: 'center'}}>Select a project to open</h3>
+        { address == "" ? this.displayNoAddressHint() : this.displayServerAddress() }
         <div>
           <Jumbotron>
             <Container>
