@@ -49,7 +49,7 @@ class Index extends React.Component {
       deleteModalOpen: !this.state.deleteModalOpen
     });
   }
-  togglSaveTooltipOpen() {
+  toggleSaveTooltipOpen() {
     this.setState({
       saveTooltipOpen: !this.state.saveTooltipOpen
     });
