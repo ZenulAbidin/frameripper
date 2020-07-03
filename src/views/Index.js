@@ -16,7 +16,8 @@ class Index extends React.Component {
       deleteModalOpen: false,
       saveTooltipOpen: false,
       projects: [],
-      currentProject: null
+      currentProject: null,
+      serverAddress: ""
     };
 
     this.toggleNewTooltip = this.toggleNewTooltip.bind(this);
@@ -74,7 +75,13 @@ class Index extends React.Component {
   }
 
   setServerAddress(e) {
-    localStorage.setItem('serverAddress', e.target.value);
+    this.setState({
+      serverAddress: e.target.value
+    })
+  }
+
+  commitServerAddress() {
+    localStorage.setItem('serverAddress', this.state.serverAddress);
   }
 
   deleteProject() {
@@ -168,7 +175,7 @@ class Index extends React.Component {
                 <Input type="email" id="serverAddress" onChange={e => this.setServerAddress(e)}
                     value={this.state.serverAddress}/>
                 <Link to="/">
-                   <Button id="saveTooltip" color="primary" onClick={this.toggleSaveModalOpen}>Save address</Button>
+                   <Button id="saveTooltip" color="primary" onClick={this.commitServerAddress}>Save address</Button>
                  </Link>
               </FormGroup>
             </Form>
