@@ -164,7 +164,7 @@ class Index extends React.Component {
       <>
         <h1 className='title'>Frameripper by Zenul_Abidin</h1>
         <h3 style={{textAlign: 'center'}}>Select a project to open</h3>
-        { address == "" ? this.displayNoAddressHint() : this.displayServerAddress() }
+        { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
         <div>
           <Jumbotron>
             <Container>
