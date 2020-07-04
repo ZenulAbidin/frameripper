@@ -217,7 +217,7 @@ class Index extends React.Component {
       <>
         <h1 className='title'>Frameripper by Zenul_Abidin</h1>
         { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
-        { address === "" ? null : this.content()) }
+        { address === "" ? null : this.content() }
         <div className='container'>
           <div className='centered-horz'>
             <Form>
