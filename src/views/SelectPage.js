@@ -20,8 +20,7 @@ class SelectPage extends React.Component {
       project: null,
       inputFrameNumbers: "",
       frameNumbersInvalid: false,
-      ogFramesList: "",,
-      serverAddress: ""
+      ogFramesList: ""
     };
 
     this.toggleFrameNumbersTooltipOpen = this.toggleFrameNumbersTooltipOpen.bind(this);
@@ -234,18 +233,6 @@ class SelectPage extends React.Component {
             </div>
           </div>
         </div>
-        <div className='container'>
-          <div className='centered-horz'>
-            <Form>
-              <FormGroup row style={{marginRight: '1rem'}}>
-                <Label for="serverAddress" id="saveTooltip">API server address</Label>
-                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)}
-                    value={this.state.serverAddress}/>
-                 <Button id="saveTooltip" color="primary" onClick={this.commitServerAddress}>Save address</Button>
-              </FormGroup>
-            </Form>
-          </div>
-        </div>
         <Tooltip placement="left" isOpen={this.state.frameNumbersTooltipOpen} target="frameNumbersToolTip" toggle={this.toggleFrameNumbersTooltipOpen}>
           Frame numbers must be zero based, one on each line.
         </Tooltip>
@@ -260,9 +247,6 @@ class SelectPage extends React.Component {
         </Tooltip>
         <Tooltip placement="bottom" isOpen={this.state.menuTooltipOpen} target="menuTooltip" toggle={this.toggleMenuTooltipOpen}>
           Cancel changes and return to main menu.
-        </Tooltip>
-        <Tooltip placement="bottom" isOpen={this.state.saveTooltipOpen} target="saveTooltip" toggle={this.toggleSaveTooltipOpen}>
-          Sets the address of the API server to send queries to. It can be an IP address or a domain name and a path. port number can also be specified. Prepend {'http://'} or {'https://'} to it and don&apos;t end it with a slash.
         </Tooltip>
       </>
     );
