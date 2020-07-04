@@ -147,7 +147,7 @@ class NewProjectPage extends React.Component {
         console.error(`POST /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
-    window.location.href = address + "/select"
+    window.location.href = window.location.host + "/select"
   }
 
   validatePrefixInput(e) {
