@@ -168,6 +168,42 @@ class NewProjectPage extends React.Component {
         console.error(`POST /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
+    body = {'framesList': []};
+    formBody = [];
+    for (var property in body) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(body[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+    // send POST request
+    fetch(address+'/frameslist', {
+        method: 'post',
+        body:    formBody,
+        headers: {'Content-Type': 'application/x-www-form-urlencoded' },
+    }).then(res => {
+    	if (!res.ok) {
+        console.error(`POST /frameslist with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
+    });
+    body = {'numFrames': 0};
+    formBody = [];
+    for (var property in body) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(body[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+    // send POST request
+    fetch(address+'/numframes', {
+        method: 'post',
+        body:    formBody,
+        headers: {'Content-Type': 'application/x-www-form-urlencoded' },
+    }).then(res => {
+    	if (!res.ok) {
+        console.error(`POST /numframes with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
+    });
   }
 
   validatePrefixInput(e) {
