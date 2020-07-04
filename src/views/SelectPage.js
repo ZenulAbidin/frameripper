@@ -3,7 +3,7 @@ import "../assets/css/styles.css";
 import {Link} from "react-router-dom";
 import {Form, FormGroup, FormFeedback, Button, Input, Label, Tooltip} from "reactstrap";
 
-const address = "http://iamomegastorm.tk:3030";
+var address = localStorage.getItem('serverAddress') || '';
 
 class SelectPage extends React.Component {
 
@@ -20,7 +20,8 @@ class SelectPage extends React.Component {
       project: null,
       inputFrameNumbers: "",
       frameNumbersInvalid: false,
-      ogFramesList: ""
+      ogFramesList: "",
+      serverAddress: ""
     };
 
     this.toggleFrameNumbersTooltipOpen = this.toggleFrameNumbersTooltipOpen.bind(this);
@@ -32,6 +33,9 @@ class SelectPage extends React.Component {
     this.validateFrameNumbersInput = this.validateFrameNumbersInput.bind(this);
     this.startJPGTranscode = this.startJPGTranscode.bind(this);
     this.startPNGTranscode = this.startPNGTranscode.bind(this);
+    this.setServerAddress = this.setServerAddress.bind(this);
+    this.commitServerAddress = this.commitServerAddress.bind(this);
+    this.content = this.content.bind(this);
   }
 
   toggleMenuTooltipOpen() {
@@ -61,6 +65,12 @@ class SelectPage extends React.Component {
   toggleFrameNumbersTooltipOpen() {
     this.setState({
       frameNumbersTooltipOpen: !this.state.frameNumbersTooltipOpen
+    });
+  }
+
+  toggleSaveTooltipOpen() {
+    this.setState({
+      saveTooltipOpen: !this.state.saveTooltipOpen
     });
   }
 
@@ -111,6 +121,33 @@ class SelectPage extends React.Component {
   componentDidUpdate(prevProps, prevState) {
   }
   
+  setServerAddress(e) {
+    this.setState({
+      serverAddress: e.target.value
+    })
+  }
+
+  commitServerAddress() {
+    localStorage.setItem('serverAddress', this.state.serverAddress);
+    window.location.reload(false);
+  }
+
+  displayServerAddress() {
+    return (
+      <>
+        <h5 style={{textAlign: 'center'}}>Using API server &quot;{address}&quot;</h5>
+      </>
+    )
+  }
+
+  displayNoAddressHint() {
+    return (
+      <>
+        <h5 style={{textAlign: 'center'}}>Please enter an API server address.</h5>
+      </>
+    )
+  }
+
 
   frameNumbersHelpText() {
 /*
@@ -202,10 +239,9 @@ class SelectPage extends React.Component {
     });
   }
 
-  render() {
+  content() {
     return (
       <>
-        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
         <h3 style={{textAlign: 'center'}}>Select frames for {this.state.project}</h3>
         <div style={{marginLeft: '1rem'}}>
           <Form>
@@ -248,6 +284,28 @@ class SelectPage extends React.Component {
         <Tooltip placement="bottom" isOpen={this.state.menuTooltipOpen} target="menuTooltip" toggle={this.toggleMenuTooltipOpen}>
           Cancel changes and return to main menu.
         </Tooltip>
+      </>
+    );
+  }
+
+  render() {
+    return (
+      <>
+        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
+        { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
+        { address === "" ? null : this.content() }
+        <div className='container'>
+          <div className='centered-horz'>
+            <Form>
+              <FormGroup row style={{marginRight: '1rem'}}>
+                <Label for="serverAddress" id="saveTooltip">API server address</Label>
+                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)} onKeyPress={(t) => {if (t.charCode===13) {this.commitServerAddress()}}}
+                    value={this.state.serverAddress}/>
+                 <Button id="saveTooltip" color="primary" onClick={this.commitServerAddress}>Save address</Button>
+              </FormGroup>
+            </Form>
+          </div>
+        </div>
       </>
     );
   }

@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {Spinner, Button} from "reactstrap";
 import "../assets/css/styles.css";
 
-const address = "http://iamomegastorm.tk:3030";
+var address = localStorage.getItem('serverAddress') || '';
 
 class TranscodeJPGPage extends React.Component {
   constructor(props) {
@@ -12,11 +12,21 @@ class TranscodeJPGPage extends React.Component {
     this.state = {
       project: null,
       completed: false,
+      serverAddress: ""
     };
 
     this.displayIncomplete = this.displayIncomplete.bind(this);
     this.displayComplete = this.displayComplete.bind(this);
     this.queryComplete = this.queryComplete.bind(this);
+    this.setServerAddress = this.setServerAddress.bind(this);
+    this.commitServerAddress = this.commitServerAddress.bind(this);
+    this.content = this.content.bind(this);
+  }
+
+  toggleSaveTooltipOpen() {
+    this.setState({
+      saveTooltipOpen: !this.state.saveTooltipOpen
+    });
   }
 
   componentDidMount() {
@@ -34,6 +44,33 @@ class TranscodeJPGPage extends React.Component {
       }
     })
     this.interval = setInterval(this.queryComplete, 1000);
+  }
+  
+  setServerAddress(e) {
+    this.setState({
+      serverAddress: e.target.value
+    })
+  }
+
+  commitServerAddress() {
+    localStorage.setItem('serverAddress', this.state.serverAddress);
+    window.location.reload(false);
+  }
+
+  displayServerAddress() {
+    return (
+      <>
+        <h5 style={{textAlign: 'center'}}>Using API server &quot;{address}&quot;</h5>
+      </>
+    )
+  }
+
+  displayNoAddressHint() {
+    return (
+      <>
+        <h5 style={{textAlign: 'center'}}>Please enter an API server address.</h5>
+      </>
+    )
   }
 
   queryComplete() {
@@ -106,11 +143,32 @@ class TranscodeJPGPage extends React.Component {
     );
   }
 
+  content() {
+    return (
+      <>
+        {this.state.completed ? this.displayComplete() : this.displayIncomplete()}
+      </>
+    );
+  }
+
   render() {
     return (
       <>
         <h1 className='title'>Frameripper by Zenul_Abidin</h1>
-        {this.state.completed ? this.displayComplete() : this.displayIncomplete()}
+        { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
+        { address === "" ? null : this.content() }
+        <div className='container'>
+          <div className='centered-horz'>
+            <Form>
+              <FormGroup row style={{marginRight: '1rem'}}>
+                <Label for="serverAddress" id="saveTooltip">API server address</Label>
+                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)} onKeyPress={(t) => {if (t.charCode===13) {this.commitServerAddress()}}}
+                    value={this.state.serverAddress}/>
+                 <Button id="saveTooltip" color="primary" onClick={this.commitServerAddress}>Save address</Button>
+              </FormGroup>
+            </Form>
+          </div>
+        </div>
       </>
     );
   }

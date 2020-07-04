@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {Form, FormGroup, FormFeedback, Button, Col, Input, Label, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
 
-const address = "http://iamomegastorm.tk:3030";
+var address = localStorage.getItem('serverAddress') || '';
 
 
 class NewProjectPage extends React.Component {
@@ -19,7 +19,8 @@ class NewProjectPage extends React.Component {
       offset: -2,
       prefixInputInvalid: false,
       pathInputInvalid: false,
-      projects: null
+      projects: null,
+      serverAddress: ""
     };
 
     this.togglePathTooltipOpen = this.togglePathTooltipOpen.bind(this);
@@ -31,6 +32,9 @@ class NewProjectPage extends React.Component {
     this.validatePathInput = this.validatePathInput.bind(this);
     this.pathHelpText = this.pathHelpText.bind(this);
     this.sendOKRequest = this.sendOKRequest.bind(this);
+    this.setServerAddress = this.setServerAddress.bind(this);
+    this.commitServerAddress = this.commitServerAddress.bind(this);
+    this.content = this.content.bind(this);
   }
 
   togglePathTooltipOpen() {
@@ -54,6 +58,12 @@ class NewProjectPage extends React.Component {
     });
   }
 
+  toggleSaveTooltipOpen() {
+    this.setState({
+      saveTooltipOpen: !this.state.saveTooltipOpen
+    });
+  }
+
   componentDidMount() {
     document.body.classList.toggle("newproject-page");
     fetch(address+'/projects').then(res => {
@@ -71,6 +81,33 @@ class NewProjectPage extends React.Component {
   }
   componentWillUnmount() {
     document.body.classList.toggle("newproject-page");
+  }
+
+  setServerAddress(e) {
+    this.setState({
+      serverAddress: e.target.value
+    })
+  }
+
+  commitServerAddress() {
+    localStorage.setItem('serverAddress', this.state.serverAddress);
+    window.location.reload(false);
+  }
+
+  displayServerAddress() {
+    return (
+      <>
+        <h5 style={{textAlign: 'center'}}>Using API server &quot;{address}&quot;</h5>
+      </>
+    )
+  }
+
+  displayNoAddressHint() {
+    return (
+      <>
+        <h5 style={{textAlign: 'center'}}>Please enter an API server address.</h5>
+      </>
+    )
   }
 
   sendOKRequest() {
@@ -165,10 +202,9 @@ class NewProjectPage extends React.Component {
   }
 
 
-  render() {
+  content() {
     return (
       <>
-        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
         <h3 style={{textAlign: 'center'}}>New Project</h3>
         <div style={{marginLeft: '1rem'}}>
           <Form>
@@ -216,6 +252,28 @@ class NewProjectPage extends React.Component {
         <Tooltip placement="bottom" isOpen={this.state.createTooltipOpen} target="createTooltip" toggle={this.toggleCreateTooltipOpen}>
           Create the project and go to the select frames page.
         </Tooltip>
+      </>
+    );
+  }
+
+  render() {
+    return (
+      <>
+        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
+        { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
+        { address === "" ? null : this.content() }
+        <div className='container'>
+          <div className='centered-horz'>
+            <Form>
+              <FormGroup row style={{marginRight: '1rem'}}>
+                <Label for="serverAddress" id="saveTooltip">API server address</Label>
+                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)} onKeyPress={(t) => {if (t.charCode===13) {this.commitServerAddress()}}}
+                    value={this.state.serverAddress}/>
+                 <Button id="saveTooltip" color="primary" onClick={this.commitServerAddress}>Save address</Button>
+              </FormGroup>
+            </Form>
+          </div>
+        </div>
       </>
     );
   }

@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {Form, FormGroup, FormFeedback, Button, Col, Input, Label, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
 
-const address = "http://iamomegastorm.tk:3030";
+var address = localStorage.getItem('serverAddress') || '';
 
 class SettingsPage extends React.Component {
 
@@ -17,6 +17,7 @@ class SettingsPage extends React.Component {
       frameOffset: -2,
       project: null,
       prefixInputInvalid: false,
+      serverAddress: ""
     };
 
     this.togglePrefixTooltipOpen = this.togglePrefixTooltipOpen.bind(this);
@@ -25,6 +26,15 @@ class SettingsPage extends React.Component {
     this.validatePrefixInput = this.validatePrefixInput.bind(this);
     this.prefixHelpText = this.prefixHelpText.bind(this);
     this.sendOKRequest = this.sendOKRequest.bind(this);
+    this.setServerAddress = this.setServerAddress.bind(this);
+    this.commitServerAddress = this.commitServerAddress.bind(this);
+    this.content = this.content.bind(this);
+  }
+
+  toggleSaveTooltipOpen() {
+    this.setState({
+      saveTooltipOpen: !this.state.saveTooltipOpen
+    });
   }
 
   componentDidMount() {
@@ -54,6 +64,33 @@ class SettingsPage extends React.Component {
   }
   componentWillUnmount() {
     document.body.classList.toggle("settings-page");
+  }
+
+  setServerAddress(e) {
+    this.setState({
+      serverAddress: e.target.value
+    })
+  }
+
+  commitServerAddress() {
+    localStorage.setItem('serverAddress', this.state.serverAddress);
+    window.location.reload(false);
+  }
+
+  displayServerAddress() {
+    return (
+      <>
+        <h5 style={{textAlign: 'center'}}>Using API server &quot;{address}&quot;</h5>
+      </>
+    )
+  }
+
+  displayNoAddressHint() {
+    return (
+      <>
+        <h5 style={{textAlign: 'center'}}>Please enter an API server address.</h5>
+      </>
+    )
   }
 
   sendOKRequest() {
@@ -124,10 +161,9 @@ class SettingsPage extends React.Component {
     });
   }
 
-  render() {
+  content() {
     return (
       <>
-        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
         <h3 style={{textAlign: 'center'}}>Settings for {this.state.project}</h3>
         <div style={{marginLeft: '1rem'}}>
           <Form>
@@ -165,6 +201,28 @@ class SettingsPage extends React.Component {
         <Tooltip placement="bottom" isOpen={this.state.saveTooltipOpen} target="saveTooltip" toggle={this.toggleSaveTooltipOpen}>
           Save the settings.
         </Tooltip>
+      </>
+    );
+  }
+
+  render() {
+    return (
+      <>
+        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
+        { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
+        { address === "" ? null : this.content() }
+        <div className='container'>
+          <div className='centered-horz'>
+            <Form>
+              <FormGroup row style={{marginRight: '1rem'}}>
+                <Label for="serverAddress" id="saveTooltip">API server address</Label>
+                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)} onKeyPress={(t) => {if (t.charCode===13) {this.commitServerAddress()}}}
+                    value={this.state.serverAddress}/>
+                 <Button id="saveTooltip" color="primary" onClick={this.commitServerAddress}>Save address</Button>
+              </FormGroup>
+            </Form>
+          </div>
+        </div>
       </>
     );
   }
