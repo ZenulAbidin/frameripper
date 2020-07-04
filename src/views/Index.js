@@ -194,9 +194,6 @@ class Index extends React.Component {
         <Tooltip placement="bottom" isOpen={this.state.deleteTooltipOpen} target="deleteTooltip" toggle={this.toggleDeleteTooltipOpen}>
           Deletes the selected project.
         </Tooltip>
-        <Tooltip placement="bottom" isOpen={this.state.addressTooltipOpen} target="saveTooltip" toggle={this.toggleAddressTooltipOpen}>
-          Sets the address of the API server to send queries to. It can be an IP address or a domain name and a path. port number can also be specified. Prepend {'http://'} or {'https://'} to it and don&apos;t end it with a slash.
-        </Tooltip>
         <Modal isOpen={this.state.deleteModalOpen} toggle={this.toggleDeleteModalOpen}>
           <ModalHeader toggle={this.toggleDeleteModalOpen}>Delete project</ModalHeader>
           <ModalBody>
@@ -229,6 +226,9 @@ class Index extends React.Component {
             </Form>
           </div>
         </div>
+        <Tooltip placement="bottom" isOpen={this.state.addressTooltipOpen} target="saveTooltip" toggle={this.toggleAddressTooltipOpen}>
+          Sets the address of the API server to send queries to. It can be an IP address or a domain name and a path. port number can also be specified. Prepend {'http://'} or {'https://'} to it and don&apos;t end it with a slash.
+        </Tooltip>
       </>
     );
   }
