@@ -161,7 +161,6 @@ class Index extends React.Component {
   }
 
   content() {
-  render() {
     return (
       <>
         <h3 style={{textAlign: 'center'}}>Select a project to open</h3>
