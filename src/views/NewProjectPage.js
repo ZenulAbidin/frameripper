@@ -115,6 +115,13 @@ class NewProjectPage extends React.Component {
   sendOKRequest() {
     
     var body = {'projects': this.state.projects.concat(this.state.path)};
+    var formBody = [];
+    for (var property in body) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
     // send POST request
     fetch(address+'/projects', {
         method: 'post',
@@ -126,6 +133,13 @@ class NewProjectPage extends React.Component {
       }
     });
     body = {'currentProject': this.state.path};
+    formBody = [];
+    for (var property in body) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
     // send POST request
     fetch(address+'/currentproject', {
         method: 'post',
@@ -137,6 +151,13 @@ class NewProjectPage extends React.Component {
       }
     });
     body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
+    formBody = [];
+    for (var property in body) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
     // send POST request
     fetch(address+'/currentsettings', {
         method: 'post',
