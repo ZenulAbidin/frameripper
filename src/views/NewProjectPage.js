@@ -115,7 +115,6 @@ class NewProjectPage extends React.Component {
   sendOKRequest() {
     
     var body = {'projects': this.state.projects.concat(this.state.path)};
-/*
     var formBody = [];
     for (var property in body) {
       var encodedKey = encodeURIComponent(property);
@@ -123,13 +122,10 @@ class NewProjectPage extends React.Component {
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
-*/
-    var formData = new FormData();
-    Object.entries(body).forEach(([key,value]) => formData.append(key, value) );
     // send POST request
     fetch(address+'/projects', {
         method: 'post',
-        body:    formData,
+        body:    formBody,
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
@@ -137,7 +133,7 @@ class NewProjectPage extends React.Component {
       }
     });
     body = {'currentProject': this.state.path};
-    var formBody = [];
+    formBody = [];
     for (var property in body) {
       var encodedKey = encodeURIComponent(property);
       var encodedValue = encodeURIComponent(body[property]);
