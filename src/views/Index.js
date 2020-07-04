@@ -4,7 +4,7 @@ import {Button, Container, Row, Col, Tooltip, Jumbotron,
     Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from "reactstrap";
 import "../assets/css/styles.css";
 
-var address = "";
+var address = localStorage.getItem('serverAddress') || '';
 
 class Index extends React.Component {
   constructor(props) {
@@ -62,7 +62,6 @@ class Index extends React.Component {
 
   componentDidMount() {
     document.body.classList.toggle("index-page");
-    address = localStorage.getItem('serverAddress') || ''
     fetch(address+'/projects').then(res => {
     	if (res.ok) {
         res.json().then(json => {
