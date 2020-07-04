@@ -7,6 +7,7 @@ const child_process = require('child_process');
 var moment = require('moment');
 var winston = require('winston');
 var glob = require('glob');
+var bodyParser = require('body-parser');
 
 const homedir = require('os').homedir();
 fs.mkdirSync(path.join(homedir, ".frameripper"), { recursive: true })
@@ -46,7 +47,8 @@ function formatNumberSign(theNumber)
 }
 
 var app = express();
-app.use(express.json())
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://iamomegastorm.tk:3011");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -211,21 +213,17 @@ app.get('/currentsettings', function (req, res) {
 app.post('/currentsettings', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.post(\'/currentsettings\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
-    if (req.body.settings == null) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "settings" doesn\'t exist'}});
-      res.status(400).json({'error': 'Required key "settings" doesn\'t exist'})
-    }
-    else if (req.body.settings.prefix == null) {
+    if (req.body.prefix == null) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "settings.prefix" doesn\'t exist'}});
-      res.status(400).json({'error': 'Required key "settings.prefix" doesn\'t exist'})
+      res.status(400).json({'error': 'Required key "prefix" doesn\'t exist'})
     }
-    else if (req.body.settings.frameOffset == null) {
+    else if (req.body.frameOffset == null) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "settings.frameOffset" doesn\'t exist'}});
-      res.status(400).json({'error': 'Required key "settings.frameOffset" doesn\'t exist'})
+      res.status(400).json({'error': 'Required key "frameOffset" doesn\'t exist'})
     }
     else {
       var project = getCurrentProject(db).then(project => {
-        setSettings(db, project, req.body.settings.prefix, req.body.settings.frameOffset).then(value => {
+        setSettings(db, project, req.body.prefix, req.body.frameOffset).then(value => {
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 200});
           res.json({ok:true})
         }).catch(function(err) {
