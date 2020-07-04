@@ -114,36 +114,40 @@ class NewProjectPage extends React.Component {
 
   sendOKRequest() {
     
-    var body = {'projects': this.state.projects.concat(this.state.path)};
-    // send POST request
-    var res = await fetch(address+'/projects', {
-        method: 'post',
-        body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
-    });
-    if (!res.ok) {
-      console.error(`POST /projects with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+    const request = async () => {
+      var body = {'projects': this.state.projects.concat(this.state.path)};
+      // send POST request
+      var res = await fetch(address+'/projects', {
+          method: 'post',
+          body:    JSON.stringify(body),
+          headers: { 'Content-Type': 'application/json' },
+      });
+      if (!res.ok) {
+        console.error(`POST /projects with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
+      body = {'currentProject': this.state.path};
+      // send POST request
+      res = await fetch(address+'/currentproject', {
+          method: 'post',
+          body:    JSON.stringify(body),
+          headers: { 'Content-Type': 'application/json' },
+      })
+      if (!res.ok) {
+        console.error(`POST /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
+      body = {'settings': {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset}};
+      // send POST request
+      res = await fetch(address+'/currentsettings', {
+          method: 'post',
+          body:    JSON.stringify(body),
+          headers: {'Content-Type': 'application/json' },
+      })
+      if (!res.ok) {
+        console.error(`POST /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
+      }
     }
-    body = {'currentProject': this.state.path};
-    // send POST request
-    res = await fetch(address+'/currentproject', {
-        method: 'post',
-        body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
-    })
-    if (!res.ok) {
-      console.error(`POST /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
-    }
-    body = {'settings': {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset}};
-    // send POST request
-    res = await fetch(address+'/currentsettings', {
-        method: 'post',
-        body:    JSON.stringify(body),
-        headers: {'Content-Type': 'application/json' },
-    })
-    if (!res.ok) {
-      console.error(`POST /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
-    }
+    
+    request();
   }
 
   validatePrefixInput(e) {
