@@ -119,7 +119,7 @@ class NewProjectPage extends React.Component {
     fetch(address+'/projects', {
         method: 'post',
         body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
         console.error(`POST /projects with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
@@ -130,7 +130,7 @@ class NewProjectPage extends React.Component {
     fetch(address+'/currentproject', {
         method: 'post',
         body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
         console.error(`POST /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
@@ -141,7 +141,7 @@ class NewProjectPage extends React.Component {
     fetch(address+'/currentsettings', {
         method: 'post',
         body:    JSON.stringify(body),
-        headers: {'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
         console.error(`POST /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
