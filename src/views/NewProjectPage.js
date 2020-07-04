@@ -20,7 +20,7 @@ class NewProjectPage extends React.Component {
       offset: -2,
       prefixInputInvalid: false,
       pathInputInvalid: false,
-      projects: null,
+      projects: [],
       serverAddress: ""
     };
 
