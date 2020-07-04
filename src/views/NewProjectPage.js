@@ -134,9 +134,9 @@ class NewProjectPage extends React.Component {
     });
     body = {'currentProject': this.state.path};
     formBody = [];
-    for (var property in body) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(body[property]);
+    for (property in body) {
+      encodedKey = encodeURIComponent(property);
+      encodedValue = encodeURIComponent(body[property]);
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
@@ -152,9 +152,9 @@ class NewProjectPage extends React.Component {
     });
     body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
     formBody = [];
-    for (var property in body) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(body[property]);
+    for (property in body) {
+      encodedKey = encodeURIComponent(property);
+      encodedValue = encodeURIComponent(body[property]);
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
@@ -170,9 +170,9 @@ class NewProjectPage extends React.Component {
     });
     body = {'framesList': []};
     formBody = [];
-    for (var property in body) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(body[property]);
+    for (property in body) {
+      encodedKey = encodeURIComponent(property);
+      encodedValue = encodeURIComponent(body[property]);
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
@@ -188,9 +188,9 @@ class NewProjectPage extends React.Component {
     });
     body = {'numFrames': 0};
     formBody = [];
-    for (var property in body) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(body[property]);
+    for (property in body) {
+      encodedKey = encodeURIComponent(property);
+      encodedValue = encodeURIComponent(body[property]);
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
