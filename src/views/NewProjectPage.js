@@ -147,7 +147,6 @@ class NewProjectPage extends React.Component {
         console.error(`POST /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
-    window.location.href = window.location.origin + "/select"
   }
 
   validatePrefixInput(e) {
@@ -234,7 +233,9 @@ class NewProjectPage extends React.Component {
           </Form>
           <div className='container'>
             <div className='centered-horz'>
-              <Button id="createTooltip" color="primary" disabled={this.state.prefixInputInvalid || this.state.pathInputInvalid} className='container__child' onClick={this.sendOKRequest}>Create</Button>
+              <Link to="/select" className='container__child'>
+                <Button id="createTooltip" color="primary" disabled={this.state.prefixInputInvalid || this.state.pathInputInvalid} onClick={this.sendOKRequest}>Create</Button>
+              </Link>
               <Link to="/" className='container__child'>
                 <Button color="primary">Cancel</Button>
               </Link>
