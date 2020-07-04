@@ -150,7 +150,7 @@ class NewProjectPage extends React.Component {
         console.error(`POST /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
-    body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
+    body = {'prefix': this.state.prefix, 'frameOffset': this.state.offset};
     formBody = [];
     for (property in body) {
       encodedKey = encodeURIComponent(property);
