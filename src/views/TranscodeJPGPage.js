@@ -1,7 +1,7 @@
 import React from "react";
 import {Checkmark} from 'react-checkmark';
 import {Link} from "react-router-dom";
-import {Spinner, Button} from "reactstrap";
+import {Spinner, Button, Form, FormGroup, Label, Input} from "reactstrap";
 import "../assets/css/styles.css";
 
 var address = localStorage.getItem('serverAddress') || '';
