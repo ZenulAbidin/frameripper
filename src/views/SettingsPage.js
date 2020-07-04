@@ -13,6 +13,7 @@ class SettingsPage extends React.Component {
       prefixTooltipOpen: false,
       offsetTooltipOpen: false,
       saveTooltipOpen: false,
+      addressTooltipOpen: false,
       prefix: "",
       frameOffset: -2,
       project: null,
@@ -31,9 +32,9 @@ class SettingsPage extends React.Component {
     this.content = this.content.bind(this);
   }
 
-  toggleSaveTooltipOpen() {
+  toggleAddressTooltipOpen() {
     this.setState({
-      saveTooltipOpen: !this.state.saveTooltipOpen
+      addressTooltipOpen: !this.state.addressTooltipOpen
     });
   }
 
@@ -119,7 +120,7 @@ class SettingsPage extends React.Component {
   }
   toggleSaveTooltipOpen() {
     this.setState({
-      saveTooltipOpen: !this.state.saveTooltipOpen
+      addressTooltipOpen: !this.state.addressTooltipOpen
     });
   }
 

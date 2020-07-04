@@ -15,6 +15,7 @@ class SelectPage extends React.Component {
       jpgTooltipOpen: false,
       pngTooltipOpen: false,
       settingsTooltipOpen: false,
+      addressTooltipOpen: false,
       framesList: [],
       numFrames: 0,
       project: null,
@@ -68,9 +69,9 @@ class SelectPage extends React.Component {
     });
   }
 
-  toggleSaveTooltipOpen() {
+  toggleAddressTooltipOpen() {
     this.setState({
-      saveTooltipOpen: !this.state.saveTooltipOpen
+      addressTooltipOpen: !this.state.addressTooltipOpen
     });
   }
 

@@ -14,6 +14,7 @@ class NewProjectPage extends React.Component {
       prefixTooltipOpen: false,
       offsetTooltipOpen: false,
       createTooltipOpen: false,
+      addressTooltipOpen: false,
       path: "",
       prefix: "",
       offset: -2,
@@ -58,9 +59,9 @@ class NewProjectPage extends React.Component {
     });
   }
 
-  toggleSaveTooltipOpen() {
+  toggleAddressTooltipOpen() {
     this.setState({
-      saveTooltipOpen: !this.state.saveTooltipOpen
+      addressTooltipOpen: !this.state.addressTooltipOpen
     });
   }
 

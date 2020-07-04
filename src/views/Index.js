@@ -14,7 +14,7 @@ class Index extends React.Component {
       openTooltipOpen: false,
       deleteTooltipOpen: false,
       deleteModalOpen: false,
-      saveTooltipOpen: false,
+      addressTooltipOpen: false,
       projects: [],
       currentProject: null,
       serverAddress: ""
@@ -24,7 +24,7 @@ class Index extends React.Component {
     this.toggleOpenTooltip = this.toggleOpenTooltip.bind(this);
     this.toggleDeleteTooltipOpen = this.toggleDeleteTooltipOpen.bind(this);
     this.toggleDeleteModalOpen = this.toggleDeleteModalOpen.bind(this);
-    this.toggleSaveTooltipOpen = this.toggleSaveTooltipOpen.bind(this);
+    this.toggleAddressTooltipOpen = this.toggleAddressTooltipOpen.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
     this.buttonList = this.buttonList.bind(this);
     this.setStateCurrentProject = this.setStateCurrentProject.bind(this);
@@ -54,9 +54,9 @@ class Index extends React.Component {
       deleteModalOpen: !this.state.deleteModalOpen
     });
   }
-  toggleSaveTooltipOpen() {
+  toggleAddressTooltipOpen() {
     this.setState({
-      saveTooltipOpen: !this.state.saveTooltipOpen
+      addressTooltipOpen: !this.state.addressTooltipOpen
     });
   }
 
@@ -194,7 +194,7 @@ class Index extends React.Component {
         <Tooltip placement="bottom" isOpen={this.state.deleteTooltipOpen} target="deleteTooltip" toggle={this.toggleDeleteTooltipOpen}>
           Deletes the selected project.
         </Tooltip>
-        <Tooltip placement="bottom" isOpen={this.state.saveTooltipOpen} target="saveTooltip" toggle={this.toggleSaveTooltipOpen}>
+        <Tooltip placement="bottom" isOpen={this.state.addressTooltipOpen} target="saveTooltip" toggle={this.toggleAddressTooltipOpen}>
           Sets the address of the API server to send queries to. It can be an IP address or a domain name and a path. port number can also be specified. Prepend {'http://'} or {'https://'} to it and don&apos;t end it with a slash.
         </Tooltip>
         <Modal isOpen={this.state.deleteModalOpen} toggle={this.toggleDeleteModalOpen}>

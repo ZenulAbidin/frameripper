@@ -10,6 +10,7 @@ class TranscodePNGPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      addressTooltipOpen: false,
       project: null,
       completed: false,
       interval: null,
@@ -24,9 +25,9 @@ class TranscodePNGPage extends React.Component {
     this.content = this.content.bind(this);
   }
 
-  toggleSaveTooltipOpen() {
+  toggleAddressTooltipOpen() {
     this.setState({
-      saveTooltipOpen: !this.state.saveTooltipOpen
+      addressTooltipOpen: !this.state.addressTooltipOpen
     });
   }
 
