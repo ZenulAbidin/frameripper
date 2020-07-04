@@ -223,7 +223,7 @@ class Index extends React.Component {
             <Form>
               <FormGroup row style={{marginRight: '1rem'}}>
                 <Label for="serverAddress" id="saveTooltip">API server address</Label>
-                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)}
+                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)} onSubmit={this.commitServerAddress}
                     value={this.state.serverAddress}/>
                  <Button id="saveTooltip" color="primary" onClick={this.commitServerAddress}>Save address</Button>
               </FormGroup>
