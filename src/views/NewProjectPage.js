@@ -114,40 +114,39 @@ class NewProjectPage extends React.Component {
 
   sendOKRequest() {
     
-    const request = async () => {
-      var body = {'projects': this.state.projects.concat(this.state.path)};
-      // send POST request
-      var res = await fetch(address+'/projects', {
-          method: 'post',
-          body:    JSON.stringify(body),
-          headers: { 'Content-Type': 'application/json' },
-      });
-      if (!res.ok) {
+    var body = {'projects': this.state.projects.concat(this.state.path)};
+    // send POST request
+    fetch(address+'/projects', {
+        method: 'post',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    }).then(res => {
+    	if (!res.ok) {
         console.error(`POST /projects with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
-      body = {'currentProject': this.state.path};
-      // send POST request
-      res = await fetch(address+'/currentproject', {
-          method: 'post',
-          body:    JSON.stringify(body),
-          headers: { 'Content-Type': 'application/json' },
-      })
-      if (!res.ok) {
+    });
+    body = {'currentProject': this.state.path};
+    // send POST request
+    fetch(address+'/currentproject', {
+        method: 'post',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    }).then(res => {
+    	if (!res.ok) {
         console.error(`POST /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
-      body = {'settings': {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset}};
-      // send POST request
-      res = await fetch(address+'/currentsettings', {
-          method: 'post',
-          body:    JSON.stringify(body),
-          headers: {'Content-Type': 'application/json' },
-      })
-      if (!res.ok) {
+    });
+    body = {'settings': {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset}};
+    // send POST request
+    fetch(address+'/currentsettings', {
+        method: 'post',
+        body:    JSON.stringify(body),
+        headers: {'Content-Type': 'application/json' },
+    }).then(res => {
+    	if (!res.ok) {
         console.error(`POST /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
-    }
-    
-    request();
+    });
   }
 
   validatePrefixInput(e) {
@@ -234,8 +233,8 @@ class NewProjectPage extends React.Component {
           </Form>
           <div className='container'>
             <div className='centered-horz'>
-              <Link to="/select" className='container__child'>
-                <Button id="createTooltip" color="primary" disabled={this.state.prefixInputInvalid || this.state.pathInputInvalid} onClick={this.sendOKRequest}>Create</Button>
+              <Link to="/select" className='container__child' onClick={this.sendOKRequest}>
+                <Button id="createTooltip" color="primary" disabled={this.state.prefixInputInvalid || this.state.pathInputInvalid}>Create</Button>
               </Link>
               <Link to="/" className='container__child'>
                 <Button color="primary">Cancel</Button>
