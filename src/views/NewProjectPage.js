@@ -118,7 +118,7 @@ class NewProjectPage extends React.Component {
     var formBody = [];
     for (var property in body) {
       var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(details[property]);
+      var encodedValue = encodeURIComponent(body[property]);
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
@@ -136,7 +136,7 @@ class NewProjectPage extends React.Component {
     formBody = [];
     for (var property in body) {
       var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(details[property]);
+      var encodedValue = encodeURIComponent(body[property]);
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
@@ -154,7 +154,7 @@ class NewProjectPage extends React.Component {
     formBody = [];
     for (var property in body) {
       var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(details[property]);
+      var encodedValue = encodeURIComponent(body[property]);
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
