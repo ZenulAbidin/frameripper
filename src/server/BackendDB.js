@@ -466,7 +466,7 @@ const getCurrentProject = db => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: true, '/currentProject': value, cached: false}});
       return resolve(value);
     }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_value: value || default_null, app_response: {success: false, 'error': err.stack || default_null}});
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: false, 'error': err.stack || default_null}});
       reject(err);
     })
   })
