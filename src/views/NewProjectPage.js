@@ -125,7 +125,7 @@ class NewProjectPage extends React.Component {
     // send POST request
     fetch(address+'/projects', {
         method: 'post',
-        body:    JSON.stringify(body),
+        body:    formBody,
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
@@ -143,7 +143,7 @@ class NewProjectPage extends React.Component {
     // send POST request
     fetch(address+'/currentproject', {
         method: 'post',
-        body:    JSON.stringify(body),
+        body:   formBody,
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
@@ -161,7 +161,7 @@ class NewProjectPage extends React.Component {
     // send POST request
     fetch(address+'/currentsettings', {
         method: 'post',
-        body:    JSON.stringify(body),
+        body:    formBody,
         headers: {'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
