@@ -92,10 +92,10 @@ class SelectPage extends React.Component {
     fetch(address+'/frameslist').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          console.log(json)
+          flarray = JSON.parse('['+json.framesList+']')
           this.setState({
-            framesList: json.framesList,
-            ogFramesList: json.framesList.join('\n')
+            framesList: flarray,
+            ogFramesList: flarray.join('\n')
           });
         })
       }
