@@ -168,7 +168,8 @@ class NewProjectPage extends React.Component {
         console.error(`POST /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
-    body = {'framesList': []};
+    // convert arbitrary JSON arrays into strings first and then to base64.
+    body = {'framesList': btoa(JSON.stringify([]))};
     formBody = [];
     for (property in body) {
       encodedKey = encodeURIComponent(property);

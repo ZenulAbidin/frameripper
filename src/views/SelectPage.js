@@ -92,7 +92,7 @@ class SelectPage extends React.Component {
     fetch(address+'/frameslist').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          var flarray = JSON.parse('['+json.framesList+']')
+          var flarray = JSON.parse(atob(json.framesList))
           this.setState({
             framesList: flarray,
             ogFramesList: flarray.join('\n')
@@ -173,13 +173,11 @@ class SelectPage extends React.Component {
       ogFramesList: e.target.value
     });
     if (e.target.value.length === 0) {
-      this.setState({
-        frameNumbersInvalid: true
-      });
+      return;
     }
     var invalid = false;
     if (this.state.numFrames !== 0) {
-      var nums = e.target.value.split('\n');
+      var nums = e.target.value.replace(/\n+/g,'\n').split('\n');
       var frames = [];
       for (var i = 0; i < nums.length; i++) {
         var n = parseInt(nums[i])
