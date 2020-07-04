@@ -16,6 +16,7 @@ class TranscodeJPGPage extends React.Component {
       serverAddress: ""
     };
 
+    this.toggleAddressTooltipOpen = this.toggleAddressTooltipOpen.bind(this);
     this.displayIncomplete = this.displayIncomplete.bind(this);
     this.displayComplete = this.displayComplete.bind(this);
     this.queryComplete = this.queryComplete.bind(this);

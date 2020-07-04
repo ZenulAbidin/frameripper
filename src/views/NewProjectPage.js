@@ -24,6 +24,7 @@ class NewProjectPage extends React.Component {
       serverAddress: ""
     };
 
+    this.toggleAddressTooltipOpen = this.toggleAddressTooltipOpen.bind(this);
     this.togglePathTooltipOpen = this.togglePathTooltipOpen.bind(this);
     this.togglePrefixTooltipOpen = this.togglePrefixTooltipOpen.bind(this);
     this.toggleOffsetTooltipOpen = this.toggleOffsetTooltipOpen.bind(this);

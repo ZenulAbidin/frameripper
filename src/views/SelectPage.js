@@ -30,6 +30,7 @@ class SelectPage extends React.Component {
     this.toggleJPGTooltipOpen = this.toggleJPGTooltipOpen.bind(this);
     this.togglePNGTooltipOpen = this.togglePNGTooltipOpen.bind(this);
     this.toggleSettingsTooltipOpen = this.toggleSettingsTooltipOpen.bind(this);
+    this.toggleAddressTooltipOpen = this.toggleAddressTooltipOpen.bind(this);
     this.frameNumbersHelpText = this.frameNumbersHelpText.bind(this);
     this.validateFrameNumbersInput = this.validateFrameNumbersInput.bind(this);
     this.startJPGTranscode = this.startJPGTranscode.bind(this);
