@@ -75,7 +75,7 @@ app.get('/abortjpgtranscode', function (req, res) {
       res.json({ok: encodeURIComponent(Buffer.from(JSON.stringify(true)).toString('base64'))})
     } else {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 400, app_response: {'error': 'ffmpeg is not running'}});
-      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify('ffmpeg is not running')).toString('base64')})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify('ffmpeg is not running')).toString('base64'))})
     }
   } else {
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 200});
@@ -102,7 +102,7 @@ app.get('/abortpngtranscode', function (req, res) {
       res.json({ok: encodeURIComponent(Buffer.from(JSON.stringify(true)).toString('base64'))})
     } else {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 400, app_response: {'error': 'ffmpeg is not running'}});
-      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify('ffmpeg is not running')).toString('base64')})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify('ffmpeg is not running')).toString('base64'))})
     }
   } else {
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 200});
