@@ -196,7 +196,7 @@ app.get('/currentsettings', function (req, res) {
     var project = getCurrentProject(db).then(project => {
       getSettings(db, project).then(function(settings) {
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 200, app_response: settings});
-        res.status(200).json({'prefix': encodeURIComponent(btoa(JSON.stringify(settings.prefix))), 'frameOffset', encodeURIComponent(btoa(JSON.stringify(settings.frameOffset)))})
+        res.status(200).json({'prefix': encodeURIComponent(btoa(JSON.stringify(settings.prefix))), 'frameOffset': encodeURIComponent(btoa(JSON.stringify(settings.frameOffset)))})
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
         res.status(400).json({'error': err.toString()})
