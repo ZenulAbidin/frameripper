@@ -254,7 +254,7 @@ app.get('/numframes', function (req, res) {
         res.status(200).json({'numFrames': encodeURIComponent(btoa(JSON.stringify(numFrames)))})
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
-        res.status(400).json({'error' encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
+        res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
       })
     }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
