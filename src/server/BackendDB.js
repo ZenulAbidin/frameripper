@@ -62,7 +62,7 @@ app.get('/startjpgtranscode', function (req, res) {
     runFFmpegJPG();
   }
   logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/startjpgtranscode', app_request: 'get', app_status: 200});
-  res.json({ok:encodeURIComponent(btoa(JSON.stringify(true)))});
+  res.json({ok: encodeURIComponent(Buffer.from(JSON.stringify(true)).toString('base64'))});
 })
 
 app.get('/abortjpgtranscode', function (req, res) {
@@ -72,14 +72,14 @@ app.get('/abortjpgtranscode', function (req, res) {
       ffmpeg.kill();
       ffmpeg_running = false;
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 200});
-      res.json({ok:encodeURIComponent(btoa(JSON.stringify(true)))})
+      res.json({ok: encodeURIComponent(Buffer.from(JSON.stringify(true)).toString('base64'))})
     } else {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 400, app_response: {'error': 'ffmpeg is not running'}});
-      res.status(400).json({'error': 'ffmpeg is not running'})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify('ffmpeg is not running')).toString('base64')})
     }
   } else {
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 200});
-    res.json({ok:encodeURIComponent(btoa(JSON.stringify(true)))})
+    res.json({ok: encodeURIComponent(Buffer.from(JSON.stringify(true)).toString('base64'))})
   }
 })
 
@@ -89,7 +89,7 @@ app.get('/startpngtranscode', function (req, res) {
     runFFmpegPNG();
   }
   logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/startpngtranscode', app_request: 'get', app_status: 200});
-  res.json({ok:encodeURIComponent(btoa(JSON.stringify(true)))});
+  res.json({ok: encodeURIComponent(Buffer.from(JSON.stringify(true)).toString('base64'))});
 })
 
 app.get('/abortpngtranscode', function (req, res) {
@@ -99,14 +99,14 @@ app.get('/abortpngtranscode', function (req, res) {
       ffmpeg.kill();
       ffmpeg_running = false;
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 200});
-      res.json({ok:encodeURIComponent(btoa(JSON.stringify(true)))})
+      res.json({ok: encodeURIComponent(Buffer.from(JSON.stringify(true)).toString('base64'))})
     } else {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 400, app_response: {'error': 'ffmpeg is not running'}});
-      res.status(400).json({'error': 'ffmpeg is not running'})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify('ffmpeg is not running')).toString('base64')})
     }
   } else {
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 200});
-    res.json({ok:encodeURIComponent(btoa(JSON.stringify(true)))})
+    res.json({ok: encodeURIComponent(Buffer.from(JSON.stringify(true)).toString('base64'))})
   }
 })
 
@@ -115,13 +115,13 @@ app.get('/projects', function (req, res) {
   if (!argv.testClient) {
     getProjects(db).then(function(projects) {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 200, app_response: {'projects': projects}});
-      res.status(200).json({'projects': encodeURIComponent(btoa(JSON.stringify(projects)))})
+      res.status(200).json({'projects': encodeURIComponent(Buffer.from(JSON.stringify(projects)).toString('base64'))})
     }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
-      res.status(400).json({'error': err.toString()})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
     })
   } else {
-    var projects = encodeURIComponent(btoa(JSON.stringify(['Big-Buck-Bunny.mp4', 'Crab-Rave.mp4', 'FooBar2000test.mp4'])));
+    var projects = encodeURIComponent(Buffer.from(JSON.stringify(['Big-Buck-Bunny.mp4', 'Crab-Rave.mp4', 'FooBar2000test.mp4'])).toString('base64'));
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 200, app_response: {'projects': null}});
     res.status(200).json({'projects': projects})
   }
@@ -133,9 +133,9 @@ app.post('/projects', function (req, res) {
   if (!argv.testClient) {
     if (req.body.projects == null) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "projects" doesn\'t exist'}});
-      res.status(400).json({'error': 'Required key "projects" doesn\'t exist'})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify('Required key "projects" doesn\'t exist')).toString('base64'))})
     } else {
-      var projects_decoded = JSON.parse(atob(decodeURIComponent(req.body.projects)));
+      var projects_decoded = JSON.parse(Buffer.from(decodeURIComponent(req.body.projects), 'base64').toString());
       setProjects(db, req.body.projects_decoded).then(value => {
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'post', app_status: 200});
         res.json({ok:true})
@@ -155,13 +155,13 @@ app.get('/currentproject', function (req, res) {
   if (!argv.testClient) {
     getCurrentProject(db).then(function(project) {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 200, app_response: {'currentProject': project}});
-      res.status(200).json({'currentProject': encodeURIComponent(btoa(JSON.stringify(project)))})
+      res.status(200).json({'currentProject': encodeURIComponent(Buffer.from(JSON.stringify(project)).toString('base64'))})
     }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
-      res.status(400).json({'error': err.toString()})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
     })
   } else {
-    var project = encodeURIComponent(btoa(JSON.stringify('Big-Buck-Bunny.mp4')));
+    var project = encodeURIComponent(Buffer.from(JSON.stringify('Big-Buck-Bunny.mp4')).toString('base64'));
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 200, app_response: {'currentProject': null}});
     res.status(200).json({'currentProject': project})
   }
@@ -172,15 +172,15 @@ app.post('/currentproject', function (req, res) {
   if (!argv.testClient) {
     if (req.body.currentProject == null) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "currentProject" doesn\'t exist'}});
-      res.status(400).json({'error': 'Required key "currentProject" doesn\'t exist'})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify('Required key "currentProject" doesn\'t exist')).toString('base64'))})
     } else {
-      var currentProject_decoded = JSON.parse(atob(decodeURIComponent(req.body.currentProject)));
+      var currentProject_decoded = JSON.parse(Buffer.from(decodeURIComponent(req.body.currentProject), 'base64').toString());
       setCurrentProject(db, req.body.currentProject_decoded).then(value => {
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'post', app_status: 200});
         res.json({ok:true})
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
-        res.status(400).json({'error': err.toString()})
+        res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
       })
     }
   }
@@ -196,14 +196,14 @@ app.get('/currentsettings', function (req, res) {
     var project = getCurrentProject(db).then(project => {
       getSettings(db, project).then(function(settings) {
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 200, app_response: settings});
-        res.status(200).json({'prefix': encodeURIComponent(btoa(JSON.stringify(settings.prefix))), 'frameOffset': encodeURIComponent(btoa(JSON.stringify(settings.frameOffset)))})
+        res.status(200).json({'prefix': encodeURIComponent(Buffer.from(JSON.stringify(settings.prefix)).toString('base64')), 'frameOffset': encodeURIComponent(Buffer.from(JSON.stringify(settings.frameOffset)).toString('base64'))})
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
-        res.status(400).json({'error': err.toString()})
+        res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
       })
     }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
-      res.status(400).json({'error': err.toString()})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
     })
   } else {
     var settings = {prefix: encodeURIComponent(btoa(JSON.stringify('bbb'))), frameOffset: encodeURIComponent(btoa(JSON.stringify(-2)))};
@@ -217,26 +217,26 @@ app.post('/currentsettings', function (req, res) {
   if (!argv.testClient) {
     if (req.body.prefix == null) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "settings.prefix" doesn\'t exist'}});
-      res.status(400).json({'error': 'Required key "prefix" doesn\'t exist'})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify('Required key "prefix" doesn\'t exist')).toString('base64'))})
     }
     else if (req.body.frameOffset == null) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "settings.frameOffset" doesn\'t exist'}});
-      res.status(400).json({'error': 'Required key "frameOffset" doesn\'t exist'})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify('Required key "frameOffset" doesn\'t exist')).toString('base64'))})
     }
     else {
-      var prefix_decoded = JSON.parse(atob(decodeURIComponent(req.body.prefix)));
-      var frameOffset_decoded = JSON.parse(atob(decodeURIComponent(req.body.frameOffset)));
+      var prefix_decoded = JSON.parse(Buffer.from(decodeURIComponent(req.body.prefix), 'base64').toString());
+      var frameOffset_decoded = JSON.parse(Buffer.from(decodeURIComponent(req.body.frameOffset), 'base64').toString());
       var project = getCurrentProject(db).then(project => {
         setSettings(db, project, req.body.prefix_decoded, req.body.frameOffset_decoded).then(value => {
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 200});
           res.json({ok:true})
         }).catch(function(err) {
           logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
-          res.status(400).json({'error': err.toString()})
+          res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
         })
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
-        res.status(400).json({'error': err.toString()})
+        res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
       })
     }
   } else {
@@ -254,11 +254,11 @@ app.get('/numframes', function (req, res) {
         res.status(200).json({'numFrames': encodeURIComponent(btoa(JSON.stringify(numFrames)))})
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
-        res.status(400).json({'error': err.toString()})
+        res.status(400).json({'error' encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
       })
     }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
-      res.status(400).json({'error': err.toString()})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
     })
   } else {
     var numFrames = encodeURIComponent(btoa(JSON.stringify(23)));
@@ -272,20 +272,20 @@ app.post('/numframes', function (req, res) {
   if (!argv.testClient) {
     if (req.body.numFrames == null) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "numFrames" doesn\'t exist'}});
-      res.status(400).json({'error': 'Required key "numFrames" doesn\'t exist'})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify('Required key "numFrames" doesn\'t exist')).toString('base64'))})
     } else {
-      var numFrames_decoded = JSON.parse(atob(decodeURIComponent(req.body.numFrames)));
+      var numFrames_decoded = JSON.parse(Buffer.from(decodeURIComponent(req.body.numFrames), 'base64').toString());
       var project = getCurrentProject(db).then(project => {
         setNumFrames(db, project, req.body.numFrames_decoded).then(value => {
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'post', app_status: 200});
           res.json({ok:true})
         }).catch(function(err) {
           logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
-          res.status(400).json({'error': err.toString()})
+          res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
         })
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
-        res.status(400).json({'error': err.toString()})
+        res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
       })
     }
   } else {
@@ -303,11 +303,11 @@ app.get('/frameslist', function (req, res) {
         res.status(200).json({'framesList': encodeURIComponent(btoa(JSON.stringify(framesList)))})
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
-        res.status(400).json({'error': err.toString()})
+        res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
       })
     }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
-      res.status(400).json({'error': err.toString()})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
     })
   } else {
     var framesList = encodeURIComponent(btoa(JSON.stringify([0, 1, 3, 4, 5, 6, 14, 16, 22])));
@@ -323,18 +323,18 @@ app.post('/frameslist', function (req, res) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "framesList" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "framesList" doesn\'t exist'})
     } else {
-      var framesList_decoded = JSON.parse(atob(decodeURIComponent(req.body.framesList)));
+      var framesList_decoded = JSON.parse(Buffer.from(decodeURIComponent(req.body.framesList), 'base64').toString())
       var project = getCurrentProject(db).then(project => {
         setFramesList(db, project, framesList_decoded).then(value => {
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'post', app_status: 200});
           res.json({ok:true})
         }).catch(function(err) {
           logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
-          res.status(400).json({'error': err.toString()})
+          res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
         })
       }).catch(function(err) {
         logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
-        res.status(400).json({'error': err.toString()})
+        res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
       })
     }
   } else {
@@ -348,14 +348,14 @@ app.post('/deleteproject', function (req, res) {
   if (!argv.testClient) {
     deleteProject(db, req.body.project).then(value => {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'post', app_status: 200});
-      res.json({ok:true})
+      res.json({ok: encodeURIComponent(Buffer.from(JSON.stringify(true)).toString('base64'))})
     }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'post', app_status: 400, app_response: {'error': err.stack || default_null}});
-      res.status(400).json({'error': err.toString()})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(complete)).toString('base64'))})
     })
   } else {
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/deleteproject', app_request: 'post', app_status: 200});
-    res.json({ok:true})
+    res.json({ok: encodeURIComponent(Buffer.from(JSON.stringify(true)).toString('base64'))})
   }
 })
 
@@ -365,17 +365,17 @@ app.get('/istranscodingjpgcomplete', function (req, res) {
   if (!argv.testClient) {
     isTranscodingJPGComplete().then(function(complete) {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
-      res.status(200).json({'complete': complete})
+      res.status(200).json({'complete': encodeURIComponent(Buffer.from(JSON.stringify(complete)).toString('base64'))})
     }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
-      res.status(400).json({'error': err.toString()})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
     })
   } else {
     ticker_jpg += 1;
     var complete = (ticker_jpg % 50 === 0) ? true : false;
     console.log(`ticker_jpg = ${ticker_jpg}`);
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/istranscodingjpgcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete, 'ticker': ticker_jpg}});
-    res.status(200).json({'complete': complete})
+    res.status(200).json({'complete': encodeURIComponent(Buffer.from(JSON.stringify(complete)).toString('base64'))})
   }
 })
 
@@ -385,17 +385,17 @@ app.get('/istranscodingpngcomplete', function (req, res) {
   if (!argv.testClient) {
     isTranscodingPNGComplete().then(function(complete) {
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete}});
-      res.status(200).json({'complete': complete})
+      res.status(200).json({'complete': encodeURIComponent(Buffer.from(JSON.stringify(complete)).toString('base64'))})
     }).catch(function(err) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 400, app_response: {'error': err.stack || default_null}});
-      res.status(400).json({'error': err.toString()})
+      res.status(400).json({'error': encodeURIComponent(Buffer.from(JSON.stringify(err.toString())).toString('base64'))})
     })
   } else {
     ticker_png += 1;
     var complete = (ticker_png % 50 === 0) ? true : false;
     console.log(`ticker_png = ${ticker_png}`);
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/istranscodingpngcomplete', app_request: 'get', app_status: 200, app_response: {'complete': complete, 'ticker': ticker_png}});
-    res.status(200).json({'complete': complete})
+    res.status(200).json({'complete': encodeURIComponent(Buffer.from(JSON.stringify(complete)).toString('base64'))})
   }
 })
 
