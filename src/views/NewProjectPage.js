@@ -173,7 +173,7 @@ class NewProjectPage extends React.Component {
     formBody = [];
     for (property in body) {
       encodedKey = encodeURIComponent(property);
-      encodedValue = body[property];
+      encodedValue = encodeURIComponent(body[property]);
       formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
