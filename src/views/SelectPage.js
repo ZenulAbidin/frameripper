@@ -80,8 +80,9 @@ class SelectPage extends React.Component {
     fetch(address+'/currentproject').then(res => {
       if (res.ok) {
         res.json().then(json => {
+          var currentProject_decoded = JSON.parse(atob(json.currentProject))
           this.setState({
-            project: json.currentProject
+            project: currentProject_decoded
           });
         })
       }
@@ -92,10 +93,10 @@ class SelectPage extends React.Component {
     fetch(address+'/frameslist').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          var flarray = JSON.parse(atob(json.framesList))
+          var framesList_decoded = JSON.parse(atob(json.framesList))
           this.setState({
-            framesList: flarray,
-            ogFramesList: flarray.join('\n')
+            framesList: framesList_decoded,
+            ogFramesList: framesList_decoded.join('\n')
           });
         })
       }
@@ -106,8 +107,9 @@ class SelectPage extends React.Component {
     fetch(address+'/numframes').then(res => {
       if (res.ok) {
         res.json().then(json => {
+          var numFrames_decoded = JSON.parse(atob(json.numFrames))
           this.setState({
-            numFrames: json.numFrames
+            numFrames: numFrames_decoded
           });
         })
       }

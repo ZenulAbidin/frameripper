@@ -114,7 +114,7 @@ class NewProjectPage extends React.Component {
 
   sendOKRequest() {
     
-    var body = {'projects': this.state.projects.concat(this.state.path)};
+    var body = {'projects': btoa(JSON.stringify(this.state.projects.concat(this.state.path)))};
     var formBody = [];
     for (var property in body) {
       var encodedKey = encodeURIComponent(property);
@@ -132,7 +132,7 @@ class NewProjectPage extends React.Component {
         console.error(`POST /projects with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
-    body = {'currentProject': this.state.path};
+    body = {'currentProject': btoa(JSON.stringify(this.state.path))};
     formBody = [];
     for (property in body) {
       encodedKey = encodeURIComponent(property);
@@ -150,7 +150,7 @@ class NewProjectPage extends React.Component {
         console.error(`POST /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
-    body = {'prefix': this.state.prefix, 'frameOffset': this.state.offset};
+    body = {'prefix': btoa(JSON.stringify(this.state.prefix)), 'frameOffset': btoa(JSON.stringify(this.state.offset))};
     formBody = [];
     for (property in body) {
       encodedKey = encodeURIComponent(property);
@@ -187,7 +187,7 @@ class NewProjectPage extends React.Component {
         console.error(`POST /frameslist with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
-    body = {'numFrames': 0};
+    body = {'numFrames': btoa(JSON.stringify(0))};
     formBody = [];
     for (property in body) {
       encodedKey = encodeURIComponent(property);
