@@ -87,7 +87,7 @@ app.get('/abortjpgtranscode', function (req, res) {
     }
   } else {
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 200});
-    res.json({ok: wwwencode(true))})
+    res.json({ok: wwwencode(true)})
   }
 })
 
@@ -97,7 +97,7 @@ app.get('/startpngtranscode', function (req, res) {
     runFFmpegPNG();
   }
   logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/startpngtranscode', app_request: 'get', app_status: 200});
-  res.json({ok: wwwencode(true))});
+  res.json({ok: wwwencode(true)});
 })
 
 app.get('/abortpngtranscode', function (req, res) {
