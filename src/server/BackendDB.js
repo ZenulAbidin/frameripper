@@ -329,7 +329,7 @@ app.post('/frameslist', function (req, res) {
   if (!argv.testClient) {
     if (req.body.framesList == null) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "framesList" doesn\'t exist'}});
-      res.status(400).json({'error': wwwencode(Required key "framesList" doesn\'t exist')})
+      res.status(400).json({'error': wwwencode('Required key "framesList" doesn\'t exist')})
     } else {
       var framesList_decoded = wwwdecode(req.body.framesList)
       var project = getCurrentProject(db).then(project => {
