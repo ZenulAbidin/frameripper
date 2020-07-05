@@ -318,8 +318,9 @@ app.post('/frameslist', function (req, res) {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'post', app_status: 400, app_response: {'error': 'Required key "framesList" doesn\'t exist'}});
       res.status(400).json({'error': 'Required key "framesList" doesn\'t exist'})
     } else {
+      var framesList_decoded = JSON.parse(atob(decodeURIComponent(req.body.framesList)));
       var project = getCurrentProject(db).then(project => {
-        setFramesList(db, project, req.body.framesList).then(value => {
+        setFramesList(db, project, framesList_decoded).then(value => {
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'post', app_status: 200});
           res.json({ok:true})
         }).catch(function(err) {
