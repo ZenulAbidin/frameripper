@@ -144,7 +144,7 @@ app.post('/projects', function (req, res) {
       res.status(400).json({'error': wwwencode('Required key "projects" doesn\'t exist')})
     } else {
       var projects_decoded = wwwdecode(req.body.projects);
-      setProjects(db, req.body.projects_decoded).then(value => {
+      setProjects(db, projects_decoded).then(value => {
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'post', app_status: 200});
         res.json({ok:true})
       }).catch(err => {
@@ -183,7 +183,7 @@ app.post('/currentproject', function (req, res) {
       res.status(400).json({'error': wwwencode('Required key "currentProject" doesn\'t exist')})
     } else {
       var currentProject_decoded = wwwdecode(req.body.currentProject);
-      setCurrentProject(db, req.body.currentProject_decoded).then(value => {
+      setCurrentProject(db, currentProject_decoded).then(value => {
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'post', app_status: 200});
         res.json({ok:true})
       }).catch(function(err) {
@@ -235,7 +235,7 @@ app.post('/currentsettings', function (req, res) {
       var prefix_decoded = wwwdecode(req.body.prefix);
       var frameOffset_decoded = wwwdecode(req.body.frameOffset);
       var project = getCurrentProject(db).then(project => {
-        setSettings(db, project, req.body.prefix_decoded, req.body.frameOffset_decoded).then(value => {
+        setSettings(db, project, prefix_decoded, frameOffset_decoded).then(value => {
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'post', app_status: 200});
           res.json({ok:true})
         }).catch(function(err) {
@@ -284,7 +284,7 @@ app.post('/numframes', function (req, res) {
     } else {
       var numFrames_decoded = wwwdecode(req.body.numFrames);
       var project = getCurrentProject(db).then(project => {
-        setNumFrames(db, project, req.body.numFrames_decoded).then(value => {
+        setNumFrames(db, project, numFrames_decoded).then(value => {
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'post', app_status: 200});
           res.json({ok:true})
         }).catch(function(err) {
