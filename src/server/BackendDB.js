@@ -216,7 +216,7 @@ app.get('/currentsettings', function (req, res) {
   } else {
     var settings = {prefix: 'bbb', frameOffset: -2};
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 200, app_response: settings});
-    res.status(200).json({prefix: wwwencode(settings.prefix), frameOffset: wwwencode(settings.frameOffset)
+    res.status(200).json({prefix: wwwencode(settings.prefix), frameOffset: wwwencode(settings.frameOffset)})
   }
 })
 
