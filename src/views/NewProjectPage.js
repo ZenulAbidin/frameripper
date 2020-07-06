@@ -115,6 +115,7 @@ class NewProjectPage extends React.Component {
 
   sendOKRequest() {
     
+    console.log(this.state.projects.concat(this.state.path)))
     var body = {'projects': wwwencode_partial(this.state.projects.concat(this.state.path))};
     var formBody = wwwencode_form(body);
     // send POST request
