@@ -3,6 +3,7 @@ import {Checkmark} from 'react-checkmark';
 import {Link} from "react-router-dom";
 import {Spinner, Button, Form, FormGroup, Label, Input, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
+import {wwwdecode} from "../Utils";
 
 var address = localStorage.getItem('serverAddress') || '';
 
@@ -37,7 +38,7 @@ class TranscodeJPGPage extends React.Component {
       if (res.ok) {
         res.json().then(json => {
           this.setState({
-            project: json.currentProject
+            project: wwwdecode(json.currentProject)
           });
         })
       }
@@ -79,7 +80,7 @@ class TranscodeJPGPage extends React.Component {
     fetch(address+'/istranscodingjpgcomplete').then(res => {
     	if (res.ok) {
         res.json().then(json => {
-          if (json.complete === true) {
+          if (wwwdecode(json.complete) === true) {
             this.setState({
               completed: true
             });

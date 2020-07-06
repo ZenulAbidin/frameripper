@@ -47,11 +47,13 @@ function formatNumberSign(theNumber)
 }
 
 const wwwencode = (data) => {
-    return encodeURIComponent(Buffer.from(JSON.stringify(data)).toString('base64'))
+//    return encodeURIComponent(Buffer.from(JSON.stringify(data)).toString('base64'))
+    return encodeURIComponent(JSON.stringify(data))
 };
 
 const wwwdecode = (data) => {
-    return JSON.parse(Buffer.from(decodeURIComponent(data), 'base64').toString())
+//    return JSON.parse(Buffer.from(decodeURIComponent(data), 'base64').toString())
+    return JSON.parse(decodeURIComponent(data))
 };
 
 var app = express();
