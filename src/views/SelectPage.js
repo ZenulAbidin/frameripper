@@ -2,6 +2,7 @@ import React from "react";
 import "../assets/css/styles.css";
 import {Link} from "react-router-dom";
 import {Form, FormGroup, FormFeedback, Button, Input, Label, Tooltip} from "reactstrap";
+import {wwwencode_partial, wwwencode_form, wwwdecode} from "../Utils";
 
 var address = localStorage.getItem('serverAddress') || '';
 
@@ -80,7 +81,7 @@ class SelectPage extends React.Component {
     fetch(address+'/currentproject').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          var currentProject_decoded = JSON.parse(atob(json.currentProject))
+          var currentProject_decoded = wwwdecode(json.currentProject)
           this.setState({
             project: currentProject_decoded
           });
@@ -93,7 +94,7 @@ class SelectPage extends React.Component {
     fetch(address+'/frameslist').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          var framesList_decoded = JSON.parse(atob(json.framesList))
+          var framesList_decoded = wwwdecode(json.framesList)
           this.setState({
             framesList: framesList_decoded,
             ogFramesList: framesList_decoded.join('\n')
@@ -107,7 +108,7 @@ class SelectPage extends React.Component {
     fetch(address+'/numframes').then(res => {
       if (res.ok) {
         res.json().then(json => {
-          var numFrames_decoded = JSON.parse(atob(json.numFrames))
+          var numFrames_decoded = wwwdecode(json.numFrames)
           this.setState({
             numFrames: numFrames_decoded
           });

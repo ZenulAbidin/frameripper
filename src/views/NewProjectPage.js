@@ -2,6 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {Form, FormGroup, FormFeedback, Button, Col, Input, Label, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
+import {wwwencode_partial, wwwencode_form, wwwdecode} from "../Utils";
 
 var address = localStorage.getItem('serverAddress') || '';
 
@@ -114,14 +115,8 @@ class NewProjectPage extends React.Component {
 
   sendOKRequest() {
     
-    var body = {'projects': btoa(JSON.stringify(this.state.projects.concat(this.state.path)))};
-    var formBody = [];
-    for (var property in body) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(body[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
+    var body = {'projects': wwwencode_partial(this.state.projects.concat(this.state.path))};
+    var formBody = wwwencode_form(body);
     // send POST request
     fetch(address+'/projects', {
         method: 'post',
@@ -132,14 +127,8 @@ class NewProjectPage extends React.Component {
         console.error(`POST /projects with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
-    body = {'currentProject': btoa(JSON.stringify(this.state.path))};
-    formBody = [];
-    for (property in body) {
-      encodedKey = encodeURIComponent(property);
-      encodedValue = encodeURIComponent(body[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
+    body = {'currentProject': wwwencode_partial(this.state.path)};
+    formBody = wwwencode_form(body);
     // send POST request
     fetch(address+'/currentproject', {
         method: 'post',
@@ -150,14 +139,8 @@ class NewProjectPage extends React.Component {
         console.error(`POST /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
-    body = {'prefix': btoa(JSON.stringify(this.state.prefix)), 'frameOffset': btoa(JSON.stringify(this.state.offset))};
-    formBody = [];
-    for (property in body) {
-      encodedKey = encodeURIComponent(property);
-      encodedValue = encodeURIComponent(body[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
+    body = {'prefix': wwwencode_partial(this.state.prefix), 'frameOffset': wwwencode_partial(this.state.offset)};
+    formBody = wwwencode_form(body);
     // send POST request
     fetch(address+'/currentsettings', {
         method: 'post',
@@ -169,14 +152,8 @@ class NewProjectPage extends React.Component {
       }
     });
     // convert arbitrary JSON arrays into strings first and then to base64.
-    body = {'framesList': btoa(JSON.stringify([]))};
-    formBody = [];
-    for (property in body) {
-      encodedKey = encodeURIComponent(property);
-      encodedValue = encodeURIComponent(body[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
+    body = {'framesList': wwwencode_partial([])};
+    formBody = wwwencode_form(body);
     // send POST request
     fetch(address+'/frameslist', {
         method: 'post',
@@ -187,14 +164,8 @@ class NewProjectPage extends React.Component {
         console.error(`POST /frameslist with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
       }
     });
-    body = {'numFrames': btoa(JSON.stringify(0))};
-    formBody = [];
-    for (property in body) {
-      encodedKey = encodeURIComponent(property);
-      encodedValue = encodeURIComponent(body[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
+    body = {'numFrames': wwwencode_partial(0)};
+    formBody = wwwencode_form(body);
     // send POST request
     fetch(address+'/numframes', {
         method: 'post',

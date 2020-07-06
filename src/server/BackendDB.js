@@ -129,9 +129,9 @@ app.get('/projects', function (req, res) {
       res.status(400).json({'error': wwwencode(err.toString())})
     })
   } else {
-    var projects = wwwencode(['Big-Buck-Bunny.mp4', 'Crab-Rave.mp4', 'FooBar2000test.mp4']);
+    var projects = ['Big-Buck-Bunny.mp4', 'Crab-Rave.mp4', 'FooBar2000test.mp4'];
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/projects', app_request: 'get', app_status: 200, app_response: {'projects': null}});
-    res.status(200).json({'projects': projects})
+    res.status(200).json({'projects': wwwencode(projects)})
   }
 })
 
@@ -169,9 +169,9 @@ app.get('/currentproject', function (req, res) {
       res.status(400).json({'error': wwwencode(err.toString())})
     })
   } else {
-    var project =  wwwencode('Big-Buck-Bunny.mp4');
+    var project =  'Big-Buck-Bunny.mp4';
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentproject', app_request: 'get', app_status: 200, app_response: {'currentProject': null}});
-    res.status(200).json({'currentProject': project})
+    res.status(200).json({'currentProject': wwwencode(project)})
   }
 })
 
@@ -214,9 +214,9 @@ app.get('/currentsettings', function (req, res) {
       res.status(400).json({'error': wwwencode(err.toString())})
     })
   } else {
-    var settings = {prefix: wwwencode('bbb'), frameOffset: wwwencode(-2)};
+    var settings = {prefix: 'bbb', frameOffset: -2};
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/currentsettings', app_request: 'get', app_status: 200, app_response: settings});
-    res.status(200).json(settings)
+    res.status(200).json({prefix: wwwencode(settings.prefix), frameOffset: wwwencode(settings.frameOffset))
   }
 })
 
@@ -269,9 +269,9 @@ app.get('/numframes', function (req, res) {
       res.status(400).json({'error': wwwencode(err.toString())})
     })
   } else {
-    var numFrames = wwwencode(23);
+    var numFrames = 23;
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/numframes', app_request: 'get', app_status: 200, app_response: {'numFrames': numFrames}});
-    res.status(200).json({'numFrames': numFrames})
+    res.status(200).json({'numFrames': wwwencode(numFrames)})
   }
 })
 
@@ -318,9 +318,9 @@ app.get('/frameslist', function (req, res) {
       res.status(400).json({'error': wwwencode(err.toString())})
     })
   } else {
-    var framesList = wwwencode([0, 1, 3, 4, 5, 6, 14, 16, 22]);
+    var framesList = [0, 1, 3, 4, 5, 6, 14, 16, 22];
     logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/frameslist', app_request: 'get', app_status: 200, app_response: {'framesList': framesList}});
-    res.status(200).json({'framesList': framesList})
+    res.status(200).json({'framesList': wwwencode(framesList)})
   }
 })
 
