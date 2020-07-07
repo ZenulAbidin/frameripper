@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {Button, Container, Row, Col, Tooltip, Jumbotron,
     Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from "reactstrap";
 import "../assets/css/styles.css";
+import {wwwencode_partial, wwwencode_form, wwwdecode} from "../Utils";
 
 var address = localStorage.getItem('serverAddress') || '';
 

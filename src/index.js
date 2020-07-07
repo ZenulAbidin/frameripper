@@ -12,7 +12,6 @@ import TranscodeJPGPage from "views/TranscodeJPGPage.js";
 import SelectPage from "views/SelectPage.js";
 import SettingsPage from "views/SettingsPage.js";
 import TranscodePNGPage from "views/TranscodePNGPage.js";
-import {wwwencode_partial, wwwencode_form, wwwdecode} from "./Utils.js";
 
 const address = "http://iamomegastorm.tk:3030";
 
