@@ -78,62 +78,45 @@ class NewProjectPage extends React.Component {
   }
 
   sendOKRequest() {
-    var body = {'projects': wwwencode_partial(this.state.projects.concat(this.state.path))};
-    // send POST request
-    fetch(address+'/projects', {
-        method: 'post',
-        body:    wwwencode_form(body),
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    }).then(res => {
-    	if (!res.ok) {
-        console.error(`POST /projects with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
-      }
-    });
-    body = {'currentProject': wwwencode_partial(this.state.path)};
-    // send POST request
-    fetch(address+'/currentproject', {
-        method: 'post',
-        body:   wwwencode_form(body),
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    }).then(res => {
-    	if (!res.ok) {
-        console.error(`POST /currentproject with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
-      }
-    });
-    body = {'prefix': wwwencode_partial(this.state.prefix), 'frameOffset': wwwencode_partial(this.state.offset)};
-    // send POST request
-    fetch(address+'/currentsettings', {
-        method: 'post',
-        body:    wwwencode_form(body),
-        headers: {'Content-Type': 'application/x-www-form-urlencoded' },
-    }).then(res => {
-    	if (!res.ok) {
-        console.error(`POST /currentsettings with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
-      }
-    });
-    // convert arbitrary JSON arrays into strings first and then to base64.
-    body = {'framesList': wwwencode_partial([])};
-    // send POST request
-    fetch(address+'/frameslist', {
-        method: 'post',
-        body:    wwwencode_form(body),
-        headers: {'Content-Type': 'application/x-www-form-urlencoded' },
-    }).then(res => {
-    	if (!res.ok) {
-        console.error(`POST /frameslist with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
-      }
-    });
-    body = {'numFrames': wwwencode_partial(0)};
-    // send POST request
-    fetch(address+'/numframes', {
-        method: 'post',
-        body:    wwwencode_form(body),
-        headers: {'Content-Type': 'application/x-www-form-urlencoded' },
-    }).then(res => {
-    	if (!res.ok) {
-        console.error(`POST /numframes with body ${JSON.stringify(body)} at NewProjectPage: ${res.status} ${res.statusText}`);
-      }
-    });
+    const request = async () {
+      var body = {'projects': wwwencode_partial(this.state.projects.concat(this.state.path))};
+      // send POST request
+      await fetch(address+'/projects', {
+          method: 'post',
+          body:    wwwencode_form(body),
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      });
+      body = {'currentProject': wwwencode_partial(this.state.path)};
+      // send POST request
+      await fetch(address+'/currentproject', {
+          method: 'post',
+          body:   wwwencode_form(body),
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      });
+      body = {'prefix': wwwencode_partial(this.state.prefix), 'frameOffset': wwwencode_partial(this.state.offset)};
+      // send POST request
+      await fetch(address+'/currentsettings', {
+          method: 'post',
+          body:    wwwencode_form(body),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded' },
+      });
+      // convert arbitrary JSON arrays into strings first and then to base64.
+      body = {'framesList': wwwencode_partial([])};
+      // send POST request
+      await fetch(address+'/frameslist', {
+          method: 'post',
+          body:    wwwencode_form(body),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded' },
+      });
+      body = {'numFrames': wwwencode_partial(0)};
+      // send POST request
+      await fetch(address+'/numframes', {
+          method: 'post',
+          body:    wwwencode_form(body),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded' },
+      });
+    };
+    request();
   }
 
   validatePrefixInput(e) {
