@@ -4,6 +4,8 @@ import {Button, Container, Row, Col, Tooltip, Jumbotron,
     Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from "reactstrap";
 import "../assets/css/styles.css";
 import {wwwencode_partial, wwwencode_form, wwwdecode} from "../Utils";
+import {APIServer} from "../components/APIServer";
+import {Header} from "../components/Header";
 
 var address = localStorage.getItem('serverAddress') || '';
 
@@ -15,24 +17,18 @@ class Index extends React.Component {
       openTooltipOpen: false,
       deleteTooltipOpen: false,
       deleteModalOpen: false,
-      addressTooltipOpen: false,
       projects: [],
-      currentProject: null,
-      serverAddress: ""
+      currentProject: null
     };
 
     this.toggleNewTooltip = this.toggleNewTooltip.bind(this);
     this.toggleOpenTooltip = this.toggleOpenTooltip.bind(this);
     this.toggleDeleteTooltipOpen = this.toggleDeleteTooltipOpen.bind(this);
     this.toggleDeleteModalOpen = this.toggleDeleteModalOpen.bind(this);
-    this.toggleAddressTooltipOpen = this.toggleAddressTooltipOpen.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
     this.buttonList = this.buttonList.bind(this);
     this.setStateCurrentProject = this.setStateCurrentProject.bind(this);
     this.setCurrentProject = this.setCurrentProject.bind(this);
-    this.setServerAddress = this.setServerAddress.bind(this);
-    this.commitServerAddress = this.commitServerAddress.bind(this);
-    this.content = this.content.bind(this);
   }
 
   toggleNewTooltip() {
@@ -55,11 +51,6 @@ class Index extends React.Component {
       deleteModalOpen: !this.state.deleteModalOpen
     });
   }
-  toggleAddressTooltipOpen() {
-    this.setState({
-      addressTooltipOpen: !this.state.addressTooltipOpen
-    });
-  }
 
   componentDidMount() {
     document.body.classList.toggle("index-page");
@@ -75,33 +66,6 @@ class Index extends React.Component {
   }
   componentWillUnmount() {
     document.body.classList.toggle("index-page");
-  }
-
-  setServerAddress(e) {
-    this.setState({
-      serverAddress: e.target.value
-    })
-  }
-
-  commitServerAddress() {
-    localStorage.setItem('serverAddress', this.state.serverAddress);
-    window.location.reload(false);
-  }
-
-  displayServerAddress() {
-    return (
-      <>
-        <h5 style={{textAlign: 'center'}}>Using API server &quot;{address}&quot;</h5>
-      </>
-    )
-  }
-
-  displayNoAddressHint() {
-    return (
-      <>
-        <h5 style={{textAlign: 'center'}}>Please enter an API server address.</h5>
-      </>
-    )
   }
 
   deleteProject() {
@@ -212,24 +176,9 @@ class Index extends React.Component {
   render() {
     return (
       <>
-        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
-        { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
+        <Header></Header>
         { address === "" ? null : this.content() }
-        <div className='container'>
-          <div className='centered-horz'>
-            <Form>
-              <FormGroup row style={{marginRight: '1rem'}}>
-                <Label for="serverAddress" id="addressTooltip">API server address</Label>
-                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)} onKeyPress={(t) => {if (t.charCode===13) {this.commitServerAddress()}}}
-                    value={this.state.serverAddress}/>
-                 <Button color="primary" onClick={this.commitServerAddress}>Save address</Button>
-              </FormGroup>
-            </Form>
-          </div>
-        </div>
-        <Tooltip placement="bottom" isOpen={this.state.addressTooltipOpen} target="addressTooltip" toggle={this.toggleAddressTooltipOpen}>
-          Sets the address of the API server to send queries to. It can be an IP address or a domain name and a path. port number can also be specified. Prepend {'http://'} or {'https://'} to it and don&apos;t end it with a slash.
-        </Tooltip>
+        <APIServer></APIServer>
       </>
     );
   }

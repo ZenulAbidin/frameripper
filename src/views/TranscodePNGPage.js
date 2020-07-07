@@ -4,6 +4,8 @@ import {Link} from "react-router-dom";
 import {Spinner, Button, Form, FormGroup, Label, Input, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
 import {wwwdecode} from "../Utils";
+import {APIServer} from "../components/APIServer";
+import {Header} from "../components/Header";
 
 const address = "http://iamomegastorm.tk:3030";
 
@@ -11,26 +13,14 @@ class TranscodePNGPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addressTooltipOpen: false,
       project: null,
       completed: false,
-      interval: null,
-      serverAddress: ""
+      interval: null
     };
 
-    this.toggleAddressTooltipOpen = this.toggleAddressTooltipOpen.bind(this);
     this.displayIncomplete = this.displayIncomplete.bind(this);
     this.displayComplete = this.displayComplete.bind(this);
     this.queryComplete = this.queryComplete.bind(this);
-    this.setServerAddress = this.setServerAddress.bind(this);
-    this.commitServerAddress = this.commitServerAddress.bind(this);
-    this.content = this.content.bind(this);
-  }
-
-  toggleAddressTooltipOpen() {
-    this.setState({
-      addressTooltipOpen: !this.state.addressTooltipOpen
-    });
   }
 
   componentDidMount() {
@@ -60,33 +50,6 @@ class TranscodePNGPage extends React.Component {
     }
     clearInterval(this.interval);
     document.body.classList.toggle("transcodepng-page");
-  }
-
-  setServerAddress(e) {
-    this.setState({
-      serverAddress: e.target.value
-    })
-  }
-
-  commitServerAddress() {
-    localStorage.setItem('serverAddress', this.state.serverAddress);
-    window.location.reload(false);
-  }
-
-  displayServerAddress() {
-    return (
-      <>
-        <h5 style={{textAlign: 'center'}}>Using API server &quot;{address}&quot;</h5>
-      </>
-    )
-  }
-
-  displayNoAddressHint() {
-    return (
-      <>
-        <h5 style={{textAlign: 'center'}}>Please enter an API server address.</h5>
-      </>
-    )
   }
 
   queryComplete() {
@@ -158,24 +121,9 @@ class TranscodePNGPage extends React.Component {
   render() {
     return (
       <>
-        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
-        { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
+        <Header></Header>
         { address === "" ? null : this.content() }
-        <div className='container'>
-          <div className='centered-horz'>
-            <Form>
-              <FormGroup row style={{marginRight: '1rem'}}>
-                <Label for="serverAddress" id="addressTooltip">API server address</Label>
-                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)} onKeyPress={(t) => {if (t.charCode===13) {this.commitServerAddress()}}}
-                    value={this.state.serverAddress}/>
-                 <Button color="primary" onClick={this.commitServerAddress}>Save address</Button>
-              </FormGroup>
-            </Form>
-          </div>
-        </div>
-        <Tooltip placement="bottom" isOpen={this.state.addressTooltipOpen} target="addressTooltip" toggle={this.toggleAddressTooltipOpen}>
-          Sets the address of the API server to send queries to. It can be an IP address or a domain name and a path. port number can also be specified. Prepend {'http://'} or {'https://'} to it and don&apos;t end it with a slash.
-        </Tooltip>
+        <APIServer></APIServer>
       </>
     );
   }

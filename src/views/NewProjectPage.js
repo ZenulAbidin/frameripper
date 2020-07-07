@@ -3,6 +3,8 @@ import {Link} from "react-router-dom";
 import {Form, FormGroup, FormFeedback, Button, Col, Input, Label, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
 import {wwwencode_partial, wwwencode_form, wwwdecode} from "../Utils";
+import {APIServer} from "../components/APIServer";
+import {Header} from "../components/Header";
 
 var address = localStorage.getItem('serverAddress') || '';
 
@@ -15,17 +17,14 @@ class NewProjectPage extends React.Component {
       prefixTooltipOpen: false,
       offsetTooltipOpen: false,
       createTooltipOpen: false,
-      addressTooltipOpen: false,
       path: "",
       prefix: "",
       offset: -2,
       prefixInputInvalid: false,
       pathInputInvalid: false,
-      projects: [],
-      serverAddress: ""
+      projects: []
     };
 
-    this.toggleAddressTooltipOpen = this.toggleAddressTooltipOpen.bind(this);
     this.togglePathTooltipOpen = this.togglePathTooltipOpen.bind(this);
     this.togglePrefixTooltipOpen = this.togglePrefixTooltipOpen.bind(this);
     this.toggleOffsetTooltipOpen = this.toggleOffsetTooltipOpen.bind(this);
@@ -35,9 +34,6 @@ class NewProjectPage extends React.Component {
     this.validatePathInput = this.validatePathInput.bind(this);
     this.pathHelpText = this.pathHelpText.bind(this);
     this.sendOKRequest = this.sendOKRequest.bind(this);
-    this.setServerAddress = this.setServerAddress.bind(this);
-    this.commitServerAddress = this.commitServerAddress.bind(this);
-    this.content = this.content.bind(this);
   }
 
   togglePathTooltipOpen() {
@@ -61,12 +57,6 @@ class NewProjectPage extends React.Component {
     });
   }
 
-  toggleAddressTooltipOpen() {
-    this.setState({
-      addressTooltipOpen: !this.state.addressTooltipOpen
-    });
-  }
-
   componentDidMount() {
     document.body.classList.toggle("newproject-page");
     fetch(address+'/projects').then(res => {
@@ -86,40 +76,12 @@ class NewProjectPage extends React.Component {
     document.body.classList.toggle("newproject-page");
   }
 
-  setServerAddress(e) {
-    this.setState({
-      serverAddress: e.target.value
-    })
-  }
-
-  commitServerAddress() {
-    localStorage.setItem('serverAddress', this.state.serverAddress);
-    window.location.reload(false);
-  }
-
-  displayServerAddress() {
-    return (
-      <>
-        <h5 style={{textAlign: 'center'}}>Using API server &quot;{address}&quot;</h5>
-      </>
-    )
-  }
-
-  displayNoAddressHint() {
-    return (
-      <>
-        <h5 style={{textAlign: 'center'}}>Please enter an API server address.</h5>
-      </>
-    )
-  }
-
   sendOKRequest() {
     var body = {'projects': wwwencode_partial(this.state.projects.concat(this.state.path))};
-    var formBody = wwwencode_form(body);
     // send POST request
     fetch(address+'/projects', {
         method: 'post',
-        body:    formBody,
+        body:    wwwencode_form(body),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
@@ -127,11 +89,10 @@ class NewProjectPage extends React.Component {
       }
     });
     body = {'currentProject': wwwencode_partial(this.state.path)};
-    formBody = wwwencode_form(body);
     // send POST request
     fetch(address+'/currentproject', {
         method: 'post',
-        body:   formBody,
+        body:   wwwencode_form(body),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
@@ -139,11 +100,10 @@ class NewProjectPage extends React.Component {
       }
     });
     body = {'prefix': wwwencode_partial(this.state.prefix), 'frameOffset': wwwencode_partial(this.state.offset)};
-    formBody = wwwencode_form(body);
     // send POST request
     fetch(address+'/currentsettings', {
         method: 'post',
-        body:    formBody,
+        body:    wwwencode_form(body),
         headers: {'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
@@ -152,11 +112,10 @@ class NewProjectPage extends React.Component {
     });
     // convert arbitrary JSON arrays into strings first and then to base64.
     body = {'framesList': wwwencode_partial([])};
-    formBody = wwwencode_form(body);
     // send POST request
     fetch(address+'/frameslist', {
         method: 'post',
-        body:    formBody,
+        body:    wwwencode_form(body),
         headers: {'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
@@ -164,11 +123,10 @@ class NewProjectPage extends React.Component {
       }
     });
     body = {'numFrames': wwwencode_partial(0)};
-    formBody = wwwencode_form(body);
     // send POST request
     fetch(address+'/numframes', {
         method: 'post',
-        body:    formBody,
+        body:    wwwencode_form(body),
         headers: {'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
@@ -289,24 +247,9 @@ class NewProjectPage extends React.Component {
   render() {
     return (
       <>
-        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
-        { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
+        <Header></Header>
         { address === "" ? null : this.content() }
-        <div className='container'>
-          <div className='centered-horz'>
-            <Form>
-              <FormGroup row style={{marginRight: '1rem'}}>
-                <Label for="serverAddress" id="addressTooltip">API server address</Label>
-                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)} onKeyPress={(t) => {if (t.charCode===13) {this.commitServerAddress()}}}
-                    value={this.state.serverAddress}/>
-                 <Button color="primary" onClick={this.commitServerAddress}>Save address</Button>
-              </FormGroup>
-            </Form>
-          </div>
-        </div>
-        <Tooltip placement="bottom" isOpen={this.state.addressTooltipOpen} target="addressTooltip" toggle={this.toggleAddressTooltipOpen}>
-          Sets the address of the API server to send queries to. It can be an IP address or a domain name and a path. port number can also be specified. Prepend {'http://'} or {'https://'} to it and don&apos;t end it with a slash.
-        </Tooltip>
+        <APIServer></APIServer>
       </>
     );
   }

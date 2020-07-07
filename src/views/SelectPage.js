@@ -3,6 +3,9 @@ import "../assets/css/styles.css";
 import {Link} from "react-router-dom";
 import {Form, FormGroup, FormFeedback, Button, Input, Label, Tooltip} from "reactstrap";
 import {wwwencode_partial, wwwencode_form, wwwdecode} from "../Utils";
+import {APIServer} from "../components/APIServer";
+import {Header} from "../components/Header";
+
 
 var address = localStorage.getItem('serverAddress') || '';
 
@@ -16,14 +19,12 @@ class SelectPage extends React.Component {
       jpgTooltipOpen: false,
       pngTooltipOpen: false,
       settingsTooltipOpen: false,
-      addressTooltipOpen: false,
       framesList: [],
       numFrames: 0,
       project: null,
       inputFrameNumbers: "",
       frameNumbersInvalid: false,
-      ogFramesList: "",
-      serverAddress: ""
+      ogFramesList: ""
     };
 
     this.toggleFrameNumbersTooltipOpen = this.toggleFrameNumbersTooltipOpen.bind(this);
@@ -31,14 +32,10 @@ class SelectPage extends React.Component {
     this.toggleJPGTooltipOpen = this.toggleJPGTooltipOpen.bind(this);
     this.togglePNGTooltipOpen = this.togglePNGTooltipOpen.bind(this);
     this.toggleSettingsTooltipOpen = this.toggleSettingsTooltipOpen.bind(this);
-    this.toggleAddressTooltipOpen = this.toggleAddressTooltipOpen.bind(this);
     this.frameNumbersHelpText = this.frameNumbersHelpText.bind(this);
     this.validateFrameNumbersInput = this.validateFrameNumbersInput.bind(this);
     this.startJPGTranscode = this.startJPGTranscode.bind(this);
     this.startPNGTranscode = this.startPNGTranscode.bind(this);
-    this.setServerAddress = this.setServerAddress.bind(this);
-    this.commitServerAddress = this.commitServerAddress.bind(this);
-    this.content = this.content.bind(this);
   }
 
   toggleMenuTooltipOpen() {
@@ -68,12 +65,6 @@ class SelectPage extends React.Component {
   toggleFrameNumbersTooltipOpen() {
     this.setState({
       frameNumbersTooltipOpen: !this.state.frameNumbersTooltipOpen
-    });
-  }
-
-  toggleAddressTooltipOpen() {
-    this.setState({
-      addressTooltipOpen: !this.state.addressTooltipOpen
     });
   }
 
@@ -126,34 +117,6 @@ class SelectPage extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
   }
-  
-  setServerAddress(e) {
-    this.setState({
-      serverAddress: e.target.value
-    })
-  }
-
-  commitServerAddress() {
-    localStorage.setItem('serverAddress', this.state.serverAddress);
-    window.location.reload(false);
-  }
-
-  displayServerAddress() {
-    return (
-      <>
-        <h5 style={{textAlign: 'center'}}>Using API server &quot;{address}&quot;</h5>
-      </>
-    )
-  }
-
-  displayNoAddressHint() {
-    return (
-      <>
-        <h5 style={{textAlign: 'center'}}>Please enter an API server address.</h5>
-      </>
-    )
-  }
-
 
   frameNumbersHelpText() {
 /*
@@ -295,24 +258,9 @@ class SelectPage extends React.Component {
   render() {
     return (
       <>
-        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
-        { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
+        <Header></Header>
         { address === "" ? null : this.content() }
-        <div className='container'>
-          <div className='centered-horz'>
-            <Form>
-              <FormGroup row style={{marginRight: '1rem'}}>
-                <Label for="serverAddress" id="addressTooltip">API server address</Label>
-                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)} onKeyPress={(t) => {if (t.charCode===13) {this.commitServerAddress()}}}
-                    value={this.state.serverAddress}/>
-                 <Button color="primary" onClick={this.commitServerAddress}>Save address</Button>
-              </FormGroup>
-            </Form>
-          </div>
-        </div>
-        <Tooltip placement="bottom" isOpen={this.state.addressTooltipOpen} target="addressTooltip" toggle={this.toggleAddressTooltipOpen}>
-          Sets the address of the API server to send queries to. It can be an IP address or a domain name and a path. port number can also be specified. Prepend {'http://'} or {'https://'} to it and don&apos;t end it with a slash.
-        </Tooltip>
+        <APIServer></APIServer>
       </>
     );
   }

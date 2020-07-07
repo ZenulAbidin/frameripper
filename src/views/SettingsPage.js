@@ -3,6 +3,8 @@ import {Link} from "react-router-dom";
 import {Form, FormGroup, FormFeedback, Button, Col, Input, Label, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
 import {wwwencode_partial, wwwencode_form, wwwdecode} from "../Utils";
+import {APIServer} from "../components/APIServer";
+import {Header} from "../components/Header";
 
 var address = localStorage.getItem('serverAddress') || '';
 
@@ -14,30 +16,18 @@ class SettingsPage extends React.Component {
       prefixTooltipOpen: false,
       offsetTooltipOpen: false,
       saveTooltipOpen: false,
-      addressTooltipOpen: false,
       prefix: "",
       frameOffset: -2,
       project: null,
-      prefixInputInvalid: false,
-      serverAddress: ""
+      prefixInputInvalid: false
     };
 
     this.togglePrefixTooltipOpen = this.togglePrefixTooltipOpen.bind(this);
     this.toggleOffsetTooltipOpen = this.toggleOffsetTooltipOpen.bind(this);
     this.toggleSaveTooltipOpen = this.toggleSaveTooltipOpen.bind(this);
-    this.toggleAddressTooltipOpen = this.toggleAddressTooltipOpen.bind(this);
     this.validatePrefixInput = this.validatePrefixInput.bind(this);
     this.prefixHelpText = this.prefixHelpText.bind(this);
     this.sendOKRequest = this.sendOKRequest.bind(this);
-    this.setServerAddress = this.setServerAddress.bind(this);
-    this.commitServerAddress = this.commitServerAddress.bind(this);
-    this.content = this.content.bind(this);
-  }
-
-  toggleAddressTooltipOpen() {
-    this.setState({
-      addressTooltipOpen: !this.state.addressTooltipOpen
-    });
   }
 
   componentDidMount() {
@@ -67,33 +57,6 @@ class SettingsPage extends React.Component {
   }
   componentWillUnmount() {
     document.body.classList.toggle("settings-page");
-  }
-
-  setServerAddress(e) {
-    this.setState({
-      serverAddress: e.target.value
-    })
-  }
-
-  commitServerAddress() {
-    localStorage.setItem('serverAddress', this.state.serverAddress);
-    window.location.reload(false);
-  }
-
-  displayServerAddress() {
-    return (
-      <>
-        <h5 style={{textAlign: 'center'}}>Using API server &quot;{address}&quot;</h5>
-      </>
-    )
-  }
-
-  displayNoAddressHint() {
-    return (
-      <>
-        <h5 style={{textAlign: 'center'}}>Please enter an API server address.</h5>
-      </>
-    )
   }
 
   sendOKRequest() {
@@ -211,24 +174,9 @@ class SettingsPage extends React.Component {
   render() {
     return (
       <>
-        <h1 className='title'>Frameripper by Zenul_Abidin</h1>
-        { address === "" ? this.displayNoAddressHint() : this.displayServerAddress() }
+        <Header></Header>
         { address === "" ? null : this.content() }
-        <div className='container'>
-          <div className='centered-horz'>
-            <Form>
-              <FormGroup row style={{marginRight: '1rem'}}>
-                <Label for="serverAddress" id="addressTooltip">API server address</Label>
-                <Input type="text" id="serverAddress" onChange={e => this.setServerAddress(e)} onKeyPress={(t) => {if (t.charCode===13) {this.commitServerAddress()}}}
-                    value={this.state.serverAddress}/>
-                 <Button color="primary" onClick={this.commitServerAddress}>Save address</Button>
-              </FormGroup>
-            </Form>
-          </div>
-        </div>
-        <Tooltip placement="bottom" isOpen={this.state.addressTooltipOpen} target="addressTooltip" toggle={this.toggleAddressTooltipOpen}>
-          Sets the address of the API server to send queries to. It can be an IP address or a domain name and a path. port number can also be specified. Prepend {'http://'} or {'https://'} to it and don&apos;t end it with a slash.
-        </Tooltip>
+        <APIServer></APIServer>
       </>
     );
   }
