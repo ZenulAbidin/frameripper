@@ -1,7 +1,7 @@
 import React from "react";
 import {Checkmark} from 'react-checkmark';
 import {Link} from "react-router-dom";
-import {Spinner, Button, Form, FormGroup, Label, Input, Tooltip} from "reactstrap";
+import {Spinner, Button} from "reactstrap";
 import "../assets/css/styles.css";
 import {wwwdecode} from "../Utils";
 import APIServer from "../components/APIServer";
@@ -20,6 +20,7 @@ class TranscodeJPGPage extends React.Component {
     this.displayIncomplete = this.displayIncomplete.bind(this);
     this.displayComplete = this.displayComplete.bind(this);
     this.queryComplete = this.queryComplete.bind(this);
+    this.content = this.content.bind(this);
   }
 
   componentDidMount() {

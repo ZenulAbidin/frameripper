@@ -2,8 +2,6 @@ import React from "react";
 import {Form, FormGroup, Label, Input, Button, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
 
-var address = localStorage.getItem('serverAddress') || '';
-
 class APIServer extends React.Component {
   constructor(props) {
     super(props);
@@ -15,7 +13,6 @@ class APIServer extends React.Component {
     this.toggleAddressTooltipOpen = this.toggleAddressTooltipOpen.bind(this);
     this.setServerAddress = this.setServerAddress.bind(this);
     this.commitServerAddress = this.commitServerAddress.bind(this);
-    this.content = this.content.bind(this);
   }
 
   toggleAddressTooltipOpen() {

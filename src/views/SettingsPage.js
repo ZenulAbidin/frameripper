@@ -28,6 +28,7 @@ class SettingsPage extends React.Component {
     this.validatePrefixInput = this.validatePrefixInput.bind(this);
     this.prefixHelpText = this.prefixHelpText.bind(this);
     this.sendOKRequest = this.sendOKRequest.bind(this);
+    this.content = this.content.bind(this);
   }
 
   componentDidMount() {

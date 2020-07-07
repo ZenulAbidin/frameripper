@@ -36,6 +36,7 @@ class SelectPage extends React.Component {
     this.validateFrameNumbersInput = this.validateFrameNumbersInput.bind(this);
     this.startJPGTranscode = this.startJPGTranscode.bind(this);
     this.startPNGTranscode = this.startPNGTranscode.bind(this);
+    this.content = this.content.bind(this);
   }
 
   toggleMenuTooltipOpen() {

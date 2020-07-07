@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {Button, Container, Row, Col, Tooltip, Jumbotron,
-    Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from "reactstrap";
+    Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import "../assets/css/styles.css";
 import {wwwencode_partial, wwwencode_form, wwwdecode} from "../Utils";
 import APIServer from "../components/APIServer";
@@ -29,6 +29,7 @@ class Index extends React.Component {
     this.buttonList = this.buttonList.bind(this);
     this.setStateCurrentProject = this.setStateCurrentProject.bind(this);
     this.setCurrentProject = this.setCurrentProject.bind(this);
+    this.content = this.content.bind(this);
   }
 
   toggleNewTooltip() {
