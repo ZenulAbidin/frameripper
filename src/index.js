@@ -5,8 +5,6 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.css';
 import "assets/css/styles.css";
-import {wwwencode_partial, wwwencode_form, wwwdecode} from "./Utils.js";
-
 
 import Index from "views/Index.js";
 import NewProjectPage from "views/NewProjectPage.js";
@@ -14,7 +12,7 @@ import TranscodeJPGPage from "views/TranscodeJPGPage.js";
 import SelectPage from "views/SelectPage.js";
 import SettingsPage from "views/SettingsPage.js";
 import TranscodePNGPage from "views/TranscodePNGPage.js";
-
+import {wwwencode_partial, wwwencode_form, wwwdecode} from "./Utils.js";
 
 const address = "http://iamomegastorm.tk:3030";
 
