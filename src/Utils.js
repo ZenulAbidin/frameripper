@@ -16,5 +16,6 @@ export function wwwencode_form(body) {
     formBody.push(encodedKey + "=" + encodedValue);
   }
   formBody = formBody.join("&");
+  console.log(formBody);
   return formBody;
 }
