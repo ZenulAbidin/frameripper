@@ -16,7 +16,7 @@ class APIServer extends React.Component {
     this.setServerAddress = this.setServerAddress.bind(this);
     this.commitServerAddress = this.commitServerAddress.bind(this);
     this.content = this.content.bind(this);
-}
+  }
 
   toggleAddressTooltipOpen() {
     this.setState({
@@ -56,5 +56,6 @@ class APIServer extends React.Component {
       </>
     );
   }
+}
 
 export default APIServer;
