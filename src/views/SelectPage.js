@@ -144,22 +144,19 @@ class SelectPage extends React.Component {
     if (e.target.value.length === 0) {
       return;
     }
-
-    if (this.state.numFrames !== 0) {
-      var nums = e.target.value.replace(/\n+/g,'\n').split('\n');
-      var frames = [];
-      for (var i = 0; i < nums.length; i++) {
-        var n = parseInt(nums[i])
-        if (isNaN(n) || n > this.state.numFrames || n <= 0) {
-          this.setState({
-            frameNumbersInvalid: true
-          });
-          invalid = true;
-          break;
-        } else {
-          frames.push(n);
-          invalid = false;
-        }
+    var nums = e.target.value.replace(/\n+/g,'\n').split('\n');
+    var frames = [];
+    for (var i = 0; i < nums.length; i++) {
+      var n = parseInt(nums[i])
+      if (isNaN(n) || this.state.numFrames !== 0 && (n > this.state.numFrames || n <= 0)) {
+        this.setState({
+          frameNumbersInvalid: true
+        });
+        invalid = true;
+        break;
+      } else {
+        frames.push(n);
+        invalid = false;
       }
     }
     if (!invalid) {
