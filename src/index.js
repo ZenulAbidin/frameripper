@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.css';
 import "assets/css/styles.css";
-import {wwwencode_partial, wwwencode_form, wwwdecode} from "Utils";
+import {wwwencode_partial, wwwencode_form, wwwdecode} from "./Utils.js";
 
 
 import Index from "views/Index.js";
