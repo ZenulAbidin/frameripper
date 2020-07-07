@@ -3,8 +3,8 @@ import "../assets/css/styles.css";
 import {Link} from "react-router-dom";
 import {Form, FormGroup, FormFeedback, Button, Input, Label, Tooltip} from "reactstrap";
 import {wwwencode_partial, wwwencode_form, wwwdecode} from "../Utils";
-import {APIServer} from "../components/APIServer";
-import {Header} from "../components/Header";
+import APIServer from "../components/APIServer";
+import Header from "../components/Header";
 
 
 var address = localStorage.getItem('serverAddress') || '';

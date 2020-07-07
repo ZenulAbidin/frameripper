@@ -1,5 +1,4 @@
 import React from "react";
-import {Form, FormGroup, Label, Input} from "reactstrap";
 import "../assets/css/styles.css";
 
 var address = localStorage.getItem('serverAddress') || '';

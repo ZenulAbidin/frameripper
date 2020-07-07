@@ -4,8 +4,8 @@ import {Link} from "react-router-dom";
 import {Spinner, Button, Form, FormGroup, Label, Input, Tooltip} from "reactstrap";
 import "../assets/css/styles.css";
 import {wwwdecode} from "../Utils";
-import {APIServer} from "../components/APIServer";
-import {Header} from "../components/Header";
+import APIServer from "../components/APIServer";
+import Header from "../components/Header";
 
 var address = localStorage.getItem('serverAddress') || '';
 
