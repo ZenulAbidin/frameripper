@@ -808,7 +808,7 @@ const runFFmpegPNG = () => {
           /* "select='eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'"*/
           var select_arg = "select='" //eq(n\\,franemumber-offset)+eq(n\\,franemumber-offset)'";
           for (const frame of framesList) {
-            select_arg += `eq(n\\,${frame}${formatNumberSign(settings.frameOffset-1)})+`
+            select_arg += `eq(n\\,${frame}${formatNumberSign(settings.frameOffset-1])})+`
           }
           select_arg = select_arg.substring(0,select_arg.length-1) + "'";
           var video_arg = path.join(argv.videopath, project)
