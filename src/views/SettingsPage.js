@@ -48,6 +48,7 @@ class SettingsPage extends React.Component {
           this.setState({
             project: wwwdecode(json.currentProject)
           });
+          console.log(wwwdecode(json.currentProject))
         })
       }
       else {
