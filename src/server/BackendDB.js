@@ -953,6 +953,7 @@ getCurrentProject(db).then(function(project) {
   // New database, populate it with default values
   logger.warn({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'init', app_operation: 'currentProjectCache', app_response: {success: false, 'error': 'currentProject not set in DB'}});
   setProjects(db, [])
+  db.put('/currentProject', '(null)').then(dummy => {})
 })
 
 const port = argv.port || 3030;
