@@ -66,7 +66,7 @@ class Index extends React.Component {
     	if (res.ok) {
         res.json().then(json => {
           this.setState({
-            projects: json.projects
+            projects: wwwdecode(json.projects)
           });
         })
       }
@@ -105,12 +105,12 @@ class Index extends React.Component {
 
   deleteProject() {
     this.toggleDeleteModalOpen()
-    var body = {'project': this.state.selectedProject};
+    var body = {'project': wwwencode_partial(this.state.selectedProject)};
     // send PUT request
     fetch(address+'/deleteproject', {
         method: 'post',
-        body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
+        body:    wwwencode_form(body),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
         console.error(`POST /deleteproject with body ${JSON.stringify(body)} at Index: ${res.status} ${res.statusText}`);
@@ -120,7 +120,7 @@ class Index extends React.Component {
         	if (res.ok) {
             res.json().then(json => {
               this.setState({
-                projects: json.projects
+                projects: wwwdecode(json.projects)
               });
             })
           }

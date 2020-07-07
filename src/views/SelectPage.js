@@ -205,12 +205,12 @@ class SelectPage extends React.Component {
   }
 
   startJPGTranscode() {
-    var body = {'framesList': this.state.framesList};
+    var body = {'framesList': wwwencode_partial(this.state.framesList)};
     // send POST request
     fetch(address+'/frameslist', {
         method: 'post',
-        body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
+        body:    wwwencode_form(body),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
         console.error(`POST /frameslist with body ${JSON.stringify(body)} at SelectPage: ${res.status} ${res.statusText}`);
@@ -224,12 +224,12 @@ class SelectPage extends React.Component {
     });
   }
   startPNGTranscode() {
-    var body = {'framesList': this.state.framesList};
+    var body = {'framesList': wwwencode_partial(this.state.framesList)};
     // send POST request
     fetch(address+'/frameslist', {
         method: 'post',
-        body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
+        body:    wwwencode_form(body),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
         console.error(`POST /frameslist with body ${JSON.stringify(body)} at SelectPage: ${res.status} ${res.statusText}`);

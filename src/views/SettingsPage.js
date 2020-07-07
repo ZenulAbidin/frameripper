@@ -46,7 +46,7 @@ class SettingsPage extends React.Component {
       if (res.ok) {
         res.json().then(json => {
           this.setState({
-            project: json.currentProject
+            project: wwwdecode(json.currentProject)
           });
         })
       }
@@ -58,8 +58,8 @@ class SettingsPage extends React.Component {
     	if (res.ok) {
         res.json().then(json => {
           this.setState({
-            prefix: json.prefix,
-            frameOffset: json.frameOffset,
+            prefix: wwwdecode(json.prefix),
+            frameOffset: wwwdecode(json.frameOffset),
           });
         })
       }
@@ -97,12 +97,12 @@ class SettingsPage extends React.Component {
   }
 
   sendOKRequest() {
-    var body = {'prefix': this.state.prefix, 'frameOffset': this.state.frameOffset};
+    var body = {'prefix': wwwencode_partial(this.state.prefix), 'frameOffset': wwwencode_partial(this.state.frameOffset)};
     // send POST request
     fetch(address+'/currentsettings', {
         method: 'post',
-        body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
+        body:    wwwencode_form(body),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
         console.error(`POST /currentsettings with body ${JSON.stringify(body)} at SettingsPage: ${res.status} ${res.statusText}`);
