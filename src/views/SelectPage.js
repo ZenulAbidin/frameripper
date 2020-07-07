@@ -140,10 +140,11 @@ class SelectPage extends React.Component {
     this.setState({
       ogFramesList: e.target.value
     });
+    var invalid = false;
     if (e.target.value.length === 0) {
       return;
     }
-    var invalid = false;
+
     if (this.state.numFrames !== 0) {
       var nums = e.target.value.replace(/\n+/g,'\n').split('\n');
       var frames = [];
