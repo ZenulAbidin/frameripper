@@ -73,7 +73,7 @@ class NewProjectPage extends React.Component {
       if (res.ok) {
         res.json().then(json => {
           this.setState({
-            projects: json.projects
+            projects: wwwdecode(json.projects)
           });
         })
       }
