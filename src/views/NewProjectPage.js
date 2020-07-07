@@ -78,7 +78,7 @@ class NewProjectPage extends React.Component {
   }
 
   sendOKRequest() {
-    const request = async () {
+    const request = async () => {
       var body = {'projects': wwwencode_partial(this.state.projects.concat(this.state.path))};
       // send POST request
       await fetch(address+'/projects', {
