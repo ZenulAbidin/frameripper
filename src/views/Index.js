@@ -112,12 +112,12 @@ class Index extends React.Component {
   }
 
   setCurrentProject() {
-    var body = {'currentProject': this.state.currentProject};
+    var body = {'currentProject': wwwencode_partial(this.state.currentProject)};
     // send POST request
     fetch(address+'/currentproject', {
         method: 'post',
-        body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
+        body:    wwwencode_form(body),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(res => {
     	if (!res.ok) {
         console.error(`POST /currentproject with body ${JSON.stringify(body)} at Index: ${res.status} ${res.statusText}`);
