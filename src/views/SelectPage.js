@@ -34,6 +34,7 @@ class SelectPage extends React.Component {
     this.toggleSettingsTooltipOpen = this.toggleSettingsTooltipOpen.bind(this);
     this.frameNumbersHelpText = this.frameNumbersHelpText.bind(this);
     this.validateFrameNumbersInput = this.validateFrameNumbersInput.bind(this);
+    this.saveFrames = this.saveFrames.bind(this);
     this.startJPGTranscode = this.startJPGTranscode.bind(this);
     this.startPNGTranscode = this.startPNGTranscode.bind(this);
     this.content = this.content.bind(this);
@@ -168,6 +169,20 @@ class SelectPage extends React.Component {
     }
   }
 
+ saveFrames() {
+    var body = {'framesList': wwwencode_partial(this.state.framesList)};
+    // send POST request
+    fetch(address+'/frameslist', {
+        method: 'post',
+        body:    wwwencode_form(body),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    }).then(res => {
+    	if (!res.ok) {
+        console.error(`POST /frameslist with body ${JSON.stringify(body)} at SelectPage: ${res.status} ${res.statusText}`);
+      }
+    });
+  }
+
   startJPGTranscode() {
     var body = {'framesList': wwwencode_partial(this.state.framesList)};
     // send POST request
@@ -225,7 +240,7 @@ class SelectPage extends React.Component {
               <Link to="/transcode-jpg" onClick={this.startJPGTranscode} className='container__child'>
                 <Button id="jpgTooltip" color="primary" disabled={this.state.frameNumbersInvalid}>Extract JPGs</Button>
               </Link>
-              <Link to="/settings" className='container__child'>
+              <Link to="/settings" onClick={this.saveFrames} className='container__child'>
                 <Button id="settingsTooltip" color="primary" disabled={this.state.frameNumbersInvalid}>Settings</Button>
               </Link>
               <Link to="/transcode-png" onClick={this.startPNGTranscode} className='container__child'>
