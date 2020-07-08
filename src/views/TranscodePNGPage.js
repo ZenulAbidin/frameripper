@@ -89,7 +89,7 @@ class TranscodePNGPage extends React.Component {
     return (
       <>
         <div className='centered height_50'>
-          <h1 style={{marginLeft: '1rem', marginRight: '1rem', textAlign: 'center'}}>Transcoding {this.state.project} PNGs</h1>
+          <h1 className='content_banner'>Transcoding {this.state.project} PNGs</h1>
           <div style={{ alignSelf: "center", width: '6rem', height: '6rem' }}>
             <Spinner style={{ width: '96px', height: '96px' }} type="grow" color="info" />
           </div>
@@ -106,7 +106,7 @@ class TranscodePNGPage extends React.Component {
     return (
       <>
         <div className='centered height_50'>
-          <h1 style={{textAlign: 'center'}}>Transcoding {this.state.project} PNGs</h1>
+          <h1 className='content_banner'>Transcoding {this.state.project} PNGs</h1>
           <Checkmark size='xxLarge' />
           <h3>All PNG frames extracted</h3>
           <Link to="/select">
@@ -121,8 +121,8 @@ class TranscodePNGPage extends React.Component {
     return (
       <>
         <div className='centered height_50'>
-          <h1 style={{textAlign: 'center'}}>Transcoding {this.state.project} PNGs</h1>
-          <h3>There was an error in ffmpeg. Check the server logs for more information.</h3>
+          <h1 className='content_banner'>Transcoding {this.state.project} PNGs</h1>
+          <h3 className='content_banner'>There was an error in ffmpeg. Check the server logs for more information.</h3>
           <Link to="/select">
             <Button color="primary">OK</Button>
           </Link>

@@ -50,3 +50,9 @@ body {
   text-align: center;
 }
 
+.content_banner {
+  margin-left: '1rem';
+  margin-right: '1rem';
+  text-align: 'center';
+}
+
