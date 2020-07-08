@@ -413,7 +413,7 @@ app.get('/istranscodingpngcomplete', function (req, res) {
 const isTranscodingJPGComplete = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const isTranscodingJPGComplete = () => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    if (ffmpeg) {
+    if (ffmpeg && !ffmpeg_running) {
       resolve(JPGcomplete === true);
     } else {
       reject('ffmpeg is not running')
@@ -424,7 +424,7 @@ const isTranscodingJPGComplete = () => {
 const isTranscodingPNGComplete = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const isTranscodingPNGComplete = () => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    if (ffmpeg) {
+    if (ffmpeg && !ffmpeg_running) {
       resolve(PNGcomplete === true);
     } else {
       reject('ffmpeg is not running')
