@@ -58,21 +58,20 @@ class TranscodePNGPage extends React.Component {
     fetch(address+'/istranscodingpngcomplete').then(res => {
     	if (res.ok) {
         res.json().then(json => {
-          if (json.error) {
-            this.setState({
-              failed: true
-            });
-          }
-          else if (wwwdecode(json.complete) === true) {
+          if (wwwdecode(json.complete) === true) {
             this.setState({
               completed: true,
             });
+            clearInterval(this.interval);
           }
-          clearInterval(this.interval);
         })
       }
       else {
         console.error(`GET /istranscodingpngcomplete at TranscodePNGPage: ${res.status} ${res.statusText}`);
+        this.setState({
+          failed: true
+        });
+        clearInterval(this.interval);
       }
     });
   }
