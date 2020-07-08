@@ -84,33 +84,36 @@ class SelectPage extends React.Component {
         console.error(`GET /currentproject at SelectPage: ${res.status} ${res.statusText}`);
       }
     })
-    fetch(address+'/frameslist').then(res => {
-      if (res.ok) {
-        res.json().then(json => {
-          var framesList_decoded = wwwdecode(json.framesList)
-          this.setState({
-            framesList: framesList_decoded,
-            ogFramesList: framesList_decoded.join('\n')
-          });
-        })
-      }
-      else {
-        console.error(`GET /frameslist at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
-      }
-    })
-    fetch(address+'/numframes').then(res => {
-      if (res.ok) {
-        res.json().then(json => {
-          var numFrames_decoded = wwwdecode(json.numFrames)
-          this.setState({
-            numFrames: numFrames_decoded
-          });
-        })
-      }
-      else {
-        console.error(`GET /numframes at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
-      }
-    });
+
+    setTimeout(() => {
+      fetch(address+'/frameslist').then(res => {
+        if (res.ok) {
+          res.json().then(json => {
+            var framesList_decoded = wwwdecode(json.framesList)
+            this.setState({
+              framesList: framesList_decoded,
+              ogFramesList: framesList_decoded.join('\n')
+            });
+          })
+        }
+        else {
+          console.error(`GET /frameslist at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
+        }
+      })
+      fetch(address+'/numframes').then(res => {
+        if (res.ok) {
+          res.json().then(json => {
+            var numFrames_decoded = wwwdecode(json.numFrames)
+            this.setState({
+              numFrames: numFrames_decoded
+            });
+          })
+        }
+        else {
+          console.error(`GET /numframes at SelectPage: ${res.status} ${res.statusText}\n(If you just created this project, ignore this error.)`);
+        }
+      });
+    }, 500);
     document.body.classList.toggle("select-page");
   }
   componentWillUnmount() {
