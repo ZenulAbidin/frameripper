@@ -763,7 +763,7 @@ const runFFmpegJPG = () => {
             //error.message
             logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'error', output: error});
             ffmpeg_running = false;
-            ffmpeg_error = true;
+            ffmpeg_error = error.code != 0;
         });
 
         ffmpeg.on("close", code => {
@@ -839,7 +839,7 @@ const runFFmpegPNG = () => {
           ffmpeg.on('error', (error) => {
             logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'error', output: error});
             ffmpeg_running = false;
-            ffmpeg_error = true;
+            ffmpeg_error = error.code != 0;
           });
 
           ffmpeg.on("close", code => {
