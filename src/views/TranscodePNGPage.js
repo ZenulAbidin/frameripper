@@ -15,7 +15,8 @@ class TranscodePNGPage extends React.Component {
     this.state = {
       project: null,
       completed: false,
-      interval: null
+      interval: null,
+      failed: false
     };
 
     this.displayIncomplete = this.displayIncomplete.bind(this);
@@ -67,6 +68,10 @@ class TranscodePNGPage extends React.Component {
       }
       else {
         console.error(`GET /istranscodingpngcomplete at TranscodePNGPage: ${res.status} ${res.statusText}`);
+        this.setState({
+          failed: true
+        });
+        clearInterval(this.interval);
       }
     });
   }
@@ -111,10 +116,24 @@ class TranscodePNGPage extends React.Component {
     );
   }
 
+  displayFailed() {
+    return (
+      <>
+        <div className='centered height_50'>
+          <h1 style={{textAlign: 'center'}}>Transcoding {this.state.project} PNGs</h1>
+          <h3>There was an error in ffmpeg. Check the server logs for more information.</h3>
+          <Link to="/select">
+            <Button color="primary">OK</Button>
+          </Link>
+        </div>
+      </>
+    );
+  }
+
   content() {
     return (
       <>
-        {this.state.completed ? this.displayComplete() : this.displayIncomplete()}
+        {this.state.completed ? this.displayComplete() : (this.state.failed ? this.displayFailed() : this.displayIncomplete())}
       </>
     );
   }
