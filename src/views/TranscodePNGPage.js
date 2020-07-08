@@ -58,20 +58,21 @@ class TranscodePNGPage extends React.Component {
     fetch(address+'/istranscodingpngcomplete').then(res => {
     	if (res.ok) {
         res.json().then(json => {
-          if (wwwdecode(json.complete) === true) {
+          if (json.error) {
+            this.setState({
+              failed: true
+            });
+          }
+          else if (wwwdecode(json.complete) === true) {
             this.setState({
               completed: true,
             });
-            clearInterval(this.interval);
           }
+          clearInterval(this.interval);
         })
       }
       else {
         console.error(`GET /istranscodingpngcomplete at TranscodePNGPage: ${res.status} ${res.statusText}`);
-        this.setState({
-          failed: true
-        });
-        clearInterval(this.interval);
       }
     });
   }
@@ -133,7 +134,7 @@ class TranscodePNGPage extends React.Component {
   content() {
     return (
       <>
-        {this.state.completed ? this.displayComplete() : (this.state.failed ? this.displayFailed() : this.displayIncomplete())}
+        {this.state.failed ? this.displayFailed() : (this.state.completed ? this.displayComplete() : this.displayIncomplete())}
       </>
     );
   }
