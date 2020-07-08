@@ -30,6 +30,7 @@ var PNGcomplete = false;
 // the same value if only one transcoding operation is running. (and currentProject will be in a bad state.)
 var ffmpeg = null;
 var ffmpeg_running = false;
+var ffmpeg_error = true;
 var default_null = '(null/undefined)';
 
 var currentProject = null;
@@ -413,7 +414,7 @@ app.get('/istranscodingpngcomplete', function (req, res) {
 const isTranscodingJPGComplete = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const isTranscodingJPGComplete = () => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    if (ffmpeg && !ffmpeg_running) {
+    if (!ffmpeg_error && !ffmpeg_running) {
       resolve(JPGcomplete === true);
     } else {
       reject('ffmpeg is not running')
@@ -424,7 +425,7 @@ const isTranscodingJPGComplete = () => {
 const isTranscodingPNGComplete = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const isTranscodingPNGComplete = () => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    if (ffmpeg && !ffmpeg_running) {
+    if (!ffmpeg_error && !ffmpeg_running) {
       resolve(PNGcomplete === true);
     } else {
       reject('ffmpeg is not running')
@@ -762,6 +763,7 @@ const runFFmpegJPG = () => {
             //error.message
             logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'error', output: error});
             ffmpeg_running = false;
+            ffmpeg_error = true;
         });
 
         ffmpeg.on("close", code => {
@@ -773,6 +775,7 @@ const runFFmpegJPG = () => {
             })
             JPGcomplete = true;
             ffmpeg_running = false;
+            ffmpeg_error = false;
         });
       } else {
         setTimeout(function() {
@@ -836,6 +839,7 @@ const runFFmpegPNG = () => {
           ffmpeg.on('error', (error) => {
             logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'error', output: error});
             ffmpeg_running = false;
+            ffmpeg_error = true;
           });
 
           ffmpeg.on("close", code => {
@@ -858,6 +862,7 @@ const runFFmpegPNG = () => {
           setTimeout(function() {
             JPGcomplete = true;
             ffmpeg_running = false;
+            ffmpeg_error = false;
           }, 5000);
         }
       }).catch(err => {
