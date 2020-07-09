@@ -65,7 +65,7 @@ const wwwdecode = (data) => {
 // the deleted projects from this array.
 // To avoid corrupting the ffmpeg handle POSTing /deleteproject while transcoding, it is not assigned to
 // this array and there is only one instance of it
-const setProjectsFFmpegArray = (projects) {
+const setProjectsFFmpegArray = (projects) => {
     for (project of projects) {
         if (!projects_ffmpeg.project) {
             projects_ffmpeg.project = {running: false, error: false, JPGComplete: false, PNGComplete: false};
