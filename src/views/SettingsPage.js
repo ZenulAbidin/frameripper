@@ -131,7 +131,7 @@ class SettingsPage extends React.Component {
   content() {
     return (
       <>
-        <h3 style={{textAlign: 'center'}}>Settings for {this.state.project}</h3>
+        <h3 className='content_banner'>Settings for {this.state.project}</h3>
         <div style={{marginLeft: '1rem'}}>
           <Form>
             <FormGroup row>

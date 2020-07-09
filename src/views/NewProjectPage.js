@@ -194,7 +194,7 @@ class NewProjectPage extends React.Component {
   content() {
     return (
       <>
-        <h3 style={{textAlign: 'center'}}>New Project</h3>
+        <h3 className='content_banner'>New Project</h3>
         <div style={{marginLeft: '1rem'}}>
           <Form>
             <FormGroup row>

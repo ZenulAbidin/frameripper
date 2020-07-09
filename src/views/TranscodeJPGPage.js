@@ -46,17 +46,12 @@ class TranscodeJPGPage extends React.Component {
     fetch(address+'/istranscodingjpgcomplete').then(res => {
     	if (res.ok) {
         res.json().then(json => {
-          if (json.error) {
-            this.setState({
-              failed: true
-            });
-          }
-          else if (wwwdecode(json.complete) === true) {
+          if (wwwdecode(json.complete) === true) {
             this.setState({
               completed: true,
             });
+            clearInterval(this.interval);
           }
-          clearInterval(this.interval);
         })
       }
       else {

@@ -226,7 +226,7 @@ class SelectPage extends React.Component {
   content() {
     return (
       <>
-        <h3 style={{textAlign: 'center'}}>Select frames for {this.state.project}</h3>
+        <h3 className='content_banner'>Select frames for {this.state.project}</h3>
         <div style={{marginLeft: '1rem'}}>
           <Form>
             <FormGroup style={{marginRight: '1rem'}}>
