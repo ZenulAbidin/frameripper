@@ -67,8 +67,8 @@ const wwwdecode = (data) => {
 // this array and there is only one instance of it
 const setProjectsFFmpegArray = (projects) => {
     for (project of projects) {
-        if (!projects_ffmpeg.project) {
-            projects_ffmpeg.project = {running: false, error: false, JPGComplete: false, PNGComplete: false};
+        if (!projects_ffmpeg[project]) {
+            projects_ffmpeg[project] = {running: false, error: false, JPGComplete: false, PNGComplete: false};
         }
     }
 }
@@ -767,14 +767,14 @@ const runFFmpegJPG = () => {
             fs.mkdirSync(working_dir, { recursive: true });
         }
 
-        projects_ffmpeg.project.error = false;
-        projects_ffmpeg.project.JPGComplete = false;
-        projects_ffmpeg.project.PNGComplete = false;
+        projects_ffmpeg[project].error = false;
+        projects_ffmpeg[project].JPGComplete = false;
+        projects_ffmpeg[project].PNGComplete = false;
         logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'spawn', options: args});
         ffmpeg = child_process.spawn("ffmpeg", args, {
           cwd: working_dir
         });
-        projects_ffmpeg.project.running = true;
+        projects_ffmpeg[project].running = true;
 
         ffmpeg.stdout.on("data", data => {
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'jpg', app_stream: 'stdout', output: data.toString()});
@@ -796,16 +796,16 @@ const runFFmpegJPG = () => {
             }).catch(function(err) {
               logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_db', app_transcode: 'jpg', app_key: 'numframes', app_value: value,  app_response: {success: false, 'error': err}});
             })
-            projects_ffmpeg.project.error = code != 0;
-            projects_ffmpeg.project.JPGcomplete = !projects_ffmpeg.project.error;
-            projects_ffmpeg.project.running = false;
+            projects_ffmpeg[project].error = code != 0;
+            projects_ffmpeg[project].JPGcomplete = !projects_ffmpeg[project].error;
+            projects_ffmpeg[project].running = false;
         });
       } else {
         setTimeout(function() {
-            projects_ffmpeg.project.error = false;
-            projects_ffmpeg.project.PNGcomplete = false;
-            projects_ffmpeg.project.JPGcomplete = true;
-            projects_ffmpeg.project.running = false;
+            projects_ffmpeg[project].error = false;
+            projects_ffmpeg[project].PNGcomplete = false;
+            projects_ffmpeg[project].JPGcomplete = true;
+            projects_ffmpeg[project].running = false;
         }, 5000);
       }
     }).catch(err => {
@@ -844,15 +844,15 @@ const runFFmpegPNG = () => {
           if (!fs.existsSync(working_dir)){
               fs.mkdirSync(working_dir, { recursive: true });
           }
-          projects_ffmpeg.project.error = false;
-          projects_ffmpeg.project.JPGComplete = false;
-          projects_ffmpeg.project.PNGComplete = false;
+          projects_ffmpeg[project].error = false;
+          projects_ffmpeg[project].JPGComplete = false;
+          projects_ffmpeg[project].PNGComplete = false;
           logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'spawn', options: args});
           ffmpeg = child_process.spawn("ffmpeg", args, {
             cwd: working_dir
           });
 
-          projects_ffmpeg.project.running = true;
+          projects_ffmpeg[project].running = true;
 
           ffmpeg.stdout.on("data", data => {
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stdout', output: data.toString()});
@@ -879,17 +879,17 @@ const runFFmpegPNG = () => {
               });
               logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_fs', app_transcode: 'png', app_operation: 'rename', app_oldfile: files[i], app_newfile: renamed_file});
             }
-            projects_ffmpeg.project.error = code != 0;
-            projects_ffmpeg.project.PNGcomplete = !projects_ffmpeg.project.error;
-            projects_ffmpeg.project.running = false;
+            projects_ffmpeg[project].error = code != 0;
+            projects_ffmpeg[project].PNGcomplete = !projects_ffmpeg[project].error;
+            projects_ffmpeg[project].running = false;
 
           });
         } else {
           setTimeout(function() {
-            projects_ffmpeg.project.error = false;
-            projects_ffmpeg.project.PNGcomplete = true;
-            projects_ffmpeg.project.JPGcomplete = false;
-            projects_ffmpeg.project.running = false;
+            projects_ffmpeg[project].error = false;
+            projects_ffmpeg[project].PNGcomplete = true;
+            projects_ffmpeg[project].JPGcomplete = false;
+            projects_ffmpeg[project].running = false;
           }, 5000);
         }
       }).catch(err => {
