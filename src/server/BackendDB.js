@@ -66,7 +66,7 @@ const wwwdecode = (data) => {
 // To avoid corrupting the ffmpeg handle POSTing /deleteproject while transcoding, it is not assigned to
 // this array and there is only one instance of it
 const setProjectsFFmpegArray = (projects) => {
-   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_meta', 'projects': projects || default_null});
+   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_meta', format: 'projects', 'projects': projects || default_null});
     for (project of projects) {
         if (!projects_ffmpeg[project]) {
             projects_ffmpeg[project] = {running: false, error: false, JPGComplete: false, PNGComplete: false};
@@ -430,6 +430,7 @@ app.get('/istranscodingpngcomplete', function (req, res) {
 
 const isTranscodingJPGComplete = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const isTranscodingJPGComplete = () => {', app_file: '/server/BackendDB.js'});
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_meta', format: 'full', 'array': projects_ffmpeg});
   return new Promise((resolve, reject) => {
     if (!currentProject) {
       reject('ffmpeg is not running')
@@ -451,6 +452,7 @@ const isTranscodingJPGComplete = () => {
 
 const isTranscodingPNGComplete = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const isTranscodingPNGComplete = () => {', app_file: '/server/BackendDB.js'});
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg_meta', format: 'full', 'array': projects_ffmpeg});
   return new Promise((resolve, reject) => {
     if (!currentProject) {
       reject('ffmpeg is not running')
