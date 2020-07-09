@@ -430,11 +430,11 @@ app.get('/istranscodingpngcomplete', function (req, res) {
 const isTranscodingJPGComplete = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const isTranscodingJPGComplete = () => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    if (!currentProject || !projects_ffmpeg.currentProject.running) {
+    if (!currentProject || !projects_ffmpeg[currentProject].running) {
       reject('ffmpeg is not running')
     }
-    else if (!projects_ffmpeg.currentProject.error) {
-      resolve(projects_ffmpeg.currentProject.JPGcomplete === true);
+    else if (!projects_ffmpeg[currentProject].error) {
+      resolve(projects_ffmpeg[currentProject].JPGcomplete === true);
     } else {
       reject('ffmpeg error')
     }
@@ -444,11 +444,11 @@ const isTranscodingJPGComplete = () => {
 const isTranscodingPNGComplete = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const isTranscodingPNGComplete = () => {', app_file: '/server/BackendDB.js'});
   return new Promise((resolve, reject) => {
-    if (!currentProject || !projects_ffmpeg.currentProject.running) {
+    if (!currentProject || !projects_ffmpeg[currentProject].running) {
       reject('ffmpeg is not running')
     }
-    else if (!projects_ffmpeg.currentProject.error) {
-      resolve(projects_ffmpeg.currentProject.PNGcomplete === true);
+    else if (!projects_ffmpeg[currentProject].error) {
+      resolve(projects_ffmpeg[currentProject].PNGcomplete === true);
     } else {
       reject('ffmpeg error')
     }
