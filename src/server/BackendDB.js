@@ -881,7 +881,7 @@ const runFFmpegPNG = () => {
           });
 
           projects_ffmpeg[project].running = true;
-          console.log(projects);
+          console.log(projects_ffmpeg);
 
           ffmpeg.stdout.on("data", data => {
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stdout', output: data.toString()});
