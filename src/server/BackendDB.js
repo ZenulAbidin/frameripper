@@ -483,7 +483,6 @@ const setProjects = (db, projects) => {
       if (!projects.includes(currentProject)) {
         currentProject = null;
       }
-      setProjectsFFmpegArray(projects);
       resolve(null);
     }).catch(err => {
       logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects || default_null, app_response: {success: false, 'error': err.stack || default_null}});
@@ -747,6 +746,12 @@ const deleteProject = (db, project) => {
 const runFFmpegJPG = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const runFFmpegJPG = framesList => {', app_file: '/server/BackendDB.js'});
 
+  getProjects(db).then(function(projects) {
+    setProjectsFFmpegArray(projects);
+  }).catch(function(err) {
+    throw err;
+  })
+
   getCurrentProject(db).then(project => {
     getSettings(db, project).then(function(settings) {
       if (!argv.testServer) {
@@ -818,6 +823,12 @@ const runFFmpegJPG = () => {
 
 const runFFmpegPNG = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const runFFmpegPNG = framesList => {', app_file: '/server/BackendDB.js'});
+
+  getProjects(db).then(function(projects) {
+    setProjectsFFmpegArray(projects);
+  }).catch(function(err) {
+    throw err;
+  })
 
   getCurrentProject(db).then(project => {
     getFramesList(db, project).then(function(framesList) {
