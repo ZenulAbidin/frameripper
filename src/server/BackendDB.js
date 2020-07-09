@@ -825,8 +825,8 @@ const runFFmpegJPG = () => {
       } else {
         setTimeout(function() {
             projects_ffmpeg[project].error = false;
-            projects_ffmpeg[project].PNGcomplete = false;
-            projects_ffmpeg[project].JPGcomplete = true;
+            projects_ffmpeg[project].PNGComplete = false;
+            projects_ffmpeg[project].JPGComplete = true;
             projects_ffmpeg[project].running = false;
         }, 5000);
       }
@@ -915,8 +915,8 @@ const runFFmpegPNG = () => {
         } else {
           setTimeout(function() {
             projects_ffmpeg[project].error = false;
-            projects_ffmpeg[project].PNGcomplete = true;
-            projects_ffmpeg[project].JPGcomplete = false;
+            projects_ffmpeg[project].PNGComplete = true;
+            projects_ffmpeg[project].JPGComplete = false;
             projects_ffmpeg[project].running = false;
           }, 5000);
         }
