@@ -435,10 +435,10 @@ const isTranscodingJPGComplete = () => {
     if (!currentProject) {
       reject('ffmpeg is not running')
     }
-    else if (!projects_ffmpeg[currentProject].error && projects_ffmpeg[currentProject].JPGcomplete === false) {
+    else if (!projects_ffmpeg[currentProject].error && projects_ffmpeg[currentProject].JPGComplete === false) {
       resolve(false);
     }
-    else if (!projects_ffmpeg[currentProject].error && projects_ffmpeg[currentProject].JPGcomplete === true) {
+    else if (!projects_ffmpeg[currentProject].error && projects_ffmpeg[currentProject].JPGComplete === true) {
       resolve(true);
     }
     else if (!projects_ffmpeg[currentProject].running) {
@@ -457,10 +457,10 @@ const isTranscodingPNGComplete = () => {
     if (!currentProject) {
       reject('ffmpeg is not running')
     }
-    else if (!projects_ffmpeg[currentProject].error && projects_ffmpeg[currentProject].PNGcomplete === false) {
+    else if (!projects_ffmpeg[currentProject].error && projects_ffmpeg[currentProject].PNGComplete === false) {
       resolve(false);
     }
-    else if (!projects_ffmpeg[currentProject].error && projects_ffmpeg[currentProject].PNGcomplete === true) {
+    else if (!projects_ffmpeg[currentProject].error && projects_ffmpeg[currentProject].PNGComplete === true) {
       resolve(true);
     }
     else if (!projects_ffmpeg[currentProject].running) {
@@ -881,7 +881,6 @@ const runFFmpegPNG = () => {
           });
 
           projects_ffmpeg[project].running = true;
-          console.log(projects_ffmpeg);
 
           ffmpeg.stdout.on("data", data => {
             logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'ffmpeg', app_transcode: 'png', app_stream: 'stdout', output: data.toString()});
