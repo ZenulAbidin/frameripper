@@ -76,6 +76,126 @@ const setProjectsFFmpegArray = (projects) => {
 
 var app = express();
 
+var db = openDB();
+
+/* Credits: https://nodejs.org/en/knowledge/command-line/how-to-parse-command-line-arguments/ */
+const argv = yargs
+    .command('frameripper', 'Extracts select PNG frames from a video', {
+        jpgpath: {
+            description: 'Base folder where JPG files of projects will be placed',
+            alias: 'j',
+            type: 'string',
+            demandOption: true
+        },
+        pngpath: {
+            description: 'Base folder where resulting PNG files will be placed',
+            alias: 'p',
+            type: 'string',
+            demandOption: true
+        },
+        videopath: {
+            description: 'Base folder where video files are located',
+            alias: 'v',
+            type: 'string',
+            demandOption: true
+        },
+        origins: {
+            description: 'Allowed CORS Origins, separated with commas',
+            alias: 'o',
+            type: 'string',
+            demandOption: true
+        }
+    })
+    .option('test-client', {
+        alias: 'c',
+        description: 'Run frameripper in client test mode. Doesn\'t run server-side functions.',
+        type: 'boolean',
+    })
+    .option('test-server', {
+        alias: 's',
+        description: 'Run frameripper in server test mode. Doesn\'t run ffmpeg or filesystem operations.',
+        type: 'boolean',
+    })
+    .option('port', {
+        alias: 'p',
+        description: 'Alternative port number to listen on (default 3030).',
+        type: 'number',
+    })
+    .help()
+    .alias('help', 'h')
+    .usage('Usage: $0 --jpgpath JPGFOLDER --pngpath PNGFOLDER --videopath VIDEOFOLDER --origins ORIGINS_LIST')
+    .argv;
+
+console.log(`Logging to "${logfile}"`)
+try {
+  if (fs.lstatSync(argv.jpgpath).isDirectory()) {
+    console.log(`Storing JPGs in "${argv.jpgpath}"`);
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv_dirs',  app_dir: 'jpg', app_jpgpath: argv.jpgpath});
+  }
+} catch(err) {
+  console.error(`The JPG folder "${argv.jpgpath}" doesn't exist. Please create it before running.`);
+  console.error(err);
+  logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'jpg'}});
+  process.exitCode = 1;
+}
+try {
+  if (fs.lstatSync(argv.pngpath).isDirectory()) {
+    console.log(`Storing PNGs in "${argv.pngpath}"`);
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv_dirs',  app_dir: 'png', app_pngpath: argv.pngpath});
+  }
+} catch(err) {
+  console.error(`The PNG folder "${argv.pngpath}" doesn't exist. Please create it before running.`);
+  console.error(err);
+  logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'png'}});
+  process.exitCode = 1;
+}
+try {
+  if (fs.lstatSync(argv.videopath).isDirectory()) {
+    console.log(`Using video directory "${argv.videopath}"`);
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv_dirs',  app_dir: 'video', app_videopath: argv.videopath});
+  }
+} catch(err) {
+  console.error(`The video folder "${argv.videopath}" doesn't exist. Please create it before running.`);
+  console.error(err);
+  logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'video'}});
+  process.exitCode = 1;
+}
+try {
+    if (!argv.origins) {
+      throw Error('argv.origins not specified')
+    }
+    console.log(`Allowing client connections from "${argv.origins}"`);
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv_dirs',  app_dir: 'origin', app_originpath: argv.origins});
+} catch(err) {
+  console.error(`Please specify the allowed hosts separated by commas.`);
+  console.error(err);
+  logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'origin'}});
+  process.exitCode = 1;
+}
+
+getCurrentProject(db).then(function(project) {
+  currentProject = project;
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'init', app_operation: 'currentProjectCache', app_response: {success: true, 'currentProject': currentProject}});
+}).catch(function(err) {
+  // New database, populate it with default values
+  logger.warn({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'init', app_operation: 'currentProjectCache', app_response: {success: false, 'error': 'currentProject not set in DB'}});
+  setProjects(db, [])
+  db.put('/currentProject', '(null)').then(dummy => {})
+})
+
+const port = argv.port || 3030;
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(function(req, res, next) {
+  console.log(argv);
+  for (var origin of argv.origins.split(',')) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+app.listen(port)
+
 app.get('/startjpgtranscode', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.get(\'/startjpgtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
@@ -921,125 +1041,6 @@ const runFFmpegPNG = () => {
   });
 }
 
-var db = openDB();
 
-/* Credits: https://nodejs.org/en/knowledge/command-line/how-to-parse-command-line-arguments/ */
-const argv = yargs
-    .command('frameripper', 'Extracts select PNG frames from a video', {
-        jpgpath: {
-            description: 'Base folder where JPG files of projects will be placed',
-            alias: 'j',
-            type: 'string',
-            demandOption: true
-        },
-        pngpath: {
-            description: 'Base folder where resulting PNG files will be placed',
-            alias: 'p',
-            type: 'string',
-            demandOption: true
-        },
-        videopath: {
-            description: 'Base folder where video files are located',
-            alias: 'v',
-            type: 'string',
-            demandOption: true
-        },
-        origins: {
-            description: 'Allowed CORS Origins, separated with commas',
-            alias: 'o',
-            type: 'string',
-            demandOption: true
-        }
-    })
-    .option('test-client', {
-        alias: 'c',
-        description: 'Run frameripper in client test mode. Doesn\'t run server-side functions.',
-        type: 'boolean',
-    })
-    .option('test-server', {
-        alias: 's',
-        description: 'Run frameripper in server test mode. Doesn\'t run ffmpeg or filesystem operations.',
-        type: 'boolean',
-    })
-    .option('port', {
-        alias: 'p',
-        description: 'Alternative port number to listen on (default 3030).',
-        type: 'number',
-    })
-    .help()
-    .alias('help', 'h')
-    .usage('Usage: $0 --jpgpath JPGFOLDER --pngpath PNGFOLDER --videopath VIDEOFOLDER --origins ORIGINS_LIST')
-    .argv;
-
-console.log(`Logging to "${logfile}"`)
-try {
-  if (fs.lstatSync(argv.jpgpath).isDirectory()) {
-    console.log(`Storing JPGs in "${argv.jpgpath}"`);
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv_dirs',  app_dir: 'jpg', app_jpgpath: argv.jpgpath});
-  }
-} catch(err) {
-  console.error(`The JPG folder "${argv.jpgpath}" doesn't exist. Please create it before running.`);
-  console.error(err);
-  logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'jpg'}});
-  process.exitCode = 1;
-}
-try {
-  if (fs.lstatSync(argv.pngpath).isDirectory()) {
-    console.log(`Storing PNGs in "${argv.pngpath}"`);
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv_dirs',  app_dir: 'png', app_pngpath: argv.pngpath});
-  }
-} catch(err) {
-  console.error(`The PNG folder "${argv.pngpath}" doesn't exist. Please create it before running.`);
-  console.error(err);
-  logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'png'}});
-  process.exitCode = 1;
-}
-try {
-  if (fs.lstatSync(argv.videopath).isDirectory()) {
-    console.log(`Using video directory "${argv.videopath}"`);
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv_dirs',  app_dir: 'video', app_videopath: argv.videopath});
-  }
-} catch(err) {
-  console.error(`The video folder "${argv.videopath}" doesn't exist. Please create it before running.`);
-  console.error(err);
-  logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'video'}});
-  process.exitCode = 1;
-}
-try {
-    if (!argv.origins) {
-      throw Error('argv.origins not specified')
-    }
-    console.log(`Allowing client connections from "${argv.origins}"`);
-    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv_dirs',  app_dir: 'origin', app_originpath: argv.origins});
-} catch(err) {
-  console.error(`Please specify the allowed hosts separated by commas.`);
-  console.error(err);
-  logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'origin'}});
-  process.exitCode = 1;
-}
-
-getCurrentProject(db).then(function(project) {
-  currentProject = project;
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'init', app_operation: 'currentProjectCache', app_response: {success: true, 'currentProject': currentProject}});
-}).catch(function(err) {
-  // New database, populate it with default values
-  logger.warn({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'init', app_operation: 'currentProjectCache', app_response: {success: false, 'error': 'currentProject not set in DB'}});
-  setProjects(db, [])
-  db.put('/currentProject', '(null)').then(dummy => {})
-})
-
-const port = argv.port || 3030;
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-console.log(argv);
-app.use(function(req, res, next) {
-  console.log(argv);
-  for (var origin of argv.origins.split(',')) {
-    res.header("Access-Control-Allow-Origin", origin);
-  }
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-app.listen(port)
 
 
