@@ -956,7 +956,7 @@ const argv = yargs
             alias: 'v',
             type: 'string',
             demandOption: true
-        }
+        },
         origins: {
             description: 'Allowed CORS Origins, separated with commas',
             alias: 'o',
