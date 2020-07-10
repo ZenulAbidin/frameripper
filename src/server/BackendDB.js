@@ -1031,6 +1031,7 @@ getCurrentProject(db).then(function(project) {
 const port = argv.port || 3030;
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+console.log(argv);
 app.use(function(req, res, next) {
   console.log(argv);
   for (var origin of argv.origins.split(',')) {
