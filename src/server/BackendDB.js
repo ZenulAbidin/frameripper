@@ -76,8 +76,6 @@ const setProjectsFFmpegArray = (projects) => {
 
 var app = express();
 
-var db = openDB();
-
 //BEGIN DATABASE SUBSYSTEM
 const openDB = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const openDB = () => {', app_file: '/server/BackendDB.js'});
@@ -368,6 +366,8 @@ const deleteProject = (db, project) => {
 }
 
 //END DATABASE SUBSYSTEM
+
+var db = openDB();
 
 /* Credits: https://nodejs.org/en/knowledge/command-line/how-to-parse-command-line-arguments/ */
 const argv = yargs
