@@ -1018,6 +1018,18 @@ try {
   logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'video'}});
   process.exitCode = 1;
 }
+try {
+    if (!argv.origins) {
+      throw Error('argv.origins not specified')
+    }
+    console.log(`Allowing client connections from "${argv.origins}"`);
+    logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv_dirs',  app_dir: 'origin', app_originpath: argv.origins});
+} catch(err) {
+  console.error(`Please specify the allowed hosts separated by commas.`);
+  console.error(err);
+  logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'argv', app_response: {success: false, error_type: 'dir_noent', dir: 'video'}});
+  process.exitCode = 1;
+}
 
 getCurrentProject(db).then(function(project) {
   currentProject = project;
