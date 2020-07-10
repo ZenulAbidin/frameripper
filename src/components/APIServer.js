@@ -47,7 +47,7 @@ class APIServer extends React.Component {
             </Form>
           </div>
         </div>
-        <p className='content_banner'><a href="https://github.com/ZenulAbidin/frameripper">View on Github</a></p>
+        <p className='content_banner'><a href="https://github.com/ZenulAbidin/frameripper" target="_blank" >View on Github</a></p>
         <Tooltip placement="bottom" isOpen={this.state.addressTooltipOpen} target="addressTooltip" toggle={this.toggleAddressTooltipOpen}>
           Sets the address of the API server to send queries to. It can be an IP address or a domain name and a path. port number can also be specified. Prepend {'http://'} or {'https://'} to it and don&apos;t end it with a slash.
         </Tooltip>
