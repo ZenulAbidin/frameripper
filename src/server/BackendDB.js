@@ -982,7 +982,7 @@ const argv = yargs
     })
     .help()
     .alias('help', 'h')
-    .usage('Usage: $0 --argv.jpgpath JPGFOLDER --argv.pngpath PNGFOLDER')
+    .usage('Usage: $0 --jpgpath JPGFOLDER --pngpath PNGFOLDER --videopath VIDEOFOLDER --origins ORIGINS_LIST')
     .argv;
 
 console.log(`Logging to "${logfile}"`)
