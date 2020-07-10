@@ -75,14 +75,19 @@ const setProjectsFFmpegArray = (projects) => {
 }
 
 var app = express();
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://iamomegastorm.tk:3011");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
 
+const initializeApp = (port, origins) => {
+  app.use(bodyParser.json()); // support json encoded bodies
+  app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+  app.use(function(req, res, next) {
+    for (var origin in origins.split(',')) {
+      res.header("Access-Control-Allow-Origin", origin);
+    }
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+  app.listen(port)
+}
 
 app.get('/startjpgtranscode', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.get(\'/startjpgtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
@@ -952,6 +957,12 @@ const argv = yargs
             type: 'string',
             demandOption: true
         }
+        origins: {
+            description: 'Allowed CORS Origins, separated with commas',
+            alias: 'o',
+            type: 'string',
+            demandOption: true
+        }
     })
     .option('test-client', {
         alias: 'c',
@@ -1019,6 +1030,6 @@ getCurrentProject(db).then(function(project) {
 })
 
 const port = argv.port || 3030;
-app.listen(port)
+initializeApp(port, argv.origins);
 
 
