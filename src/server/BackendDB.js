@@ -78,6 +78,297 @@ var app = express();
 
 var db = openDB();
 
+//BEGIN DATABASE SUBSYSTEM
+const openDB = () => {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const openDB = () => {', app_file: '/server/BackendDB.js'});
+  logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'open', app_file: DBfile});
+  const db = level(DBfile, { valueEncoding: 'json' });
+  return db;
+}
+
+const getProjects = db => {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const getProjects = db => {', app_file: '/server/BackendDB.js'});
+  return new Promise((resolve, reject) => {
+    db.get('/projects').then(value => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: true, '/projects': value}});
+      return resolve(value);
+    }).catch(err => {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: false, 'error': err.stack || default_null}});
+      reject(err);
+    })
+  })
+}
+
+const setProjects = (db, projects) => {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setProjects = (db, projects) => {', app_file: '/server/BackendDB.js'});
+  return new Promise((resolve, reject) => {
+    db.put('/projects', projects).then(value => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects || default_null, app_response: {success: true}});
+      if (!projects.includes(currentProject)) {
+        currentProject = null;
+      }
+      resolve(null);
+    }).catch(err => {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects || default_null, app_response: {success: false, 'error': err.stack || default_null}});
+      reject(err);
+    })
+  })
+}
+
+const getCurrentProject = db => {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const getCurrentProject = db => {', app_file: '/server/BackendDB.js'});
+  return new Promise((resolve, reject) => {
+    // Use cached value if exists to avoid expensive DB call
+    if (currentProject) {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: true, '/currentProject': currentProject, cached: true}});
+      return resolve(currentProject);
+    }
+    db.get('/currentProject').then(value => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: true, '/currentProject': value, cached: false}});
+      return resolve(value);
+    }).catch(err => {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: false, 'error': err.stack || default_null}});
+      reject(err);
+    })
+  })
+}
+
+const setCurrentProject = (db, project) => {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setCurrentProject = (db, project) => {', app_file: '/server/BackendDB.js'});
+  return new Promise((resolve, reject) => {
+    getProjects(db).then(projects => {
+      if (project == null || !projects.includes(project)) {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+        reject('Project doesn\'t exist');
+      }
+    }).catch(err => {
+      reject(err);
+    });
+    db.put('/currentProject', project).then(value => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: true}});
+      currentProject = project;
+      resolve(null);
+    }).catch(err => {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: false, 'error': err.stack || default_null}});
+      reject(err);
+    })
+  })
+}
+
+const getSettings = (db, project) => {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const getSettings = (db, project) => {', app_file: '/server/BackendDB.js'});
+  return new Promise((resolve, reject) => {
+    var exists = project != null && getProjects(db).then(projects => {
+      return projects.includes(project);
+    }).catch(err => {
+      reject(err);
+    });
+    if (!exists) {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+        reject('Project doesn\'t exist');
+    }
+
+    db.get('/project/'+project+'/prefix').then((prefix) => {
+      db.get('/project/'+project+'/frameOffset').then((frameOffset) => {
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: true, [`/project/${project}/prefix`]: prefix}});
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: true, [`/project/${project}/frameOffset`]: frameOffset}});
+        resolve({'prefix': prefix, 'frameOffset': frameOffset});
+      }).catch(err => {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err.stack || default_null}});
+        reject(err);
+      })
+    }).catch(err => {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err.stack || default_null}});
+      reject(err);
+    })
+  })
+}
+
+const setSettings = (db, project, prefix, frameOffset) => {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setSettings = (db, project, prefix, frameOffset) => {', app_file: '/server/BackendDB.js'});
+  return new Promise((resolve, reject) => {
+    var exists = project != null && getProjects(db).then(projects => {
+      return projects.includes(project);
+    }).catch(err => {
+      reject(err);
+    });
+    logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+    logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+    if (!exists) reject('Project doesn\'t exist');
+    db.put('/project/'+project+'/prefix', prefix).then(value => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix || default_null, app_response: {success: true}});
+    }).catch(err => {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix || default_null, app_response: {success: false, 'error': err.stack || default_null}});
+      reject(err);
+    })
+    db.put('/project/'+project+'/frameOffset', frameOffset).then((value) => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset || default_null, app_response: {success: true}});
+      resolve(null);
+    }).catch(err => {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset || default_null, app_response: {success: false, 'error': err.stack || default_null}});
+      reject(err);
+    })
+  })
+}
+
+
+const getNumFrames = (db, project) => {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const getNumFrames = (db, project) => {', app_file: '/server/BackendDB.js'});
+  return new Promise((resolve, reject) => {
+    var exists = project != null && getProjects(db).then(projects => {
+      return projects.includes(project);
+    }).catch(err => {
+      reject(err);
+    });
+    if (!exists) {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+      reject('Project doesn\'t exist');
+    }
+    db.get('/project/'+project+'/numFrames').then(numFrames => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: true, [`/project/${project}/numFrames`]: numFrames}});
+      resolve(numFrames);
+    }).catch(err => {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack || default_null}});
+      reject(err);
+    })
+
+  })
+}
+
+const setNumFrames = (db, project, numFrames) => {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setNumFrames = (db, project, numFrames) => {', app_file: '/server/BackendDB.js'});
+  return new Promise((resolve, reject) => {
+    var exists = project != null && getProjects(db).then(projects => {
+        return projects.includes(project);
+    }).catch(err => {
+      reject(err);
+    });
+    if (!exists) {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+      reject('Project doesn\'t exist');
+    }
+    db.put('/project/'+project+'/numFrames', numFrames).then(value => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames || default_null, app_response: {success: true}});
+      resolve(null);
+    }).catch(err => {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames || default_null, app_response: {success: false, 'error': err.stack || default_null}});
+      reject(err);
+    })
+  })
+}
+
+const getFramesList = (db, project) => {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const getFramesList = (db, project) => {', app_file: '/server/BackendDB.js'});
+  return new Promise((resolve, reject) => {
+    getProjects(db).then(projects => {
+      var exists = project != null && projects.includes(project);
+      if (!exists) {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+        reject('Project doesn\'t exist');
+      }
+    }).catch(err => {
+      reject(err);
+    });
+    db.get('/project/'+project+'/framesList').then(framesList => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: true, [`/project/${project}/framesList`]: framesList}});
+      resolve(framesList);
+    }).catch(err => {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack || default_null}});
+      reject(err);
+    })
+  })
+}
+
+const setFramesList = (db, project, framesList) => {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setFramesList = (db, project, framesList) => {', app_file: '/server/BackendDB.js'});
+  return new Promise((resolve, reject) => {
+    var exists = project != null && getProjects(db).then(projects => {
+        return projects.includes(project);
+    }).catch(err => {
+      reject(err);
+    });
+    if (!exists) {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+      reject('Project doesn\'t exist');
+    }
+    db.put('/project/'+project+'/framesList', framesList).then(value => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList || default_null, app_response: {success: true}});
+      resolve(null);
+    }).catch(err => {
+      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList || default_null, app_response: {success: false, 'error': err.stack || default_null}});
+      reject(err);
+    })
+  })
+}
+
+const deleteProject = (db, project) => {
+  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const deleteProject = (db, project) => {', app_file: '/server/BackendDB.js'});
+  return new Promise((resolve, reject) => {
+    getProjects(db).then(projects => {
+      var exists = project != null &&  projects.includes(project);
+      if (!exists) {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
+        reject('Project doesn\'t exist');
+      };
+      db.del('/project/'+project+'/prefix').then(value => {
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: true}});
+      }).catch(err => {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err.stack || default_null}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err.stack || default_null}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack || default_null}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack || default_null}});
+        reject(err);
+      })
+
+      db.del('/project/'+project+'/frameOffset').then(value => {
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: true}});
+      }).catch(err => {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err.stack || default_null}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack || default_null}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack || default_null}});
+        reject(err);
+      })
+
+      db.del('/project/'+project+'/numFrames').then(value => {
+      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: true}});
+      }).catch(err => {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack || default_null}});
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack || default_null}});
+        reject(err);
+      })
+
+      db.del('/project/'+project+'/framesList').then(value => {
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: true}});
+      }).catch(err => {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack || default_null}});
+        reject(err);
+      })
+
+      projects = projects.filter((value, index, arr) => {
+        return value !== project;
+      })
+      setProjects(db, projects).then(value => {
+        if (project == currentProject) {
+          currentProject = null;
+        }
+        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del_projremove', app_key: '/project/'+project, app_response: {success: true}});
+        resolve(null);
+      }).catch(err => {
+        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del_projremove', app_key: '/project/'+project, app_response:  {success: false, 'error': err.stack || default_null}});
+        reject(err);
+      })
+    }).catch(err => {
+      reject(err);
+    })
+  })
+}
+
+//END DATABASE SUBSYSTEM
+
 /* Credits: https://nodejs.org/en/knowledge/command-line/how-to-parse-command-line-arguments/ */
 const argv = yargs
     .command('frameripper', 'Extracts select PNG frames from a video', {
@@ -581,294 +872,6 @@ const isTranscodingPNGComplete = () => {
     else {
       reject('ffmpeg error')
     }
-  })
-}
-
-const openDB = () => {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const openDB = () => {', app_file: '/server/BackendDB.js'});
-  logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'open', app_file: DBfile});
-  const db = level(DBfile, { valueEncoding: 'json' });
-  return db;
-}
-
-const getProjects = db => {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const getProjects = db => {', app_file: '/server/BackendDB.js'});
-  return new Promise((resolve, reject) => {
-    db.get('/projects').then(value => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: true, '/projects': value}});
-      return resolve(value);
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/projects', app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    })
-  })
-}
-
-const setProjects = (db, projects) => {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setProjects = (db, projects) => {', app_file: '/server/BackendDB.js'});
-  return new Promise((resolve, reject) => {
-    db.put('/projects', projects).then(value => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects || default_null, app_response: {success: true}});
-      if (!projects.includes(currentProject)) {
-        currentProject = null;
-      }
-      resolve(null);
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/projects', app_value: projects || default_null, app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    })
-  })
-}
-
-const getCurrentProject = db => {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const getCurrentProject = db => {', app_file: '/server/BackendDB.js'});
-  return new Promise((resolve, reject) => {
-    // Use cached value if exists to avoid expensive DB call
-    if (currentProject) {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: true, '/currentProject': currentProject, cached: true}});
-      return resolve(currentProject);
-    }
-    db.get('/currentProject').then(value => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: true, '/currentProject': value, cached: false}});
-      return resolve(value);
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/currentProject', app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    })
-  })
-}
-
-const setCurrentProject = (db, project) => {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setCurrentProject = (db, project) => {', app_file: '/server/BackendDB.js'});
-  return new Promise((resolve, reject) => {
-    getProjects(db).then(projects => {
-      if (project == null || !projects.includes(project)) {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-        reject('Project doesn\'t exist');
-      }
-    }).catch(err => {
-      reject(err);
-    });
-    db.put('/currentProject', project).then(value => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: true}});
-      currentProject = project;
-      resolve(null);
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/currentProject', app_value: project || default_null, app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    })
-  })
-}
-
-const getSettings = (db, project) => {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const getSettings = (db, project) => {', app_file: '/server/BackendDB.js'});
-  return new Promise((resolve, reject) => {
-    var exists = project != null && getProjects(db).then(projects => {
-      return projects.includes(project);
-    }).catch(err => {
-      reject(err);
-    });
-    if (!exists) {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-        reject('Project doesn\'t exist');
-    }
-
-    db.get('/project/'+project+'/prefix').then((prefix) => {
-      db.get('/project/'+project+'/frameOffset').then((frameOffset) => {
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: true, [`/project/${project}/prefix`]: prefix}});
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: true, [`/project/${project}/frameOffset`]: frameOffset}});
-        resolve({'prefix': prefix, 'frameOffset': frameOffset});
-      }).catch(err => {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err.stack || default_null}});
-        reject(err);
-      })
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    })
-  })
-}
-
-const setSettings = (db, project, prefix, frameOffset) => {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setSettings = (db, project, prefix, frameOffset) => {', app_file: '/server/BackendDB.js'});
-  return new Promise((resolve, reject) => {
-    var exists = project != null && getProjects(db).then(projects => {
-      return projects.includes(project);
-    }).catch(err => {
-      reject(err);
-    });
-    logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-    logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-    if (!exists) reject('Project doesn\'t exist');
-    db.put('/project/'+project+'/prefix', prefix).then(value => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix || default_null, app_response: {success: true}});
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/prefix', app_value: prefix || default_null, app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    })
-    db.put('/project/'+project+'/frameOffset', frameOffset).then((value) => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset || default_null, app_response: {success: true}});
-      resolve(null);
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/frameOffset', app_value: frameOffset || default_null, app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    })
-  })
-}
-
-
-const getNumFrames = (db, project) => {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const getNumFrames = (db, project) => {', app_file: '/server/BackendDB.js'});
-  return new Promise((resolve, reject) => {
-    var exists = project != null && getProjects(db).then(projects => {
-      return projects.includes(project);
-    }).catch(err => {
-      reject(err);
-    });
-    if (!exists) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-      reject('Project doesn\'t exist');
-    }
-    db.get('/project/'+project+'/numFrames').then(numFrames => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: true, [`/project/${project}/numFrames`]: numFrames}});
-      resolve(numFrames);
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    })
-
-  })
-}
-
-const setNumFrames = (db, project, numFrames) => {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setNumFrames = (db, project, numFrames) => {', app_file: '/server/BackendDB.js'});
-  return new Promise((resolve, reject) => {
-    var exists = project != null && getProjects(db).then(projects => {
-        return projects.includes(project);
-    }).catch(err => {
-      reject(err);
-    });
-    if (!exists) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-      reject('Project doesn\'t exist');
-    }
-    db.put('/project/'+project+'/numFrames', numFrames).then(value => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames || default_null, app_response: {success: true}});
-      resolve(null);
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/numFrames', app_value: numFrames || default_null, app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    })
-  })
-}
-
-const getFramesList = (db, project) => {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const getFramesList = (db, project) => {', app_file: '/server/BackendDB.js'});
-  return new Promise((resolve, reject) => {
-    getProjects(db).then(projects => {
-      var exists = project != null && projects.includes(project);
-      if (!exists) {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-        reject('Project doesn\'t exist');
-      }
-    }).catch(err => {
-      reject(err);
-    });
-    db.get('/project/'+project+'/framesList').then(framesList => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: true, [`/project/${project}/framesList`]: framesList}});
-      resolve(framesList);
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'get', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    })
-  })
-}
-
-const setFramesList = (db, project, framesList) => {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const setFramesList = (db, project, framesList) => {', app_file: '/server/BackendDB.js'});
-  return new Promise((resolve, reject) => {
-    var exists = project != null && getProjects(db).then(projects => {
-        return projects.includes(project);
-    }).catch(err => {
-      reject(err);
-    });
-    if (!exists) {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList || default_null, app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-      reject('Project doesn\'t exist');
-    }
-    db.put('/project/'+project+'/framesList', framesList).then(value => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList || default_null, app_response: {success: true}});
-      resolve(null);
-    }).catch(err => {
-      logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'set', app_key: '/project/'+project+'/framesList', app_value: framesList || default_null, app_response: {success: false, 'error': err.stack || default_null}});
-      reject(err);
-    })
-  })
-}
-
-const deleteProject = (db, project) => {
-  logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const deleteProject = (db, project) => {', app_file: '/server/BackendDB.js'});
-  return new Promise((resolve, reject) => {
-    getProjects(db).then(projects => {
-      var exists = project != null &&  projects.includes(project);
-      if (!exists) {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': 'Project doesn\'t exist'}});
-        reject('Project doesn\'t exist');
-      };
-      db.del('/project/'+project+'/prefix').then(value => {
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: true}});
-      }).catch(err => {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/prefix', app_response: {success: false, 'error': err.stack || default_null}});
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err.stack || default_null}});
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack || default_null}});
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack || default_null}});
-        reject(err);
-      })
-
-      db.del('/project/'+project+'/frameOffset').then(value => {
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: true}});
-      }).catch(err => {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/frameOffset', app_response: {success: false, 'error': err.stack || default_null}});
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack || default_null}});
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack || default_null}});
-        reject(err);
-      })
-
-      db.del('/project/'+project+'/numFrames').then(value => {
-      logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: true}});
-      }).catch(err => {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/numFrames', app_response: {success: false, 'error': err.stack || default_null}});
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack || default_null}});
-        reject(err);
-      })
-
-      db.del('/project/'+project+'/framesList').then(value => {
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: true}});
-      }).catch(err => {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del', app_key: '/project/'+project+'/framesList', app_response: {success: false, 'error': err.stack || default_null}});
-        reject(err);
-      })
-
-      projects = projects.filter((value, index, arr) => {
-        return value !== project;
-      })
-      setProjects(db, projects).then(value => {
-        if (project == currentProject) {
-          currentProject = null;
-        }
-        logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del_projremove', app_key: '/project/'+project, app_response: {success: true}});
-        resolve(null);
-      }).catch(err => {
-        logger.error({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'database', app_request: 'del_projremove', app_key: '/project/'+project, app_response:  {success: false, 'error': err.stack || default_null}});
-        reject(err);
-      })
-    }).catch(err => {
-      reject(err);
-    })
   })
 }
 
