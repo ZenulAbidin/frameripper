@@ -80,7 +80,7 @@ const initializeApp = (port, origins) => {
   app.use(bodyParser.json()); // support json encoded bodies
   app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
   app.use(function(req, res, next) {
-    for (var origin in origins.split(',')) {
+    for (var origin of origins.split(',')) {
       res.header("Access-Control-Allow-Origin", origin);
     }
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
