@@ -76,20 +76,6 @@ const setProjectsFFmpegArray = (projects) => {
 
 var app = express();
 
-const initializeApp = (port, origins) => {
-  app.use(bodyParser.json()); // support json encoded bodies
-  app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-  app.use(function(req, res, next) {
-    console.log(origins);
-    for (var origin of origins.split(',')) {
-      res.header("Access-Control-Allow-Origin", origin);
-    }
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
-  app.listen(port)
-}
-
 app.get('/startjpgtranscode', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.get(\'/startjpgtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
@@ -1043,6 +1029,16 @@ getCurrentProject(db).then(function(project) {
 })
 
 const port = argv.port || 3030;
-initializeApp(port, argv.origins);
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(function(req, res, next) {
+  console.log(argv.origins);
+  for (var origin of argv.origins.split(',')) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+app.listen(port)
 
 
