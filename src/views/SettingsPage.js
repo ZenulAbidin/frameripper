@@ -137,14 +137,14 @@ class SettingsPage extends React.Component {
             <FormGroup row>
               <Label id="prefixTooltip" for="prefixInput" sm={2}>Prefix</Label>
               <Col sm={6}>
-                <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onChange={e => this.validatePrefixInput(e)} invalid={this.state.prefixInputInvalid ? true : false} />
+                <Input type="text" id="prefixInput" placeholder="Big_Buck_Bunny_" onChange={e => this.validatePrefixInput(e)} invalid={this.state.prefixInputInvalid ? true : false} value={this.state.prefix}/>
                 {this.state.prefixInputInvalid ? this.prefixHelpText() : null}
               </Col>
             </FormGroup>
             <FormGroup row>
               <Label id="offsetTooltip" for="offsetInput" sm={2}>Frame offset</Label>
               <Col sm={2} md={1}>
-                <Input min={-10} max={10} id="offsetInput" type="number" step="1" placeholder="-1" onChange={e => this.setState({frameOffset: e.target.value})}/>
+                <Input min={-10} max={10} id="offsetInput" type="number" step="1" placeholder="-1" onChange={e => this.setState({frameOffset: e.target.value})} value={this.state.frameOffset}/>
               </Col>
             </FormGroup>
           </Form>
