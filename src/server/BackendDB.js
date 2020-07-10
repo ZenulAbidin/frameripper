@@ -80,6 +80,7 @@ const initializeApp = (port, origins) => {
   app.use(bodyParser.json()); // support json encoded bodies
   app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
   app.use(function(req, res, next) {
+    console.log(origins);
     for (var origin of origins.split(',')) {
       res.header("Access-Control-Allow-Origin", origin);
     }
