@@ -484,7 +484,6 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-app.listen(port)
 
 app.get('/startjpgtranscode', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.get(\'/startjpgtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
@@ -1043,6 +1042,6 @@ const runFFmpegPNG = () => {
   });
 }
 
-
+app.listen(port)
 
 
