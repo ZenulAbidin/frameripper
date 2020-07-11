@@ -13,6 +13,7 @@ Client:
 - Customizeable file name prefix
 - Displays progress of ffmpeg extractions
 - Configurable frame offset for the rare case the video frames are off by one
+- Add and remove projects
 
 Server:
 - Arbitrary characters supported in video name, by virtue of LevelDB
@@ -27,6 +28,10 @@ Server:
 3. Open a terminal and run `npm run server --jpgpath <ROOT-FOLDER-OF-JPG-OUTPUT> --pngpath <ROOT-FOLDER-OF-PNG-OUTPUT> --videopath <PATH-TO-VIDEOS> --origins <LIST-OF-DOMAINS-SEPARATED-BY-COMMAS>`. If necessary you can change the listening port with `--port`.
 4. In another terminal run `npm run-script build` to compile the client app, then run `serve -l tcp://host:port build` to run the client app on that host and port. Make sure it's in the allowed server CORS origins.
 
+The images will be generated on the server. To view them on a headless server, use self-hosted image gallery software. For that I use [Piwigo](https://piwigo.org/get-piwigo).
+
 ## Known issues
 - If project creation XMLHTTPRequest fails, it takes you to the select screen with empty data. Treat it as failure.
 - Similarly for settings page.
+- Renaming projects is not supported at this time.
+
