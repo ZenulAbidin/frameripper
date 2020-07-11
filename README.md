@@ -22,8 +22,10 @@ Server:
 
 ## Usage
 
-- Clone this repositiory
-- Open a terminal and run `npm run server --jpgpath <ROOT-FOLDER-OF-JPG-OUTPUT> --pngpath <ROOT-FOLDER-OF-PNG-OUTPUT> --videopath <PATH-TO-VIDEOS> --origins <LIST-OF-DOMAINS-SEPARATED-BY-COMMAS>
+1. Clone this repositiory
+2. Run `npm install -g serve` to install the server package. It's needed to run the client app.
+3. Open a terminal and run `npm run server --jpgpath <ROOT-FOLDER-OF-JPG-OUTPUT> --pngpath <ROOT-FOLDER-OF-PNG-OUTPUT> --videopath <PATH-TO-VIDEOS> --origins <LIST-OF-DOMAINS-SEPARATED-BY-COMMAS>`. If necessary you can change the listening port with `--port`.
+4. In another terminal run `npm run-script build` to compile the client app, then run `serve -l tcp://host:port build` to run the client app on that host and port. Make sure it's in the allowed server CORS origins.
 
 ## Known issues
 - If project creation XMLHTTPRequest fails, it takes you to the select screen with empty data. Treat it as failure.
