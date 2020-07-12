@@ -48,13 +48,12 @@ function formatNumberSign(theNumber)
     }
 }
 
+// Hacks to pass JSON data in x-www-url-formencoded content type.
 const wwwencode = (data) => {
-//    return encodeURIComponent(Buffer.from(JSON.stringify(data)).toString('base64'))
     return encodeURIComponent(JSON.stringify(data))
 };
 
 const wwwdecode = (data) => {
-//    return JSON.parse(Buffer.from(decodeURIComponent(data), 'base64').toString())
     return JSON.parse(decodeURIComponent(data))
 };
 
@@ -471,6 +470,8 @@ getCurrentProject(db).then(function(project) {
   db.put('/currentProject', '(null)').then(dummy => {})
 })
 
+// BEGIN ROUTING SUBSYSTEM
+
 const port = argv.port || 3030;
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -495,9 +496,9 @@ app.get('/startjpgtranscode', function (req, res) {
 app.get('/abortjpgtranscode', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.get(\'/abortjpgtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
-    if (ffmpeg_running) {
+    if (projects_ffmpeg[project].running) {
       ffmpeg.kill();
-      ffmpeg_running = false;
+      projects_ffmpeg[project].running = false;
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortjpgtranscode', app_request: 'get', app_status: 200});
       res.json({ok: wwwencode(true)})
     } else {
@@ -522,9 +523,9 @@ app.get('/startpngtranscode', function (req, res) {
 app.get('/abortpngtranscode', function (req, res) {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'app.get(\'/abortpngtranscode\', function (req, res) {', app_file: '/server/BackendDB.js'});
   if (!argv.testClient) {
-    if (ffmpeg_running) {
+    if (projects_ffmpeg[project].running) {
       ffmpeg.kill();
-      ffmpeg_running = false;
+      projects_ffmpeg[project].running = false;
       logger.verbose({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'endpoint', app_url: '/abortpngtranscode', app_request: 'get', app_status: 200});
       res.json({ok: wwwencode(true)})
     } else {
@@ -798,6 +799,7 @@ app.get('/istranscodingjpgcomplete', function (req, res) {
       res.status(400).json({'error': wwwencode(err.toString())})
     })
   } else {
+    // Every 50 function calls this returns true
     ticker_jpg += 1;
     var complete = (ticker_jpg % 50 === 0) ? true : false;
     console.log(`ticker_jpg = ${ticker_jpg}`);
@@ -818,6 +820,7 @@ app.get('/istranscodingpngcomplete', function (req, res) {
       res.status(400).json({'error': wwwencode(err.toString())})
     })
   } else {
+    // Every 50 function calls this returns true
     ticker_png += 1;
     var complete = (ticker_png % 50 === 0) ? true : false;
     console.log(`ticker_png = ${ticker_png}`);
@@ -826,6 +829,9 @@ app.get('/istranscodingpngcomplete', function (req, res) {
   }
 })
 
+// END ROUTING SUBSYSTEM
+
+// BEGIN FFMPEG SUBSYSTEM
 
 const isTranscodingJPGComplete = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const isTranscodingJPGComplete = () => {', app_file: '/server/BackendDB.js'});
@@ -875,6 +881,7 @@ const runFFmpegJPG = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const runFFmpegJPG = framesList => {', app_file: '/server/BackendDB.js'});
 
   getProjects(db).then(function(projects) {
+    // We update the ffmpeg array with new and deleted projects here.
     setProjectsFFmpegArray(projects);
   }).catch(function(err) {
     throw err;
@@ -953,6 +960,7 @@ const runFFmpegPNG = () => {
   logger.debug({time: moment().format("YYYY-MM-DDTHH:mm:ss.SSSSSSSSSZ"), app_subsystem: 'function_call', app_func: 'const runFFmpegPNG = framesList => {', app_file: '/server/BackendDB.js'});
 
   getProjects(db).then(function(projects) {
+    // We update the ffmpeg array with new and deleted projects here.
     setProjectsFFmpegArray(projects);
   }).catch(function(err) {
     throw err;
@@ -972,6 +980,7 @@ const runFFmpegPNG = () => {
             });
           }
 
+          // Build the select arg, it looks like select='eq(n\1)+eq(n\2)+etc...'
           var select_arg = "select='"
           for (const frame of framesList) {
             select_arg += `eq(n\\,${frame}${formatNumberSign(settings.frameOffset)})+`
@@ -1039,6 +1048,8 @@ const runFFmpegPNG = () => {
     });
   });
 }
+
+// BEGIN FFMPEG SUBSYSTEM
 
 app.listen(port)
 
