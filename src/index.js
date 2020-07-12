@@ -13,14 +13,6 @@ import SelectPage from "views/SelectPage.js";
 import SettingsPage from "views/SettingsPage.js";
 import TranscodePNGPage from "views/TranscodePNGPage.js";
 
-const address = "http://iamomegastorm.tk:3030";
-
-if (address === '' || !address.startsWith('http://') || address.startsWith('https://')) {
-  console.error(`WARNING: missing or malformed address ${address}. Server queries will fail.
-Check that the SERVER_ADDRESS environment variable is set with the domain IP address and has http:// or https:// in front of it.`)
-}
-
-
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
